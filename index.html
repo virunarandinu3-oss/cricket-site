@@ -171,7 +171,40 @@
       text-align: center;
     }
 
-    /* Music Status Badge */
+    /* Music & Audio Control Badges */
+    .header-ctrl-btn {
+      background: rgba(0, 242, 254, 0.15);
+      border: 1px solid var(--cyan-neon);
+      padding: 2px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-family: var(--font-chakra);
+      font-weight: 700;
+      color: var(--cyan-neon);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      box-shadow: 0 0 8px rgba(0, 242, 254, 0.3);
+      transition: all 0.25s ease;
+      outline: none;
+    }
+    .header-ctrl-btn:hover {
+      background: rgba(0, 242, 254, 0.35);
+      box-shadow: 0 0 15px rgba(0, 242, 254, 0.7);
+      transform: scale(1.04);
+    }
+    .header-ctrl-btn.cheer-btn {
+      background: rgba(255, 230, 0, 0.18);
+      border-color: var(--yellow-gold);
+      color: var(--yellow-gold);
+      box-shadow: 0 0 10px rgba(255, 230, 0, 0.4);
+    }
+    .header-ctrl-btn.cheer-btn:hover {
+      background: rgba(255, 230, 0, 0.38);
+      box-shadow: 0 0 20px rgba(255, 230, 0, 0.8);
+    }
+
     #music-ctrl-badge {
       background: rgba(0, 242, 254, 0.15);
       border: 1px solid var(--cyan-neon);
@@ -188,6 +221,35 @@
     }
     #music-ctrl-badge:hover {
       background: rgba(0, 242, 254, 0.3);
+      box-shadow: 0 0 15px rgba(0, 242, 254, 0.6);
+    }
+
+    /* Floating Audio Unlock Banner (If browser blocks autoplay) */
+    #audio-unlock-banner {
+      position: absolute;
+      top: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(90deg, #ff007f 0%, #7928ca 50%, #00f2fe 100%);
+      border: 1px solid #ffffff;
+      padding: 6px 24px;
+      border-radius: 30px;
+      font-family: var(--font-chakra);
+      font-size: 13px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 1.5px;
+      cursor: pointer;
+      z-index: 99999;
+      box-shadow: 0 0 25px rgba(255, 0, 127, 0.8), 0 0 50px rgba(0, 242, 254, 0.5);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: pulseUnlock 1.6s infinite alternate;
+    }
+    @keyframes pulseUnlock {
+      0% { transform: translateX(-50%) scale(0.96); box-shadow: 0 0 15px rgba(255, 0, 127, 0.7); }
+      100% { transform: translateX(-50%) scale(1.04); box-shadow: 0 0 35px rgba(0, 242, 254, 0.9); }
     }
 
     /* =========================================================
@@ -313,6 +375,84 @@
       min-width: 230px;
       position: relative;
       overflow: hidden;
+      transition: all 0.35s ease;
+    }
+
+    /* Dynamic states for center-ball-pill */
+    #center-ball-pill.pill-six {
+      background: linear-gradient(135deg, #4a032d 0%, #831843 50%, #db2777 100%);
+      border-color: #ff007f;
+      box-shadow: 0 0 40px rgba(255, 0, 127, 0.9), inset 0 0 20px rgba(255, 0, 127, 0.5);
+    }
+    #center-ball-pill.pill-six #ball-event-title {
+      text-shadow: 0 0 20px #ff007f;
+      color: #ffffff;
+    }
+    #center-ball-pill.pill-six #ball-event-subtitle {
+      color: #ff80bf;
+    }
+
+    #center-ball-pill.pill-four {
+      background: linear-gradient(135deg, #023820 0%, #065f46 50%, #059669 100%);
+      border-color: #39ff14;
+      box-shadow: 0 0 40px rgba(57, 255, 20, 0.9), inset 0 0 20px rgba(57, 255, 20, 0.5);
+    }
+    #center-ball-pill.pill-four #ball-event-title {
+      text-shadow: 0 0 20px #39ff14;
+      color: #ffffff;
+    }
+    #center-ball-pill.pill-four #ball-event-subtitle {
+      color: #6ee7b7;
+    }
+
+    #center-ball-pill.pill-wicket {
+      background: linear-gradient(135deg, #4c0505 0%, #7f1d1d 50%, #dc2626 100%);
+      border-color: #ff1744;
+      box-shadow: 0 0 45px rgba(255, 23, 68, 1), inset 0 0 25px rgba(255, 23, 68, 0.6);
+    }
+    #center-ball-pill.pill-wicket #ball-event-title {
+      text-shadow: 0 0 25px #ff1744;
+      color: #ffffff;
+    }
+    #center-ball-pill.pill-wicket #ball-event-subtitle {
+      color: #fca5a5;
+    }
+
+    #center-ball-pill.pill-over {
+      background: linear-gradient(135deg, #3d2800 0%, #785200 50%, #b45309 100%);
+      border-color: var(--yellow-gold);
+      box-shadow: 0 0 35px rgba(255, 230, 0, 0.85), inset 0 0 20px rgba(255, 230, 0, 0.4);
+    }
+    #center-ball-pill.pill-over #ball-event-title {
+      text-shadow: 0 0 20px var(--yellow-gold);
+      color: #ffffff;
+    }
+    #center-ball-pill.pill-over #ball-event-subtitle {
+      color: var(--yellow-gold);
+    }
+
+    #center-ball-pill.pill-run {
+      background: linear-gradient(135deg, #02123a 0%, #0f3460 50%, #1a365d 100%);
+      border-color: var(--cyan-neon);
+      box-shadow: 0 0 30px rgba(0, 242, 254, 0.6), inset 0 0 15px rgba(0, 242, 254, 0.3);
+    }
+    #center-ball-pill.pill-run #ball-event-title {
+      text-shadow: 0 0 15px var(--cyan-neon);
+    }
+    #center-ball-pill.pill-run #ball-event-subtitle {
+      color: var(--cyan-neon);
+    }
+
+    #center-ball-pill.pill-wide, #center-ball-pill.pill-noball {
+      background: linear-gradient(135deg, #3d2b00 0%, #684805 50%, #b45309 100%);
+      border-color: #f59e0b;
+      box-shadow: 0 0 30px #f59e0b;
+    }
+
+    #center-ball-pill.pill-ball {
+      background: linear-gradient(135deg, #02123a 0%, #042459 50%, #033c8c 100%);
+      border-color: var(--cyan-neon);
+      box-shadow: 0 0 30px rgba(0, 242, 254, 0.6), inset 0 0 15px rgba(0, 242, 254, 0.3);
     }
 
     #ball-event-title {
@@ -323,6 +463,7 @@
       letter-spacing: 3px;
       text-transform: uppercase;
       text-shadow: 0 0 15px var(--cyan-neon);
+      transition: all 0.25s ease;
     }
 
     #ball-event-subtitle {
@@ -332,6 +473,7 @@
       color: var(--cyan-neon);
       letter-spacing: 2px;
       text-transform: uppercase;
+      transition: all 0.25s ease;
     }
 
     .bowling-team-box {
@@ -1071,6 +1213,11 @@
 </head>
 <body>
 
+  <!-- Floating Audio Unlock Pill (Autoplay fallback) -->
+  <div id="audio-unlock-banner" onclick="unlockAllAudio()">
+    <span>🔊 CLICK ANYWHERE TO UNLOCK STADIUM SOUND & MUSIC 🎵</span>
+  </div>
+
   <!-- Fullscreen 16:9 Broadcast Container -->
   <div id="broadcast-stage">
 
@@ -1089,9 +1236,13 @@
 
       <span id="match-title-text">SRI LANKA WOMEN vs INDIA WOMEN — DUBAI INTERNATIONAL STADIUM</span>
 
-      <div id="music-ctrl-badge" onclick="toggleBackgroundMusic()" title="Click to Toggle Streaming Music">
-        <span id="music-icon">🔊</span>
-        <span id="music-title-disp">MUSIC: PLAYING</span>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <div id="music-ctrl-badge" onclick="toggleBackgroundMusic()" title="Click to Toggle Streaming Music">
+          <span id="music-icon">🔊</span>
+          <span id="music-title-disp">MUSIC: PLAYING</span>
+        </div>
+        <button class="header-ctrl-btn" id="next-track-btn" onclick="skipNextTrack()" title="Skip to Next Song">⏭ NEXT</button>
+        <button class="header-ctrl-btn cheer-btn" id="cheer-test-btn" onclick="testCheerSound()" title="Test Stadium Crowd Cheer">🎉 CHEER</button>
       </div>
     </div>
 
@@ -1103,19 +1254,19 @@
         <div class="team-meta">
           <div class="team-title" id="team1-title">SRI LANKA W</div>
           <div class="team-score-overs">
-            <div class="main-score" id="team1-score">11-1</div>
-            <div class="main-overs" id="team1-overs">1.3 Ov</div>
+            <div class="main-score" id="team1-score">28-1</div>
+            <div class="main-overs" id="team1-overs">4.4 Ov</div>
           </div>
         </div>
       </div>
 
-      <!-- Center: Current Ball Event Pill (STABLE, NEVER FLICKERS) -->
-      <div id="center-ball-pill">
+      <!-- Center: Current Ball Event Pill (DYNAMIC BALL / OVER / 6 / 4 / WICKET) -->
+      <div id="center-ball-pill" class="pill-ball">
         <div class="beat-bars" style="position: absolute; left: 10px; top: 12px;">
           <div class="bar"></div><div class="bar"></div><div class="bar"></div>
         </div>
-        <div id="ball-event-title">2ND INNINGS</div>
-        <div id="ball-event-subtitle">TARGET: 184</div>
+        <div id="ball-event-title">BALL</div>
+        <div id="ball-event-subtitle">WOMEN'S ASIA CUP FINAL</div>
         <div class="beat-bars" style="position: absolute; right: 10px; top: 12px;">
           <div class="bar"></div><div class="bar"></div><div class="bar"></div>
         </div>
@@ -1368,30 +1519,46 @@
       { name: "Built to Last - NEFFEX", url: "https://github.com/virunarandinu3-oss/cricket-site/releases/download/4.0/Built.to.Last.Instrumental.-.NEFFEX.mp3" }
     ];
 
-    // Background Audio Player
+    // Background Audio Player (Continuous 3-song loop)
     const bgAudio = new Audio();
+    bgAudio.preload = "auto";
     let currentTrackIdx = 0;
     let isMusicPlaying = false;
-    bgAudio.volume = 0.32; // Pleasant background volume
+    let musicDuckingTimeout = null;
+    bgAudio.volume = 0.32; // Normal pleasant broadcast background music
 
     function playCurrentTrack() {
-      bgAudio.src = MUSIC_PLAYLIST[currentTrackIdx].url;
+      const track = MUSIC_PLAYLIST[currentTrackIdx];
+      bgAudio.src = track.url;
       const titleDisp = document.getElementById('music-title-disp');
-      if (titleDisp) titleDisp.textContent = `MUSIC: ${MUSIC_PLAYLIST[currentTrackIdx].name.toUpperCase()}`;
+      if (titleDisp) titleDisp.textContent = `[${currentTrackIdx + 1}/3] ${track.name.toUpperCase()}`;
 
-      bgAudio.play().then(() => {
-        isMusicPlaying = true;
-        updateMusicUI();
-      }).catch(() => {
-        isMusicPlaying = false;
-        updateMusicUI();
-      });
+      const playPromise = bgAudio.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          isMusicPlaying = true;
+          updateMusicUI();
+          hideUnlockBanner();
+        }).catch(() => {
+          isMusicPlaying = false;
+          updateMusicUI();
+        });
+      }
     }
 
-    // Auto-advance loop through the 3 tracks
+    // Auto-advance continuous loop through the 3 tracks
     bgAudio.addEventListener('ended', () => {
       currentTrackIdx = (currentTrackIdx + 1) % MUSIC_PLAYLIST.length;
       playCurrentTrack();
+    });
+
+    // Auto-recover from network blip: skip to next track after 1.5s
+    bgAudio.addEventListener('error', (e) => {
+      console.warn("Audio playback error, advancing to next track...", e);
+      setTimeout(() => {
+        currentTrackIdx = (currentTrackIdx + 1) % MUSIC_PLAYLIST.length;
+        playCurrentTrack();
+      }, 1500);
     });
 
     function toggleBackgroundMusic() {
@@ -1400,9 +1567,14 @@
         isMusicPlaying = false;
       } else {
         if (!bgAudio.src) playCurrentTrack();
-        else bgAudio.play().then(() => { isMusicPlaying = true; });
+        else bgAudio.play().then(() => { isMusicPlaying = true; hideUnlockBanner(); });
       }
       updateMusicUI();
+    }
+
+    function skipNextTrack() {
+      currentTrackIdx = (currentTrackIdx + 1) % MUSIC_PLAYLIST.length;
+      playCurrentTrack();
     }
 
     function updateMusicUI() {
@@ -1410,49 +1582,107 @@
       const title = document.getElementById('music-title-disp');
       if (isMusicPlaying) {
         if (icon) icon.textContent = "🔊";
-        if (title) title.textContent = `MUSIC: ${MUSIC_PLAYLIST[currentTrackIdx].name.toUpperCase()}`;
+        if (title) title.textContent = `[${currentTrackIdx + 1}/3] ${MUSIC_PLAYLIST[currentTrackIdx].name.toUpperCase()}`;
       } else {
         if (icon) icon.textContent = "🔇";
-        if (title) title.textContent = "MUSIC: CLICK TO PLAY";
+        if (title) title.textContent = "MUSIC: PAUSED (CLICK TO PLAY)";
       }
     }
 
-    // Attempt autoplay immediately, with fallback on first user interaction
-    setTimeout(() => {
-      playCurrentTrack();
-    }, 500);
-
-    document.addEventListener('click', () => {
-      if (!isMusicPlaying && bgAudio.paused) {
-        playCurrentTrack();
-      }
-    }, { once: true });
-
-    // Stadium Crowd Cheering Sound (gentle volume 0.30)
+    // Stadium Crowd Cheering Sound Engine (Punchy 0.85 Volume + Audio Ducking)
     const cheerAudio = new Audio(CHEER_SOUND_URL);
-    cheerAudio.volume = 0.30; // Soft & pleasant as requested
+    cheerAudio.preload = "auto";
+    cheerAudio.volume = 0.85;
 
     function playCheerSound() {
       try {
+        // TV Broadcast Audio Ducking: lowers music to 0.08 so the stadium crowd roar is punchy!
+        if (bgAudio && isMusicPlaying) {
+          bgAudio.volume = 0.08;
+          if (musicDuckingTimeout) clearTimeout(musicDuckingTimeout);
+          musicDuckingTimeout = setTimeout(() => {
+            if (isMusicPlaying) bgAudio.volume = 0.32;
+          }, 4200);
+        }
+
         cheerAudio.currentTime = 0;
-        cheerAudio.play().catch(() => {});
-      } catch (e) {}
+        cheerAudio.volume = 0.85;
+        const p = cheerAudio.play();
+        if (p !== undefined) {
+          p.catch(() => {
+            // Backup instance if primary is busy
+            const freshCheer = new Audio(CHEER_SOUND_URL);
+            freshCheer.volume = 0.85;
+            freshCheer.play().catch(() => {});
+          });
+        }
+      } catch (e) {
+        console.warn("Cheer sound error:", e);
+      }
     }
+
+    // Test Cheer Function (Triggered by 🎉 CHEER button)
+    function testCheerSound() {
+      playCheerSound();
+      if (typeof triggerFullscreenCheer === 'function') {
+        triggerFullscreenCheer('six', 'Sri Lanka Batter', 'TEST CHEER SHOT 🔥');
+      }
+    }
+
+    // Audio Unlock System (Handles strict browser autoplay policies)
+    function unlockAllAudio() {
+      try {
+        // Unlock cheer audio channel
+        cheerAudio.volume = 0.01;
+        cheerAudio.play().then(() => {
+          cheerAudio.pause();
+          cheerAudio.currentTime = 0;
+          cheerAudio.volume = 0.85;
+        }).catch(() => {});
+
+        // Start music if paused
+        if (!isMusicPlaying) {
+          playCurrentTrack();
+        }
+      } catch (e) {}
+      hideUnlockBanner();
+    }
+
+    function hideUnlockBanner() {
+      const banner = document.getElementById('audio-unlock-banner');
+      if (banner) banner.style.display = 'none';
+    }
+
+    // Auto-attempt playback on start
+    setTimeout(() => {
+      playCurrentTrack();
+    }, 400);
+
+    // Any pointer / key event unlocks all audio immediately
+    window.addEventListener('pointerdown', unlockAllAudio, { once: true });
+    window.addEventListener('keydown', unlockAllAudio, { once: true });
   </script>
 
   <!-- =========================================================
        CRICKET BROADCAST CORE ENGINE (FLICKER-FREE & 2ND INNINGS)
        ========================================================= -->
   <script>
-    const CACHE_KEY = "cricket_live_overlay_cache_v6";
+    const CACHE_KEY = "cricket_live_overlay_cache_v7";
     let matchData = null;
-    let isInitialLoad = true;
-    let lastProcessedBallText = "";
-    let lastCelebratedBallOver = "";
-    let isCelebrating = false;
-    let celebrationTimer = null;
     let fetchTimer = null;
     let isFetching = false;
+
+    /**
+     * MONOTONIC ANTI-ROLLBACK ENGINE (ELIMINATES 7.5 -> 7.3 BACKWARDS JUMPS)
+     */
+    const LiveEngine = {
+      activeInningsIdx: 2, // Default to 2 for Sri Lanka Chase
+      maxTotalBalls: 0,    // Monotonic total balls count
+      maxRuns: 0,          // Monotonic runs
+      maxWkts: 0,          // Monotonic wickets
+      lastCelebratedBallId: "",
+      isInitialLoad: true
+    };
 
     try {
       const cached = localStorage.getItem(CACHE_KEY);
@@ -1462,7 +1692,7 @@
     } catch (e) {}
 
     /**
-     * SRI LANKA LIVE TIME (Asia/Colombo UTC+5:30 with seconds)
+     * SRI LANKA LIVE TIME (Asia/Colombo UTC+5:30 with ticking seconds)
      */
     function updateSriLankaClock() {
       try {
@@ -1487,7 +1717,25 @@
     updateSriLankaClock();
 
     /**
-     * EXTRACT ACTIVE BATTER ON STRIKE FROM COMMENTARY
+     * HELPER CONVERSIONS FOR OVERS & BALLS
+     */
+    function oversStringToBalls(ovStr) {
+      if (!ovStr) return 0;
+      const cleaned = String(ovStr).replace(/[^\d\.]/g, '');
+      const parts = cleaned.split('.');
+      const ov = parseInt(parts[0], 10) || 0;
+      const b = parts.length > 1 ? (parseInt(parts[1], 10) || 0) : 0;
+      return (ov * 6) + b;
+    }
+
+    function ballsToOversString(totalBalls) {
+      const ov = Math.floor(totalBalls / 6);
+      const rem = totalBalls % 6;
+      return `${ov}.${rem}`;
+    }
+
+    /**
+     * EXTRACT ACTIVE BATTER ON STRIKE FROM COMMENTARY ("to [Striker],")
      */
     function getStrikerFromBall(ballText) {
       if (!ballText) return "";
@@ -1499,56 +1747,57 @@
     }
 
     /**
-     * ACCURATE BALL EVENT DETECTION (NO FALSE WICKETS ON MID-WICKET)
+     * ACCURATE BALL EVENT DETECTION (FILTERS OUT MID-WICKET FALSE ALARMS)
      */
-    function detectBallEvent(ball) {
-      const badge = (ball.badge || "").toUpperCase();
-      const rawText = ball.text || ball.latest_update || "";
-      const lower = rawText.toLowerCase();
+    function detectDeliveryEvent(badge, rawText) {
+      const b = (badge || "").toUpperCase().trim();
+      const text = (rawText || "").toLowerCase();
 
-      // 1. Badge checks
-      if (badge === 'W') return { type: 'wicket', label: 'WICKET', title: 'WICKET! 🎯' };
-      if (badge === '6') return { type: 'six', label: '6 MAXIMUM', title: 'SIX! 🔥' };
-      if (badge === '4') return { type: 'four', label: '4 BOUNDARY', title: 'FOUR! ⚡' };
+      // 1. Genuine Wicket Check
+      if (b === 'W') return { type: 'wicket', title: 'WICKET', label: 'WICKET 🎯' };
 
-      // 2. Safe string cleaning (remove "mid-wicket", "outside", "without")
-      const cleaned = lower
+      const cleanedForWicket = text
         .replace(/mid[\s-]?wicket/g, '')
         .replace(/outside/g, '')
         .replace(/without/g, '');
 
-      // 3. Genuine Wicket Check
-      const isGenuineWicket = 
-        /\b(thats out|run out|c & b|stumped|hit wicket)\b/i.test(cleaned) ||
-        /\bout\s+(caught|bowled|lbw|hit wicket|run out)/i.test(cleaned) ||
-        /\b(caught|bowled|lbw)\s+by\b/i.test(cleaned);
+      const isWicketText = /\b(thats out|run out|c & b|stumped|hit wicket)\b/i.test(cleanedForWicket) ||
+                           /\bout\s+(caught|bowled|lbw|hit wicket|run out)/i.test(cleanedForWicket) ||
+                           /\b(caught|bowled|lbw)\s+by\b/i.test(cleanedForWicket);
 
-      if (isGenuineWicket) {
-        return { type: 'wicket', label: 'WICKET', title: 'WICKET! 🎯' };
+      if (isWicketText) {
+        return { type: 'wicket', title: 'WICKET', label: 'WICKET 🎯' };
       }
 
-      // 4. Six Check
-      if (/\b(six|maximum|into the stands)\b/i.test(lower)) {
-        return { type: 'six', label: '6 MAXIMUM', title: 'SIX! 🔥' };
+      // 2. Six Check
+      if (b === '6' || /\b(six|maximum|into the stands)\b/i.test(text)) {
+        return { type: 'six', title: 'SIX', label: '6 MAXIMUM' };
       }
 
-      // 5. Four Check
-      if (/\b(four|boundary|races away for four|to the fence)\b/i.test(lower)) {
-        return { type: 'four', label: '4 BOUNDARY', title: 'FOUR! ⚡' };
+      // 3. Four Check
+      if (b === '4' || /\b(four|boundary|races away for four|to the fence)\b/i.test(text)) {
+        return { type: 'four', title: 'FOUR', label: '4 BOUNDARY' };
       }
 
-      // 6. Runs
-      if (/\b(1 run|single)\b/i.test(lower)) return { type: 'run', label: '1 RUN', title: '1 RUN' };
-      if (/\b(2 runs)\b/i.test(lower)) return { type: 'run', label: '2 RUNS', title: '2 RUNS' };
-      if (/\b(3 runs)\b/i.test(lower)) return { type: 'run', label: '3 RUNS', title: '3 RUNS' };
-      if (/\b(wide)\b/i.test(lower)) return { type: 'run', label: 'WIDE', title: 'WIDE BALL' };
-      if (/\b(no ball)\b/i.test(lower)) return { type: 'run', label: 'NO BALL', title: 'NO BALL' };
+      // 4. Wide & No Ball
+      if (/\b(wide)\b/i.test(text)) {
+        return { type: 'wide', title: 'WIDE', label: 'WIDE BALL' };
+      }
+      if (/\b(no ball)\b/i.test(text)) {
+        return { type: 'noball', title: 'NO BALL', label: 'NO BALL' };
+      }
 
-      return { type: 'dot', label: 'NO RUN', title: 'BALL' };
+      // 5. Runs
+      if (/\b(1 run|single)\b/i.test(text)) return { type: 'run', title: '1 RUN', label: '1 RUN' };
+      if (/\b(2 runs)\b/i.test(text)) return { type: 'run', title: '2 RUNS', label: '2 RUNS' };
+      if (/\b(3 runs)\b/i.test(text)) return { type: 'run', title: '3 RUNS', label: '3 RUNS' };
+
+      // 6. Dot / normal ball
+      return { type: 'ball', title: 'BALL', label: 'DOT BALL' };
     }
 
     /**
-     * FULLSCREEN CELEBRATION CHEER ENGINE (WITH SOFT CHEER AUDIO)
+     * FULLSCREEN CELEBRATION CHEER OVERLAY (WITH LOUD CROWD ROAR + MUSIC DUCKING)
      */
     const cheerOverlay = document.getElementById('fullscreen-cheer-overlay');
     const cheerTitle = document.getElementById('cheer-title');
@@ -1561,7 +1810,7 @@
     function triggerFullscreenCheer(type, playerName, details) {
       if (!cheerOverlay) return;
 
-      playCheerSound(); // Soft stadium cheer audio!
+      playCheerSound(); // Audio roars with broadcast ducking!
 
       stage.classList.remove('screen-shake');
       void stage.offsetWidth;
@@ -1573,7 +1822,7 @@
         cheerSubtitle.textContent = "COLOSSAL HIT OUT OF THE PARK!";
         cheerSubtitle.style.color = "#ff007f";
         cheerRing.style.borderColor = "#ff007f";
-        cheerPlayer.textContent = `${playerName} sends it soaring over the ropes!`;
+        cheerPlayer.textContent = `${playerName} sends it soaring into the stands!`;
         launchConfettiExplosion('pink');
       } else if (type === 'four') {
         cheerTitle.textContent = "BOUNDARY 4!";
@@ -1586,7 +1835,7 @@
       } else if (type === 'wicket') {
         cheerTitle.textContent = "WICKET! OUT!";
         cheerTitle.className = "cheer-event-type cheer-type-wicket";
-        cheerSubtitle.textContent = "HUGE BREAKTHROUGH!";
+        cheerSubtitle.textContent = "CRUCIAL BREAKTHROUGH!";
         cheerSubtitle.style.color = "#ff1744";
         cheerRing.style.borderColor = "#ff1744";
         cheerPlayer.textContent = details || "Wicket falls!";
@@ -1598,46 +1847,19 @@
       if (cheerTimeout) clearTimeout(cheerTimeout);
       cheerTimeout = setTimeout(() => {
         cheerOverlay.classList.remove('active');
-      }, 3600);
+      }, 3800);
     }
 
     /**
-     * OVER-END ROTATING BROADCAST CARDS
+     * OVER-END ROTATING BROADCAST OVERLAYS (Dismissed on .1)
      */
-    let lastKnownOver = "";
     let isShowingOverEndCard = false;
     const overCardEl = document.getElementById('over-end-rotation-card');
     const modalTitleEl = document.getElementById('modal-title-text');
     const modalBodyEl = document.getElementById('modal-dynamic-body');
 
-    function checkOverEndTransitions(oversStr, ballOverStr) {
-      if (!oversStr && !ballOverStr) return;
-
-      const ballParts = (ballOverStr || "").split('.');
-      const ballNum = ballParts.length > 1 ? parseInt(ballParts[1]) : -1;
-
-      // 1. Next over starts (.1)
-      if (ballNum === 1 || (oversStr && /\.1\s*(Ov)?$/i.test(oversStr.trim()))) {
-        if (isShowingOverEndCard) {
-          dismissOverEndCard();
-        }
-        lastKnownOver = ballOverStr;
-        return;
-      }
-
-      // 2. Exact over completed condition (1, 2, 3 ... 20)
-      const isBallSix = (ballNum === 6);
-      const isIntegerOver = oversStr && /^(1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20)(\.0)?\s*(Ov)?$/i.test(oversStr.trim());
-
-      if ((isBallSix || isIntegerOver) && !isShowingOverEndCard && ballOverStr !== lastKnownOver) {
-        showRandomOverEndCard();
-      }
-
-      lastKnownOver = ballOverStr;
-    }
-
     function showRandomOverEndCard() {
-      if (!matchData) return;
+      if (!matchData || isShowingOverEndCard) return;
       isShowingOverEndCard = true;
       overCardEl.classList.add('active');
 
@@ -1657,8 +1879,10 @@
     }
 
     function dismissOverEndCard() {
-      isShowingOverEndCard = false;
-      overCardEl.classList.remove('active');
+      if (isShowingOverEndCard) {
+        isShowingOverEndCard = false;
+        overCardEl.classList.remove('active');
+      }
     }
 
     function renderSquadList(xi, coach) {
@@ -1716,9 +1940,63 @@
     }
 
     /**
-     * UNBLOCKED VERCEL 5-SECOND POLLER (Generous 9s timeout, no lag)
+     * DYNAMIC OVER BALLS TRAY (Shows the 6 balls of the current over)
      */
-    const API_URL = "https://cricket-api-v5.vercel.app/?url=https://www.cricbuzz.com/live-cricket-scores/169891/indw-vs-slw-final-womens-asia-cup-2026";
+    function renderOverBallsTray(fullCommentary, currentOverNum) {
+      const trayEl = document.getElementById('over-balls-tray');
+      if (!trayEl) return;
+
+      const prefix = `${currentOverNum}.`;
+      const ballsInOver = (fullCommentary || [])
+        .filter(c => c.over && String(c.over).startsWith(prefix))
+        .sort((a, b) => parseFloat(a.over) - parseFloat(b.over));
+
+      let html = '';
+      for (let i = 1; i <= 6; i++) {
+        const targetOver = `${currentOverNum}.${i}`;
+        const ball = ballsInOver.find(b => String(b.over) === targetOver);
+        if (ball) {
+          const ev = detectDeliveryEvent(ball.badge, ball.text);
+          let cls = 'b-dot';
+          let txt = '0';
+          if (ev.type === 'six') { cls = 'b-6'; txt = '6'; }
+          else if (ev.type === 'four') { cls = 'b-4'; txt = '4'; }
+          else if (ev.type === 'wicket') { cls = 'b-w'; txt = 'W'; }
+          else if (ev.type === 'wide') { cls = 'b-1'; txt = 'Wd'; }
+          else if (ev.type === 'noball') { cls = 'b-1'; txt = 'Nb'; }
+          else if (ev.type === 'run') {
+            if (ev.title.includes('2')) txt = '2';
+            else if (ev.title.includes('3')) txt = '3';
+            else txt = '1';
+            cls = 'b-1';
+          }
+          html += `<div class="ball-pill-circle ${cls}">${txt}</div>`;
+        } else {
+          html += `<div class="ball-pill-circle b-dot" style="opacity:0.35;">•</div>`;
+        }
+      }
+      trayEl.innerHTML = html;
+    }
+
+    /**
+     * FILTER DISMISSED BATTERS (Removes out batters from active display)
+     */
+    function filterAliveBatters(allBatters) {
+      if (!allBatters || allBatters.length === 0) return [];
+      return allBatters.filter(b => {
+        if (!b.dismissal) return true;
+        const d = b.dismissal.toLowerCase().trim();
+        if (d === 'batting' || d === 'not out') return true;
+        const isDismissed = /\b(out|caught|bowled|lbw|run out|stumped|c\s+.*b\s+)\b/i.test(d) ||
+                            /^[cb]\s+/i.test(d);
+        return !isDismissed;
+      });
+    }
+
+    /**
+     * VERCEL 5-SECOND POLLER WITH MONOTONIC PROGRESS GUARANTEE
+     */
+    const BASE_API_URL = "https://cricket-api-v5.vercel.app/?url=" + encodeURIComponent("https://www.cricbuzz.com/live-cricket-scores/169891/indw-vs-slw-final-womens-asia-cup-2026");
 
     async function fetchLiveCricketData() {
       if (isFetching) return;
@@ -1729,9 +2007,12 @@
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 9000);
 
-        const response = await fetch(API_URL, {
+        // Anti-cache URL parameter prevents Edge CDN backwards routing
+        const uniqueUrl = `${BASE_API_URL}&_cb=${Date.now()}_${Math.floor(Math.random() * 100000)}`;
+
+        const response = await fetch(uniqueUrl, {
           signal: controller.signal,
-          headers: { 'Accept': 'application/json' },
+          headers: { 'Accept': 'application/json', 'Cache-Control': 'no-cache' },
           cache: 'no-store'
         });
         clearTimeout(timeoutId);
@@ -1739,6 +2020,7 @@
         if (response.ok) {
           const freshData = await response.json();
           if (freshData && freshData.scorecard && freshData.scorecard.innings) {
+            processIncomingCricketData(freshData);
             matchData = freshData;
             try {
               localStorage.setItem(CACHE_KEY, JSON.stringify(freshData));
@@ -1755,39 +2037,77 @@
         if (statusDot) statusDot.style.background = '#ffe600';
       } finally {
         isFetching = false;
-        isInitialLoad = false;
+        LiveEngine.isInitialLoad = false;
         if (fetchTimer) clearTimeout(fetchTimer);
         fetchTimer = setTimeout(fetchLiveCricketData, 5000);
       }
     }
 
     /**
-     * FILTER OUT DISMISSED BATTERS
+     * MONOTONIC INTEGRITY FILTER (PROTECTION AGAINST 7.5 -> 7.3 JUMPS)
      */
-    function filterAliveBatters(allBatters) {
-      if (!allBatters || allBatters.length === 0) return [];
-      return allBatters.filter(b => {
-        if (!b.dismissal) return true;
-        const d = b.dismissal.toLowerCase().trim();
-        if (d === 'batting' || d === 'not out') return true;
-        const isDismissed = /\b(out|caught|bowled|lbw|run out|stumped|c\s+.*b\s+)\b/i.test(d) ||
-                            /^[cb]\s+/i.test(d);
-        return !isDismissed;
-      });
+    function processIncomingCricketData(freshData) {
+      const allInnings = freshData.scorecard?.innings || [];
+      const incomingInningsIdx = allInnings.length;
+
+      // 1. Detect if an innings changed
+      if (incomingInningsIdx < LiveEngine.activeInningsIdx) {
+        // Obsolete 1st innings cache received -> discard!
+        return;
+      }
+      if (incomingInningsIdx > LiveEngine.activeInningsIdx) {
+        // 2nd innings just started! Reset monotonic tracker
+        LiveEngine.activeInningsIdx = incomingInningsIdx;
+        LiveEngine.maxTotalBalls = 0;
+        LiveEngine.maxRuns = 0;
+        LiveEngine.maxWkts = 0;
+      }
+
+      const inn = allInnings[allInnings.length - 1] || {};
+      const live = freshData.live || {};
+      const comm = freshData.full_commentary || [];
+
+      // Calculate total balls bowled from all available fields in the payload
+      const scBalls = oversStringToBalls(inn.overs);
+      const liveBalls = oversStringToBalls(live.latest_ball?.over);
+      const commBalls = oversStringToBalls(comm.find(c => c.over)?.over);
+      const incomingMaxBalls = Math.max(scBalls, liveBalls, commBalls);
+
+      // Parse runs & wickets
+      let incRuns = 0;
+      let incWkts = 0;
+      if (inn.score) {
+        const m = inn.score.match(/^(\d+)(?:-(\d+))?/);
+        if (m) {
+          incRuns = parseInt(m[1], 10) || 0;
+          incWkts = m[2] ? (parseInt(m[2], 10) || 0) : 0;
+        }
+      }
+
+      // Monotonic guard: if edge server returned older balls, NEVER roll back!
+      if (incomingMaxBalls < LiveEngine.maxTotalBalls) {
+        // Stale edge CDN response detected. Maintain forward state.
+        return;
+      }
+
+      // Valid forward progress
+      LiveEngine.maxTotalBalls = incomingMaxBalls;
+      LiveEngine.maxRuns = Math.max(LiveEngine.maxRuns, incRuns);
+      LiveEngine.maxWkts = Math.max(LiveEngine.maxWkts, incWkts);
     }
 
     /**
-     * ATOMIC SYNCHRONOUS RENDER (FLICKER-FREE + 2ND INNINGS AUTOMATION)
+     * ATOMIC SYNCHRONOUS RENDER (DYNAMIC PILL, 2ND INNINGS & ON-STRIKE)
      */
     function renderAllData() {
       if (!matchData) return;
 
       const allInnings = matchData.scorecard?.innings || [];
-      // 2nd innings is active if allInnings has 2 elements!
       const inn = allInnings[allInnings.length - 1] || allInnings[0] || {};
       const inn1 = allInnings[0] || {};
       const live = matchData.live || {};
       const info = matchData.info || {};
+      const comm = matchData.full_commentary || [];
 
       const isSecondInnings = allInnings.length >= 2;
       const battingTeam = (inn.team_name || (isSecondInnings ? "Sri Lanka Women" : "India Women")).toUpperCase();
@@ -1797,10 +2117,15 @@
       const matchTitle = info.match || info.match_title || "INDW vs SLW • FINAL • WOMEN'S ASIA CUP 2026";
       document.getElementById('match-title-text').textContent = matchTitle.toUpperCase() + (info.venue ? ` — ${info.venue.toUpperCase()}` : "");
 
-      // 1. Team & Main Score (Dynamic Flags & Names)
+      // 1. Team & Main Score (Synchronized Monotonic Progress)
+      const currentOversStr = ballsToOversString(LiveEngine.maxTotalBalls);
+      const currentScoreStr = (LiveEngine.maxRuns > 0 || LiveEngine.maxWkts > 0)
+        ? `${LiveEngine.maxRuns}-${LiveEngine.maxWkts}`
+        : (inn.score || "0-0");
+
       document.getElementById('team1-title').textContent = battingTeam;
-      document.getElementById('team1-score').textContent = inn.score || "0-0";
-      document.getElementById('team1-overs').textContent = inn.overs || "0.0 Ov";
+      document.getElementById('team1-score').textContent = currentScoreStr;
+      document.getElementById('team1-overs').textContent = `${currentOversStr} Ov`;
 
       const team1Flag = document.getElementById('team1-flag');
       const team2Flag = document.getElementById('team2-flag');
@@ -1823,18 +2148,11 @@
       }
 
       if (isSecondInnings) {
-        // Calculate Target from 1st Innings
         const inn1Runs = parseInt(inn1.score) || 183;
         const target = inn1Runs + 1;
-        const slRuns = parseInt(inn.score) || 0;
+        const slRuns = LiveEngine.maxRuns || parseInt(inn.score) || 0;
         const runsNeeded = Math.max(0, target - slRuns);
-
-        // Balls remaining
-        const ovParts = (inn.overs || "0").replace(' Ov', '').split('.');
-        const oversDone = parseInt(ovParts[0]) || 0;
-        const ballsInCurrent = ovParts.length > 1 ? parseInt(ovParts[1]) : 0;
-        const totalBallsBowled = (oversDone * 6) + ballsInCurrent;
-        const ballsRemaining = Math.max(0, 120 - totalBallsBowled);
+        const ballsRemaining = Math.max(0, 120 - LiveEngine.maxTotalBalls);
         const reqRR = ballsRemaining > 0 ? ((runsNeeded / ballsRemaining) * 6).toFixed(2) : "0.00";
 
         document.getElementById('req-rr-display').textContent = reqRR;
@@ -1853,66 +2171,59 @@
       if (info.third_umpire) document.getElementById('umpire-third').textContent = info.third_umpire;
       if (info.referee) document.getElementById('umpire-referee').textContent = info.referee;
 
-      // 3. LIVE BALL & EVENT (COMPLETELY ELIMINATES FLICKER)
-      const currentBall = live.latest_ball || {};
-      const ballOver = currentBall.over || (inn.overs ? inn.overs.replace(' Ov', '') : "");
-      const ballText = live.latest_update || currentBall.text || "Play in progress";
+      // 3. TOP CENTER PILL & LIVE BALL ACTION (DYNAMIC: BALL / OVER / 6 / 4 / WICKET)
+      const latestDelivery = comm.find(c => c.over) || live.latest_ball || {};
+      const ballText = live.latest_update || latestDelivery.text || "Play in progress";
+      const eventObj = detectDeliveryEvent(latestDelivery.badge, ballText);
 
-      document.getElementById('live-over-badge').textContent = ballOver || "--";
+      document.getElementById('live-over-badge').textContent = currentOversStr || "--";
       document.getElementById('live-ball-text').textContent = ballText;
 
-      checkOverEndTransitions(inn.overs, ballOver);
-
-      // Detect Event safely
-      const eventObj = detectBallEvent({ badge: currentBall.badge, text: ballText, latest_update: live.latest_update });
+      const centerPill = document.getElementById('center-ball-pill');
       const centerPillTitle = document.getElementById('ball-event-title');
       const centerPillSub = document.getElementById('ball-event-subtitle');
       const eventBadge = document.getElementById('live-event-badge');
 
-      // Center card event badge always matches the current ball
+      // Center pitch card event badge
       eventBadge.className = `ball-event-badge badge-${eventObj.type}`;
       eventBadge.textContent = eventObj.label;
 
-      // Stable Top Pill: ONLY flash on a brand new ball, NEVER oscillate on 5s poll!
-      const isBrandNewBall = (ballOver !== lastCelebratedBallOver && ballText !== lastProcessedBallText);
+      const isOverCompleted = (LiveEngine.maxTotalBalls > 0 && LiveEngine.maxTotalBalls % 6 === 0);
+      const completedOverNum = Math.floor(LiveEngine.maxTotalBalls / 6);
 
-      if (isBrandNewBall) {
-        lastCelebratedBallOver = ballOver;
-        lastProcessedBallText = ballText;
-
-        if (eventObj.type === 'six' || eventObj.type === 'four' || eventObj.type === 'wicket') {
-          isCelebrating = true;
-          centerPillTitle.textContent = eventObj.title;
-
-          // Trigger Fullscreen Cheer Overlay & Sound
-          if (!isInitialLoad) {
-            const bName = isSriLankaBatting ? "Sri Lanka Batter" : "India Batter";
-            triggerFullscreenCheer(eventObj.type, bName, ballText);
-          }
-
-          if (celebrationTimer) clearTimeout(celebrationTimer);
-          celebrationTimer = setTimeout(() => {
-            isCelebrating = false;
-            // Return to stable default state based on innings
-            centerPillTitle.textContent = isSecondInnings ? "2ND INNINGS" : "BALL";
-          }, 4500);
-        } else {
-          isCelebrating = false;
-          centerPillTitle.textContent = isSecondInnings ? "2ND INNINGS" : "BALL";
-        }
-      } else if (!isCelebrating) {
-        // Keep it stable, do NOT toggle to SIX or BALL repeatedly!
-        centerPillTitle.textContent = isSecondInnings ? "2ND INNINGS" : "BALL";
-      }
-
-      if (isSecondInnings) {
-        const inn1Runs = parseInt(inn1.score) || 183;
-        centerPillSub.textContent = `TARGET: ${inn1Runs + 1}`;
+      if (isOverCompleted) {
+        // OVER COMPLETED: Display "OVER" in top box & trigger over card
+        centerPill.className = "pill-over";
+        centerPillTitle.textContent = "OVER";
+        centerPillSub.textContent = `END OF OVER ${completedOverNum}`;
+        showRandomOverEndCard();
       } else {
-        centerPillSub.textContent = "WOMEN'S ASIA CUP FINAL";
+        // BALL IN PROGRESS: Display ball result (6, 4, WICKET, 1 RUN, BALL)
+        centerPill.className = `pill-${eventObj.type}`;
+        centerPillTitle.textContent = eventObj.title;
+        centerPillSub.textContent = `OVER ${currentOversStr}`;
+
+        // Dismiss over break card immediately when next over begins (.1)
+        if (LiveEngine.maxTotalBalls % 6 === 1) {
+          dismissOverEndCard();
+        }
       }
 
-      // 4. BATSMEN: Dynamic Striker / Non-Striker Assignment
+      // Dynamic Over Balls Tray (6 bubbles for current over)
+      const currentOverIndex = isOverCompleted ? (completedOverNum - 1) : Math.floor(LiveEngine.maxTotalBalls / 6);
+      renderOverBallsTray(comm, currentOverIndex);
+
+      // Trigger Fullscreen Cheer & Stadium Roar Sound on 4, 6 or genuine Wicket
+      const deliveryId = `${currentOversStr}_${eventObj.type}_${ballText.slice(0, 24)}`;
+      if (deliveryId !== LiveEngine.lastCelebratedBallId) {
+        LiveEngine.lastCelebratedBallId = deliveryId;
+        if (!LiveEngine.isInitialLoad && (eventObj.type === 'six' || eventObj.type === 'four' || eventObj.type === 'wicket')) {
+          const bName = isSriLankaBatting ? "Sri Lanka Batter" : "India Batter";
+          triggerFullscreenCheer(eventObj.type, bName, ballText);
+        }
+      }
+
+      // 4. BATSMEN: Strike Assignment from commentary
       const allBatters = inn.batting || [];
       let activeBatters = filterAliveBatters(allBatters);
       if (activeBatters.length < 2) {
@@ -1990,9 +2301,9 @@
         document.getElementById('bowler-econ').textContent = econ;
       }
 
-      // 6. Running commentary ticker
-      if (matchData.full_commentary && matchData.full_commentary.length > 0) {
-        const tickerString = matchData.full_commentary
+      // 6. RUNNING COMMENTARY TICKER (Smooth 140s marquee)
+      if (comm && comm.length > 0) {
+        const tickerString = comm
           .filter(c => c.text)
           .map(c => `● [OVER ${c.over || 'LIVE'}]: ${c.text}`)
           .join('    ──────────    ');
@@ -2003,7 +2314,7 @@
     }
 
     /**
-     * AMBIENT CANVAS VISUAL FX (OPTIMIZED 60 FPS WITHOUT SHADOWBLUR)
+     * AMBIENT CANVAS VISUAL FX (LIGHTWEIGHT 60 FPS, 0% CPU LAG)
      */
     const canvas = document.getElementById('ambient-canvas');
     const ctx = canvas.getContext('2d');
@@ -2092,6 +2403,7 @@
 
     // Render immediately if cached
     if (matchData) {
+      processIncomingCricketData(matchData);
       renderAllData();
     }
 
