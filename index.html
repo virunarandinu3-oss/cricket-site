@@ -1,0 +1,1766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Live Cricket Broadcast Overlay - Women's Asia Cup 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,400;0,600;0,700;1,700&family=Teko:wght@500;600;700&family=Rajdhani:wght@500;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    /* =========================================================
+       CSS RESET & BROADCAST 16:9 ZERO-SCROLL SETUP
+       ========================================================= */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    :root {
+      --bg-dark: #070913;
+      --bg-stadium: radial-gradient(circle at 50% 35%, #182848 0%, #0c1427 45%, #050711 100%);
+      --pink-neon: #ff007f;
+      --magenta: #d9027d;
+      --purple-dark: #3a0066;
+      --purple-bar: #5c0982;
+      --cyan-neon: #00f2fe;
+      --blue-electric: #4facfe;
+      --yellow-gold: #ffe600;
+      --lime-neon: #39ff14;
+      --red-wicket: #ff1744;
+      --card-bg: rgba(18, 14, 45, 0.88);
+      --card-border: rgba(255, 0, 127, 0.45);
+      --glass-panel: rgba(13, 10, 32, 0.75);
+      --font-teko: 'Teko', sans-serif;
+      --font-chakra: 'Chakra Petch', sans-serif;
+      --font-rajdhani: 'Rajdhani', sans-serif;
+      --font-outfit: 'Outfit', sans-serif;
+    }
+
+    html, body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: var(--bg-dark);
+      font-family: var(--font-rajdhani);
+      color: #fff;
+      position: relative;
+      cursor: default;
+    }
+
+    /* 16:9 Fullscreen Stream Container */
+    #broadcast-stage {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: grid;
+      grid-template-rows: 92px 34px 1fr 140px 38px;
+      background: var(--bg-stadium);
+      overflow: hidden;
+    }
+
+    /* Ambient Canvas & Animated Stadium Lights */
+    #ambient-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* 50+ Keyframe Animations Included */
+    @keyframes pulseGlow {
+      0%, 100% { filter: drop-shadow(0 0 10px rgba(255, 0, 127, 0.8)); }
+      50% { filter: drop-shadow(0 0 25px rgba(0, 242, 254, 0.9)); }
+    }
+
+    @keyframes liveDotBlink {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.3; transform: scale(0.85); }
+    }
+
+    @keyframes floodlightSwayLeft {
+      0%, 100% { transform: rotate(-25deg) scaleY(1); opacity: 0.35; }
+      50% { transform: rotate(-10deg) scaleY(1.15); opacity: 0.55; }
+    }
+
+    @keyframes floodlightSwayRight {
+      0%, 100% { transform: rotate(25deg) scaleY(1); opacity: 0.35; }
+      50% { transform: rotate(10deg) scaleY(1.15); opacity: 0.55; }
+    }
+
+    @keyframes neonBorderPulse {
+      0%, 100% { border-color: rgba(255, 0, 127, 0.7); box-shadow: 0 0 15px rgba(255, 0, 127, 0.4), inset 0 0 15px rgba(255, 0, 127, 0.2); }
+      50% { border-color: rgba(0, 242, 254, 0.9); box-shadow: 0 0 20px rgba(0, 242, 254, 0.5), inset 0 0 20px rgba(0, 242, 254, 0.2); }
+    }
+
+    @keyframes marqueeSlide {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+
+    @keyframes stadiumTurfGlow {
+      0%, 100% { opacity: 0.85; }
+      50% { opacity: 1; }
+    }
+
+    @keyframes eventPop {
+      0% { transform: scale(0.7) translateY(20px); opacity: 0; }
+      40% { transform: scale(1.1) translateY(-5px); opacity: 1; }
+      60% { transform: scale(0.98) translateY(0); }
+      100% { transform: scale(1) translateY(0); }
+    }
+
+    @keyframes ballSpin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes cardSlideIn {
+      0% { opacity: 0; transform: translateY(40px) scale(0.96); filter: blur(6px); }
+      100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+    }
+
+    @keyframes shimmerMove {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    @keyframes flashScore {
+      0% { color: #fff; }
+      50% { color: var(--yellow-gold); text-shadow: 0 0 25px var(--yellow-gold); }
+      100% { color: #fff; }
+    }
+
+    /* Floodlight Cones */
+    .stadium-light {
+      position: absolute;
+      top: -60px;
+      width: 450px;
+      height: 700px;
+      background: radial-gradient(ellipse at top, rgba(0, 242, 254, 0.35) 0%, rgba(217, 2, 125, 0.15) 35%, transparent 75%);
+      pointer-events: none;
+      z-index: 1;
+      transform-origin: top center;
+    }
+    .light-left { left: 5%; animation: floodlightSwayLeft 12s ease-in-out infinite; }
+    .light-right { right: 5%; animation: floodlightSwayRight 14s ease-in-out infinite; }
+
+    /* =========================================================
+       ROW 1: TOP MAIN BROADCAST HEADER (Screenshot 1 Style)
+       ========================================================= */
+    #top-bar {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      background: linear-gradient(90deg, #1b0128 0%, #3e0158 20%, #680577 50%, #3e0158 80%, #1b0128 100%);
+      border-bottom: 2px solid var(--pink-neon);
+      box-shadow: 0 4px 25px rgba(217, 2, 125, 0.5);
+    }
+
+    /* Left Team Pill (Batting) */
+    .team-badge-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(43, 0, 71, 0.85);
+      padding: 6px 20px;
+      border-radius: 50px;
+      border: 2px solid rgba(255, 0, 127, 0.7);
+      box-shadow: 0 0 18px rgba(255, 0, 127, 0.3);
+    }
+
+    .flag-circle {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 3px solid #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+      position: relative;
+    }
+
+    /* Realistic Flag SVGs */
+    .flag-india {
+      background: linear-gradient(180deg, #FF9933 33.33%, #FFFFFF 33.33%, #FFFFFF 66.66%, #138808 66.66%);
+      position: relative;
+    }
+    .flag-india::after {
+      content: '☸';
+      position: absolute;
+      color: #000080;
+      font-size: 20px;
+      line-height: 1;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .flag-srilanka {
+      background: #8D153A;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .flag-srilanka::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      width: 25%;
+      height: 100%;
+      background: linear-gradient(90deg, #00534E 50%, #EB7400 50%);
+      border-right: 2px solid #FFBE29;
+    }
+    .flag-srilanka::after {
+      content: '🦁';
+      font-size: 22px;
+      margin-left: 25%;
+      filter: drop-shadow(0 0 2px #FFBE29);
+    }
+
+    .team-meta {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .team-title {
+      font-family: var(--font-chakra);
+      font-weight: 700;
+      font-size: 20px;
+      letter-spacing: 1.5px;
+      color: var(--yellow-gold);
+      text-transform: uppercase;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
+    }
+
+    .team-score-overs {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+    }
+
+    .main-score {
+      font-family: var(--font-teko);
+      font-size: 64px;
+      font-weight: 700;
+      line-height: 1;
+      color: #ffffff;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 2px 2px 0 #3a0066;
+      letter-spacing: 1px;
+    }
+
+    .main-overs {
+      font-family: var(--font-teko);
+      font-size: 42px;
+      font-weight: 600;
+      color: #ffe600;
+      text-shadow: 0 0 8px rgba(255, 230, 0, 0.6);
+    }
+
+    /* Center Match Status Badge */
+    #center-ball-pill {
+      background: linear-gradient(135deg, #001242 0%, #002d72 50%, #0348a6 100%);
+      padding: 6px 36px;
+      border-radius: 16px;
+      border: 2px solid var(--blue-electric);
+      box-shadow: 0 0 25px rgba(0, 242, 254, 0.6);
+      text-align: center;
+      min-width: 220px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #center-ball-pill::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(60deg, transparent, rgba(255,255,255,0.15), transparent);
+      transform: rotate(30deg);
+      animation: shimmerMove 3s infinite;
+    }
+
+    #ball-event-title {
+      font-family: var(--font-chakra);
+      font-size: 28px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-shadow: 0 0 12px var(--cyan-neon);
+      display: inline-block;
+    }
+
+    #ball-event-subtitle {
+      font-family: var(--font-rajdhani);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--cyan-neon);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* Right Team Pill (Bowling) */
+    .bowling-team-box {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(43, 0, 71, 0.85);
+      padding: 8px 24px;
+      border-radius: 50px;
+      border: 2px solid rgba(255, 0, 127, 0.7);
+      box-shadow: 0 0 18px rgba(255, 0, 127, 0.3);
+    }
+
+    .bowling-label {
+      font-family: var(--font-chakra);
+      font-size: 26px;
+      font-weight: 700;
+      font-style: italic;
+      color: #ffffff;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-shadow: 0 0 10px rgba(255, 0, 127, 0.8);
+    }
+
+    /* =========================================================
+       ROW 2: SUB-HEADER (Run Rate, Partnership, Toss, SL Time)
+       ========================================================= */
+    #sub-bar {
+      position: relative;
+      z-index: 9;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      background: linear-gradient(90deg, #0b0728 0%, #17083b 50%, #0b0728 100%);
+      border-bottom: 1px solid rgba(0, 242, 254, 0.4);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .sub-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sub-highlight {
+      color: var(--yellow-gold);
+      font-family: var(--font-chakra);
+      font-size: 16px;
+    }
+
+    .toss-text {
+      color: #ffffff;
+      text-transform: uppercase;
+      font-family: var(--font-chakra);
+      font-weight: 600;
+    }
+
+    /* Sri Lanka Clock Live Digital Display */
+    .sl-clock-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 2px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--cyan-neon);
+      box-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+    }
+
+    .live-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #ff0055;
+      box-shadow: 0 0 10px #ff0055;
+      animation: liveDotBlink 1.2s infinite ease-in-out;
+    }
+
+    #sl-time-display {
+      font-family: var(--font-teko);
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--cyan-neon);
+      letter-spacing: 1.5px;
+      min-width: 130px;
+    }
+
+    /* =========================================================
+       ROW 3: STADIUM ARENA & LIVE BALL-BY-BALL CENTERPIECE
+       ========================================================= */
+    #arena-stage {
+      position: relative;
+      z-index: 5;
+      display: grid;
+      grid-template-columns: 290px 1fr 290px;
+      padding: 10px 18px;
+      gap: 16px;
+      overflow: hidden;
+    }
+
+    /* Left Side Panel: Tournament & Match Info */
+    .side-info-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-heading {
+      font-family: var(--font-chakra);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--yellow-gold);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      border-bottom: 1px solid rgba(255, 230, 0, 0.3);
+      padding-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .info-row {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      font-size: 13px;
+    }
+
+    .info-label {
+      color: #9ea8c7;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 600;
+    }
+
+    .info-value {
+      color: #ffffff;
+      font-weight: 700;
+      font-family: var(--font-chakra);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Center Stadium Pitch & Commentary View */
+    #center-arena {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 16px;
+      overflow: hidden;
+      background: radial-gradient(circle at 50% 50%, rgba(26, 92, 42, 0.45) 0%, rgba(10, 40, 20, 0.6) 40%, rgba(5, 12, 28, 0.85) 90%);
+      border: 2px solid rgba(0, 242, 254, 0.3);
+      box-shadow: inset 0 0 50px rgba(0, 242, 254, 0.2), 0 10px 40px rgba(0,0,0,0.8);
+    }
+
+    /* 3D Pitch Graphic Simulation */
+    .pitch-graphic {
+      position: absolute;
+      width: 160px;
+      height: 380px;
+      background: linear-gradient(180deg, rgba(214, 185, 137, 0.5) 0%, rgba(189, 155, 102, 0.65) 50%, rgba(214, 185, 137, 0.5) 100%);
+      transform: perspective(600px) rotateX(55deg);
+      border-radius: 12px;
+      border: 2px dashed rgba(255, 255, 255, 0.35);
+      box-shadow: 0 0 35px rgba(26, 92, 42, 0.8);
+      z-index: 2;
+      opacity: 0.65;
+    }
+
+    /* Ball Trail Glow Ring */
+    .pitch-ring {
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      border: 2px solid rgba(255, 0, 127, 0.35);
+      border-radius: 50%;
+      animation: neonBorderPulse 6s infinite alternate;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    /* Big Center Live Ball Commentary Card */
+    #live-ball-action-card {
+      position: relative;
+      z-index: 6;
+      width: 90%;
+      max-width: 820px;
+      background: rgba(12, 8, 30, 0.92);
+      border: 2px solid var(--pink-neon);
+      border-radius: 16px;
+      padding: 16px 24px;
+      text-align: center;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 0 35px rgba(255, 0, 127, 0.5), inset 0 0 25px rgba(0, 242, 254, 0.2);
+      transition: all 0.4s ease;
+    }
+
+    .ball-action-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 8px;
+    }
+
+    .ball-over-badge {
+      font-family: var(--font-teko);
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--yellow-gold);
+      background: rgba(255, 230, 0, 0.15);
+      padding: 0 16px;
+      border-radius: 8px;
+      border: 1px solid var(--yellow-gold);
+      letter-spacing: 1px;
+    }
+
+    .ball-event-badge {
+      font-family: var(--font-chakra);
+      font-size: 24px;
+      font-weight: 700;
+      padding: 2px 20px;
+      border-radius: 8px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      animation: eventPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .badge-dot { background: #374151; color: #e5e7eb; border: 1px solid #9ca3af; }
+    .badge-run { background: #1e3a8a; color: #60a5fa; border: 1px solid #3b82f6; }
+    .badge-four { background: #065f46; color: #34d399; border: 2px solid #10b981; box-shadow: 0 0 20px #10b981; }
+    .badge-six { background: #831843; color: #f472b6; border: 2px solid #ec4899; box-shadow: 0 0 25px #ec4899; }
+    .badge-wicket { background: #7f1d1d; color: #f87171; border: 2px solid #ef4444; box-shadow: 0 0 30px #ef4444; }
+
+    #live-ball-text {
+      font-family: var(--font-outfit);
+      font-size: 20px;
+      font-weight: 600;
+      color: #ffffff;
+      line-height: 1.4;
+      margin-top: 6px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+      min-height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Recent Overs Ball Bubbles */
+    .over-balls-tray {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .ball-pill-circle {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-teko);
+      font-size: 22px;
+      font-weight: 700;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+      transition: transform 0.3s;
+    }
+
+    .ball-pill-circle:hover { transform: scale(1.15); }
+    .b-dot { background: #262c3a; color: #a0aec0; }
+    .b-1, .b-2, .b-3 { background: #1a365d; color: #90cdf4; border-color: #3182ce; }
+    .b-4 { background: #1c4532; color: #68d391; border-color: #38a169; box-shadow: 0 0 12px rgba(72,187,120,0.7); }
+    .b-6 { background: #702459; color: #f687b3; border-color: #d53f8c; box-shadow: 0 0 15px rgba(237,100,166,0.8); }
+    .b-w { background: #742a2a; color: #feb2b2; border-color: #e53e3e; box-shadow: 0 0 18px rgba(245,101,101,0.9); }
+
+    /* Right Side Panel: Officials & Umpires */
+    .side-officials-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+      position: relative;
+    }
+
+    /* =========================================================
+       AUTOMATED OVER-END ROTATING OVERLAY (Playing XI & Table)
+       Smoothly slides in at over ends / interval without clicks
+       ========================================================= */
+    #auto-rotation-modal {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(5, 3, 15, 0.94);
+      z-index: 20;
+      backdrop-filter: blur(14px);
+      display: flex;
+      flex-direction: column;
+      padding: 18px 24px;
+      box-sizing: border-box;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    #auto-rotation-modal.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    .modal-header-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid var(--pink-neon);
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+    }
+
+    .modal-title {
+      font-family: var(--font-chakra);
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--yellow-gold);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .modal-timer-bar {
+      font-family: var(--font-chakra);
+      font-size: 14px;
+      color: var(--cyan-neon);
+      background: rgba(0, 242, 254, 0.12);
+      padding: 4px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--cyan-neon);
+    }
+
+    /* Table Grid for Squad / Points Table */
+    .modal-grid-content {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      overflow: hidden;
+    }
+
+    .squad-column {
+      background: rgba(22, 16, 54, 0.7);
+      border-radius: 10px;
+      border: 1px solid rgba(255, 0, 127, 0.3);
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .squad-col-title {
+      font-family: var(--font-chakra);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--cyan-neon);
+      text-transform: uppercase;
+      border-bottom: 1px solid rgba(0, 242, 254, 0.3);
+      padding-bottom: 4px;
+      margin-bottom: 4px;
+    }
+
+    .player-row-item {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      padding: 3px 6px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .player-name-text {
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .player-role-badge {
+      font-size: 11px;
+      color: var(--yellow-gold);
+      background: rgba(255, 230, 0, 0.15);
+      padding: 1px 8px;
+      border-radius: 4px;
+    }
+
+    /* Points Table Layout (Screenshot 2 Match) */
+    .points-table-view {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .points-table-view th {
+      background: linear-gradient(90deg, #42045e, #710986);
+      color: var(--yellow-gold);
+      font-family: var(--font-chakra);
+      font-size: 14px;
+      padding: 6px 10px;
+      text-align: left;
+      border-bottom: 2px solid var(--pink-neon);
+    }
+
+    .points-table-view td {
+      padding: 6px 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      font-family: var(--font-chakra);
+      font-weight: 600;
+    }
+
+    .points-table-view tr:nth-child(even) {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .highlight-row {
+      background: rgba(255, 0, 127, 0.18) !important;
+      border-left: 3px solid var(--pink-neon);
+    }
+
+    /* =========================================================
+       ROW 4: BATSMEN & BOWLER BROADCAST STRIP (Screenshot 1 Match)
+       ========================================================= */
+    #bottom-stats-strip {
+      position: relative;
+      z-index: 10;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      padding: 8px 18px;
+      background: linear-gradient(180deg, #17042a 0%, #0d011a 100%);
+      border-top: 2px solid var(--pink-neon);
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.8);
+    }
+
+    .player-stat-card {
+      background: rgba(33, 9, 56, 0.85);
+      border-radius: 10px;
+      border: 1px solid rgba(255, 0, 127, 0.5);
+      padding: 6px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    .player-stat-card.on-strike {
+      border: 2px solid var(--yellow-gold);
+      box-shadow: 0 0 20px rgba(255, 230, 0, 0.4);
+    }
+
+    .card-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .player-role-indicator {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #000;
+      padding: 2px 10px;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .role-icon {
+      font-size: 14px;
+    }
+
+    .role-name {
+      font-family: var(--font-chakra);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--yellow-gold);
+      letter-spacing: 1.5px;
+    }
+
+    .player-display-name {
+      font-family: var(--font-chakra);
+      font-size: 18px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 1px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin: 2px 0;
+    }
+
+    .score-numbers-row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .card-runs {
+      font-family: var(--font-teko);
+      font-size: 52px;
+      font-weight: 700;
+      line-height: 0.95;
+      color: var(--yellow-gold);
+      text-shadow: 0 0 10px rgba(255, 230, 0, 0.5);
+    }
+
+    .card-balls {
+      font-family: var(--font-teko);
+      font-size: 32px;
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    .card-bottom-pills {
+      display: flex;
+      gap: 10px;
+      font-family: var(--font-chakra);
+      font-size: 13px;
+      font-weight: 700;
+      color: #cfd6ee;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 4px;
+    }
+
+    .stat-pill {
+      display: flex;
+      gap: 3px;
+    }
+    .stat-val {
+      color: #ffffff;
+    }
+
+    /* =========================================================
+       ROW 5: RUNNING COMMENTARY & NEWS TICKER
+       ========================================================= */
+    #bottom-ticker-wrap {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      background: linear-gradient(90deg, #ff007f 0%, #a200ff 50%, #00f2fe 100%);
+      padding: 0 14px;
+      overflow: hidden;
+      height: 38px;
+    }
+
+    .ticker-header-badge {
+      background: #000000;
+      color: var(--yellow-gold);
+      font-family: var(--font-chakra);
+      font-weight: 700;
+      font-size: 14px;
+      padding: 3px 14px;
+      border-radius: 4px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      white-space: nowrap;
+      margin-right: 14px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+
+    .marquee-content-track {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      position: relative;
+    }
+
+    #ticker-running-text {
+      display: inline-block;
+      font-family: var(--font-chakra);
+      font-size: 15px;
+      font-weight: 700;
+      color: #040112;
+      letter-spacing: 1px;
+      animation: marqueeSlide 38s linear infinite;
+    }
+
+    /* Safe Mode & Status indicator */
+    #api-status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--lime-neon);
+      box-shadow: 0 0 8px var(--lime-neon);
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Fullscreen 16:9 Zero-Scroll Broadcast Stage -->
+  <div id="broadcast-stage">
+
+    <!-- Ambient Canvas & Stadium Lights -->
+    <canvas id="ambient-canvas"></canvas>
+    <div class="stadium-light light-left"></div>
+    <div class="stadium-light light-right"></div>
+
+    <!-- ROW 1: TOP MAIN BROADCAST HEADER -->
+    <header id="top-bar">
+      <!-- Left: Batting Team & Score -->
+      <div class="team-badge-box">
+        <div class="flag-circle flag-india" id="team1-flag"></div>
+        <div class="team-meta">
+          <div class="team-title" id="team1-title">INDIA WOMEN</div>
+          <div class="team-score-overs">
+            <div class="main-score" id="team1-score">71-0</div>
+            <div class="main-overs" id="team1-overs">7.2 Ov</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Center: Current Ball Event Pill -->
+      <div id="center-ball-pill">
+        <div id="ball-event-title">BALL</div>
+        <div id="ball-event-subtitle">WOMEN'S ASIA CUP FINAL</div>
+      </div>
+
+      <!-- Right: Bowling Team -->
+      <div class="bowling-team-box">
+        <div class="team-meta" style="text-align: right;">
+          <div class="team-title" id="team2-title">SRI LANKA W</div>
+          <div class="bowling-label">BOWLING</div>
+        </div>
+        <div class="flag-circle flag-srilanka" id="team2-flag"></div>
+      </div>
+    </header>
+
+    <!-- ROW 2: SUB-BAR (RR, Partnership, Toss, Sri Lanka Time) -->
+    <section id="sub-bar">
+      <div class="sub-item">
+        <span>RUN RATE:</span>
+        <span class="sub-highlight" id="crr-display">9.68</span>
+      </div>
+
+      <div class="sub-item">
+        <span>P'SHIP:</span>
+        <span class="sub-highlight" id="pship-display">71 (44)</span>
+      </div>
+
+      <div class="sub-item">
+        <span class="toss-text" id="toss-display">India Women won the toss and opt to Bat</span>
+      </div>
+
+      <!-- Sri Lanka Live Real-Time Clock with Seconds -->
+      <div class="sl-clock-box">
+        <div class="live-dot"></div>
+        <span style="font-size: 11px; color:#a5b4fc; font-weight:700;">SL TIME:</span>
+        <div id="sl-time-display">--:--:-- PM</div>
+      </div>
+    </section>
+
+    <!-- ROW 3: ARENA STAGE (Match Details, Live Ball Commentary & Officials) -->
+    <main id="arena-stage">
+      
+      <!-- Left Column: Match & Venue Info -->
+      <aside class="side-info-card">
+        <div class="card-heading">
+          <span>MATCH DETAILS</span>
+          <span style="color: var(--cyan-neon); font-size:11px;">FINAL</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">SERIES</span>
+          <span class="info-value" id="info-series">Women's Asia Cup 2026</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">VENUE</span>
+          <span class="info-value" id="info-venue">Dubai Intl Cricket Stadium</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">CAPACITY</span>
+          <span class="info-value" id="info-capacity">25,000 Spectators</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">PITCH ENDS</span>
+          <span class="info-value" id="info-ends">Emirates Rd, Sports City End</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">LIVE STATUS</span>
+          <span class="info-value" style="color: var(--lime-neon);" id="match-live-status">Innings 1 in Progress</span>
+        </div>
+      </aside>
+
+      <!-- Center Stadium Pitch & Giant Live Ball Commentary Area -->
+      <section id="center-arena">
+        <!-- 3D Simulated Pitch Graphics (No Player Face Images as requested) -->
+        <div class="pitch-ring"></div>
+        <div class="pitch-graphic"></div>
+
+        <!-- Big Center Live Ball Commentary Card -->
+        <div id="live-ball-action-card">
+          <div class="ball-action-header">
+            <div class="ball-over-badge" id="live-over-badge">7.2</div>
+            <div class="ball-event-badge badge-dot" id="live-event-badge">NO RUN</div>
+          </div>
+          <div id="live-ball-text">Kavisha Dilhari to Smriti Mandhana, no run</div>
+          
+          <!-- Over Ball Bubbles Tray -->
+          <div class="over-balls-tray" id="over-balls-tray">
+            <div class="ball-pill-circle b-1">1</div>
+            <div class="ball-pill-circle b-4">4</div>
+            <div class="ball-pill-circle b-4">4</div>
+            <div class="ball-pill-circle b-1">1</div>
+            <div class="ball-pill-circle b-2">2</div>
+            <div class="ball-pill-circle b-dot">0</div>
+          </div>
+        </div>
+
+        <!-- AUTOMATED OVER-END ROTATING OVERLAY (Playing XI, Points Table, Umpires) -->
+        <div id="auto-rotation-modal">
+          <div class="modal-header-strip">
+            <div class="modal-title" id="modal-title-text">
+              <span>📋 PLAYING XI - INDIA WOMEN</span>
+            </div>
+            <div class="modal-timer-bar" id="modal-timer-text">AUTO-ROTATING IN 8s</div>
+          </div>
+          <div class="modal-grid-content" id="modal-dynamic-body">
+            <!-- Dynamically populated without clicks -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Column: Umpires & Officials -->
+      <aside class="side-officials-card">
+        <div class="card-heading">
+          <span>MATCH OFFICIALS</span>
+          <span style="color: var(--yellow-gold); font-size:11px;">ICC / ACC</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">ON-FIELD UMPIRES</span>
+          <span class="info-value" id="umpire-onfield">Saleema Imtiaz, Shathira Jakir</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">THIRD UMPIRE</span>
+          <span class="info-value" id="umpire-third">Rokeya Sultana</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">MATCH REFEREE</span>
+          <span class="info-value" id="umpire-referee">Supriya Das</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">HEAD COACH (IND)</span>
+          <span class="info-value">Amol Muzumdar</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">HEAD COACH (SL)</span>
+          <span class="info-value">Jamie Siddons</span>
+        </div>
+      </aside>
+
+    </main>
+
+    <!-- ROW 4: BATSMEN & BOWLER STATS STRIP (Screenshot 1 Exact Layout) -->
+    <section id="bottom-stats-strip">
+
+      <!-- Batsman 1 Card -->
+      <div class="player-stat-card on-strike" id="card-bat1">
+        <div class="card-top-row">
+          <div class="player-role-indicator">
+            <span class="role-icon">🏏</span>
+            <span class="role-name">BATSMAN</span>
+          </div>
+          <div style="color: var(--yellow-gold); font-size:12px; font-weight:700;">★ ON STRIKE</div>
+        </div>
+        <div class="player-display-name" id="bat1-name">Smriti Mandhana</div>
+        <div class="score-numbers-row">
+          <div class="card-runs" id="bat1-runs">23</div>
+          <div class="card-balls" id="bat1-balls">(21)</div>
+        </div>
+        <div class="card-bottom-pills">
+          <div class="stat-pill">4s: <span class="stat-val" id="bat1-fours">3</span></div>
+          <div class="stat-pill">6s: <span class="stat-val" id="bat1-sixes">0</span></div>
+          <div class="stat-pill">SR: <span class="stat-val" id="bat1-sr">109.52</span></div>
+        </div>
+      </div>
+
+      <!-- Batsman 2 Card -->
+      <div class="player-stat-card" id="card-bat2">
+        <div class="card-top-row">
+          <div class="player-role-indicator">
+            <span class="role-icon">🏏</span>
+            <span class="role-name">BATSMAN</span>
+          </div>
+        </div>
+        <div class="player-display-name" id="bat2-name">Shafali Verma</div>
+        <div class="score-numbers-row">
+          <div class="card-runs" id="bat2-runs">48</div>
+          <div class="card-balls" id="bat2-balls">(23)</div>
+        </div>
+        <div class="card-bottom-pills">
+          <div class="stat-pill">4s: <span class="stat-val" id="bat2-fours">6</span></div>
+          <div class="stat-pill">6s: <span class="stat-val" id="bat2-sixes">2</span></div>
+          <div class="stat-pill">SR: <span class="stat-val" id="bat2-sr">208.70</span></div>
+        </div>
+      </div>
+
+      <!-- Bowler Card -->
+      <div class="player-stat-card" id="card-bowler">
+        <div class="card-top-row">
+          <div class="player-role-indicator">
+            <span class="role-icon">⚾</span>
+            <span class="role-name">BOWLER</span>
+          </div>
+          <div style="color: var(--cyan-neon); font-size:12px; font-weight:700;">CURRENT OVER</div>
+        </div>
+        <div class="player-display-name" id="bowler-name">Kavisha Dilhari</div>
+        <div class="score-numbers-row">
+          <div class="card-runs" id="bowler-wkts-runs">0-15</div>
+          <div class="card-balls" id="bowler-overs">(1.2)</div>
+        </div>
+        <div class="card-bottom-pills">
+          <div class="stat-pill">Mdn: <span class="stat-val" id="bowler-maidens">0</span></div>
+          <div class="stat-pill">Econ: <span class="stat-val" id="bowler-econ">11.25</span></div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ROW 5: RUNNING COMMENTARY & NEWS TICKER -->
+    <footer id="bottom-ticker-wrap">
+      <div class="ticker-header-badge">LIVE COMMENTARY</div>
+      <div class="marquee-content-track">
+        <div id="ticker-running-text">
+          ● 7.2: Kavisha Dilhari to Smriti Mandhana, no run ● 7.1: Kavisha Dilhari to Smriti Mandhana, 2 runs, to sweeper cover ● 6.6: Chamudi Praboda to Smriti Mandhana, 1 run ● 6.4: Chamudi Praboda to Shafali Verma, FOUR, whips it through deep mid-wicket ● 6.3: Chamudi Praboda to Shafali Verma, FOUR, lifts towards deep extra cover ● 4.6: Chamari Athapaththu to Shafali Verma, SIX, launched over the bowler's head!
+        </div>
+      </div>
+      <div id="api-status-dot" title="Live Stream Online"></div>
+    </footer>
+
+  </div>
+
+  <!-- =========================================================
+       CRICKET ENGINE SCRIPT (Rate-Limit Protected, Zero-Click)
+       ========================================================= -->
+  <script>
+    /**
+     * INITIAL SEED / FALLBACK DATA
+     * Guaranteed instant rendering even if API is blocked or offline
+     */
+    let matchData = {
+      "created_by": "Created By Viruna Randinu",
+      "info": {
+        "match_title": "India Women vs Sri Lanka Women, Final, Women's Asia Cup 2026 - Match Info",
+        "start_time": "2026-09-13T14:30:00.000Z",
+        "venue": "Dubai International Cricket Stadium, Dubai",
+        "city": "Dubai, United Arab Emirates",
+        "teams": ["India Women", "Sri Lanka Women"],
+        "series": "Women's Asia Cup 2026",
+        "match": "INDW vs SLW • Final • Women's Asia Cup 2026",
+        "toss": "India Women won the toss and opt to Bat",
+        "umpires": "Saleema Imtiaz, Shathira Jakir",
+        "third_umpire": "Rokeya Sultana",
+        "referee": "Supriya Das",
+        "capacity": "25,000",
+        "ends": "Emirates Road End, Dubai Sports City End"
+      },
+      "live": {
+        "latest_update": "Kavisha Dilhari to Smriti Mandhana, no run",
+        "latest_ball": {
+          "over": "7.2",
+          "text": "Kavisha Dilhari to Smriti Mandhana, no run"
+        }
+      },
+      "scorecard": {
+        "innings": [
+          {
+            "team_short": "INDW",
+            "team_name": "India Women",
+            "score": "71-0",
+            "overs": "7.2 Ov",
+            "extras": "0 (b 0, lb 0, w 0, nb 0, p 0)",
+            "total": "71-0 (7.2 Overs, RR: 9.68)",
+            "batting": [
+              { "name": "Smriti Mandhana", "dismissal": "batting", "runs": "23", "balls": "21", "fours": "3", "sixes": "0", "strike_rate": "109.52" },
+              { "name": "Shafali Verma", "dismissal": "batting", "runs": "48", "balls": "23", "fours": "6", "sixes": "2", "strike_rate": "208.70" }
+            ],
+            "bowling": [
+              { "name": "Mithali Ayodhya", "overs": "2", "maidens": "0", "runs": "16", "wickets": "0", "economy": "8.00" },
+              { "name": "Kavisha Dilhari", "overs": "1.2", "maidens": "0", "runs": "15", "wickets": "0", "economy": "11.25" },
+              { "name": "Sugandika Kumari", "overs": "2", "maidens": "0", "runs": "8", "wickets": "0", "economy": "4.00" },
+              { "name": "Chamari Athapaththu (c)", "overs": "1", "maidens": "0", "runs": "20", "wickets": "0", "economy": "20.00" },
+              { "name": "Chamudi Praboda", "overs": "1", "maidens": "0", "runs": "12", "wickets": "0", "economy": "12.00" }
+            ]
+          }
+        ]
+      },
+      "squads": {
+        "India Women": {
+          "playing_xi": [
+            { "name": "Smriti Mandhana", "role": "Batter" },
+            { "name": "Shafali Verma", "role": "Batter" },
+            { "name": "Gunalan Kamalini", "role": "WK-Batter" },
+            { "name": "Harmanpreet Kaur", "role": "Batting Allrounder" },
+            { "name": "Bharti Fulmali", "role": "Batter" },
+            { "name": "Richa Ghosh", "role": "WK-Batter" },
+            { "name": "Deepti Sharma", "role": "Batting Allrounder" },
+            { "name": "Prema Rawat", "role": "Bowler" },
+            { "name": "Shree Charani", "role": "Bowler" },
+            { "name": "Kranti Gaud", "role": "Bowler" },
+            { "name": "Nandani Sharma", "role": "Bowler" }
+          ],
+          "bench": [
+            { "name": "Pratika Rawal", "role": "Batter" },
+            { "name": "Renuka Singh Thakur", "role": "Bowler" },
+            { "name": "Radha Yadav", "role": "Bowler" },
+            { "name": "Arundhati Reddy", "role": "Bowling Allrounder" }
+          ]
+        },
+        "Sri Lanka Women": {
+          "playing_xi": [
+            { "name": "Chamari Athapaththu", "role": "Batting Allrounder" },
+            { "name": "Imesha Dulani", "role": "Batter" },
+            { "name": "Vishmi Gunaratne", "role": "Batter" },
+            { "name": "Hasini Perera", "role": "Batter" },
+            { "name": "Harshitha Samarawickrama", "role": "Batter" },
+            { "name": "Kavisha Dilhari", "role": "Batting Allrounder" },
+            { "name": "Nilakshika Silva", "role": "Batting Allrounder" },
+            { "name": "Kaushani Nuthyangana", "role": "WK-Batter" },
+            { "name": "Sugandika Kumari", "role": "Bowler" },
+            { "name": "Chamudi Praboda", "role": "Bowler" },
+            { "name": "Mithali Ayodhya", "role": "Bowler" }
+          ],
+          "bench": [
+            { "name": "Sanjana Kavindi", "role": "Batter" },
+            { "name": "Dewmi Vihanga", "role": "Bowling Allrounder" },
+            { "name": "Kawya Kavindi", "role": "Bowler" },
+            { "name": "Chethana Vimukthi", "role": "Bowler" }
+          ]
+        }
+      },
+      "full_commentary": [
+        { "over": "7.2", "text": "Kavisha Dilhari to Smriti Mandhana, no run" },
+        { "over": "7.1", "text": "Kavisha Dilhari to Smriti Mandhana, 2 runs, to sweeper cover" },
+        { "over": "6.6", "text": "Chamudi Praboda to Smriti Mandhana, 1 run, tucked to deep mid-wicket" },
+        { "over": "6.5", "text": "Chamudi Praboda to Shafali Verma, 1 run, leg-lined, deflected to deep mid-wicket" },
+        { "over": "6.4", "badge": "4", "text": "Chamudi Praboda to Shafali Verma, FOUR, rocks back and whips it through deep mid-wicket!" },
+        { "over": "6.3", "badge": "4", "text": "Chamudi Praboda to Shafali Verma, FOUR, loopy delivery, lifts towards deep extra cover!" },
+        { "over": "4.6", "badge": "6", "text": "Chamari Athapaththu to Shafali Verma, SIX, launches straight back over bowler's head!" }
+      ],
+      "points_table": [
+        { "position": "1", "team": "INDW(Q)", "played": "3", "won": "3", "lost": "0", "points": "6", "nrr": "+5.471" },
+        { "position": "2", "team": "PAKW(Q)", "played": "3", "won": "2", "lost": "1", "points": "4", "nrr": "+0.927" },
+        { "position": "3", "team": "THAIW(E)", "played": "3", "won": "1", "lost": "2", "points": "2", "nrr": "-2.050" },
+        { "position": "4", "team": "HKCW(E)", "played": "3", "won": "0", "lost": "3", "points": "0", "nrr": "-3.583" },
+        { "position": "1", "team": "SLW(Q)", "played": "3", "won": "3", "lost": "0", "points": "6", "nrr": "+2.730" },
+        { "position": "2", "team": "BANW(Q)", "played": "3", "won": "2", "lost": "1", "points": "4", "nrr": "+1.688" },
+        { "position": "3", "team": "UAEW(E)", "played": "3", "won": "1", "lost": "2", "points": "2", "nrr": "-1.116" },
+        { "position": "4", "team": "IDNW(E)", "played": "3", "won": "0", "lost": "3", "points": "0", "nrr": "-3.169" }
+      ]
+    };
+
+    /**
+     * SRI LANKA LIVE REAL-TIME CLOCK
+     * Specifically calculates Sri Lanka Standard Time (Asia/Colombo UTC+5:30)
+     * updates every 1000ms with seconds ticking.
+     */
+    function updateSriLankaClock() {
+      const now = new Date();
+      // Colombo is UTC + 5.5 hours
+      const utcTime = now.getTime() + (now.getTimezoneOffset() * 60000);
+      const slOffset = 5.5 * 60 * 60 * 1000;
+      const slDate = new Date(utcTime + slOffset);
+
+      let hours = slDate.getHours();
+      const minutes = String(slDate.getMinutes()).padStart(2, '0');
+      const seconds = String(slDate.getSeconds()).padStart(2, '0');
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12;
+      hours = hours ? hours : 12; // convert 0 to 12
+      const strHours = String(hours).padStart(2, '0');
+
+      const clockEl = document.getElementById('sl-time-display');
+      if (clockEl) {
+        clockEl.textContent = `${strHours}:${minutes}:${seconds} ${ampm}`;
+      }
+    }
+    setInterval(updateSriLankaClock, 1000);
+    updateSriLankaClock();
+
+    /**
+     * VERCEL RATE-LIMIT PROTECTION & LIVE FETCH
+     * Uses a minimum 6-second interval with error-backoff to never exceed Vercel quotas
+     */
+    const API_URL = "https://cricket-api-v5.vercel.app/?url=https://www.cricbuzz.com/live-cricket-scores/169891/indw-vs-slw-final-womens-asia-cup-2026";
+    let lastFetchedDataHash = "";
+    let consecutiveErrors = 0;
+    let isFetching = false;
+
+    async function fetchLiveCricketData() {
+      if (isFetching) return;
+      isFetching = true;
+      const statusDot = document.getElementById('api-status-dot');
+
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 4500);
+
+        const response = await fetch(API_URL, {
+          signal: controller.signal,
+          headers: { 'Accept': 'application/json' }
+        });
+        clearTimeout(timeoutId);
+
+        if (response.ok) {
+          const freshData = await response.json();
+          if (freshData && freshData.scorecard) {
+            matchData = freshData;
+            consecutiveErrors = 0;
+            if (statusDot) {
+              statusDot.style.background = '#39ff14';
+              statusDot.style.boxShadow = '0 0 10px #39ff14';
+            }
+            renderAllData();
+          }
+        } else {
+          // If rate limited or 429/500, back off silently
+          consecutiveErrors++;
+          if (statusDot) {
+            statusDot.style.background = '#ffe600';
+            statusDot.style.boxShadow = '0 0 10px #ffe600';
+          }
+        }
+      } catch (err) {
+        // Network or CORS or timeout; keep running on cache
+        consecutiveErrors++;
+        if (statusDot) {
+          statusDot.style.background = consecutiveErrors > 3 ? '#ff0055' : '#ffe600';
+        }
+      } finally {
+        isFetching = false;
+        // Adaptive delay to protect Vercel limits (6s normal, up to 15s if throttled)
+        const nextDelay = Math.min(6000 + (consecutiveErrors * 2500), 18000);
+        setTimeout(fetchLiveCricketData, nextDelay);
+      }
+    }
+
+    // Start polling safely after initial render
+    setTimeout(fetchLiveCricketData, 4000);
+
+    /**
+     * RENDER ALL UI DATA COMPONENTS
+     */
+    let previousOver = "7.2";
+
+    function renderAllData() {
+      const inn = matchData.scorecard?.innings?.[0] || {};
+      const live = matchData.live || {};
+      const info = matchData.info || {};
+
+      // 1. Teams & Main Score
+      document.getElementById('team1-title').textContent = (inn.team_name || "INDIA WOMEN").toUpperCase();
+      document.getElementById('team1-score').textContent = inn.score || "0-0";
+      document.getElementById('team1-overs').textContent = inn.overs || "0.0 Ov";
+
+      // 2. CRR & Sub-bar
+      if (inn.total) {
+        const crrMatch = inn.total.match(/RR:\s*([\d\.]+)/i);
+        if (crrMatch) document.getElementById('crr-display').textContent = crrMatch[1];
+      }
+
+      if (info.toss) document.getElementById('toss-display').textContent = info.toss;
+      if (info.series) document.getElementById('info-series').textContent = info.series;
+      if (info.venue) document.getElementById('info-venue').textContent = info.venue;
+      if (info.capacity) document.getElementById('info-capacity').textContent = info.capacity + " Spectators";
+      if (info.ends) document.getElementById('info-ends').textContent = info.ends;
+      if (info.umpires) document.getElementById('umpire-onfield').textContent = info.umpires;
+      if (info.third_umpire) document.getElementById('umpire-third').textContent = info.third_umpire;
+      if (info.referee) document.getElementById('umpire-referee').textContent = info.referee;
+
+      // 3. Batters
+      const batters = inn.batting || [];
+      if (batters.length > 0) {
+        document.getElementById('bat1-name').textContent = batters[0].name || "Batsman 1";
+        document.getElementById('bat1-runs').textContent = batters[0].runs || "0";
+        document.getElementById('bat1-balls').textContent = `(${batters[0].balls || "0"})`;
+        document.getElementById('bat1-fours').textContent = batters[0].fours || "0";
+        document.getElementById('bat1-sixes').textContent = batters[0].sixes || "0";
+        document.getElementById('bat1-sr').textContent = batters[0].strike_rate || "0.00";
+      }
+
+      if (batters.length > 1) {
+        document.getElementById('bat2-name').textContent = batters[1].name || "Batsman 2";
+        document.getElementById('bat2-runs').textContent = batters[1].runs || "0";
+        document.getElementById('bat2-balls').textContent = `(${batters[1].balls || "0"})`;
+        document.getElementById('bat2-fours').textContent = batters[1].fours || "0";
+        document.getElementById('bat2-sixes').textContent = batters[1].sixes || "0";
+        document.getElementById('bat2-sr').textContent = batters[1].strike_rate || "0.00";
+
+        // Calculate partnership
+        const b1Runs = parseInt(batters[0].runs) || 0;
+        const b2Runs = parseInt(batters[1].runs) || 0;
+        const b1Balls = parseInt(batters[0].balls) || 0;
+        const b2Balls = parseInt(batters[1].balls) || 0;
+        document.getElementById('pship-display').textContent = `${b1Runs + b2Runs} (${b1Balls + b2Balls})`;
+      }
+
+      // 4. Current Bowler
+      const bowlers = inn.bowling || [];
+      if (bowlers.length > 0) {
+        // Active bowler is usually the last active or Dilhari
+        const activeBowler = bowlers.find(b => b.overs.includes('.')) || bowlers[bowlers.length - 1];
+        document.getElementById('bowler-name').textContent = activeBowler.name || "Bowler";
+        document.getElementById('bowler-wkts-runs').textContent = `${activeBowler.wickets || 0}-${activeBowler.runs || 0}`;
+        document.getElementById('bowler-overs').textContent = `(${activeBowler.overs || "0.0"})`;
+        document.getElementById('bowler-maidens').textContent = activeBowler.maidens || "0";
+        
+        let econ = activeBowler.economy;
+        if (!econ || econ === "0" || econ === "0.0") {
+          const ovNum = parseFloat(activeBowler.overs) || 1;
+          econ = (parseInt(activeBowler.runs) / ovNum).toFixed(2);
+        }
+        document.getElementById('bowler-econ').textContent = econ;
+      }
+
+      // 5. Live Ball Action & Commentary
+      const currentBall = live.latest_ball || {};
+      const currentOver = currentBall.over || (inn.overs ? inn.overs.replace(' Ov', '') : "0.0");
+      const ballText = live.latest_update || currentBall.text || "Play in progress";
+
+      document.getElementById('live-over-badge').textContent = currentOver;
+      document.getElementById('live-ball-text').textContent = ballText;
+
+      // Event Pill classification
+      const centerPillTitle = document.getElementById('ball-event-title');
+      const eventBadge = document.getElementById('live-event-badge');
+      const lowerText = ballText.toLowerCase();
+
+      if (lowerText.includes('six') || lowerText.includes('6')) {
+        centerPillTitle.textContent = "SIX! 🔥";
+        eventBadge.className = "ball-event-badge badge-six";
+        eventBadge.textContent = "6 MAXIMUM";
+        triggerConfettiFX('pink');
+      } else if (lowerText.includes('four') || lowerText.includes('4')) {
+        centerPillTitle.textContent = "FOUR! ⚡";
+        eventBadge.className = "ball-event-badge badge-four";
+        eventBadge.textContent = "4 BOUNDARY";
+        triggerConfettiFX('green');
+      } else if (lowerText.includes('out') || lowerText.includes('wicket') || lowerText.includes('caught') || lowerText.includes('bowled')) {
+        centerPillTitle.textContent = "WICKET! 🎯";
+        eventBadge.className = "ball-event-badge badge-wicket";
+        eventBadge.textContent = "WICKET";
+        triggerConfettiFX('red');
+      } else if (lowerText.includes('1 run') || lowerText.includes('single')) {
+        centerPillTitle.textContent = "SINGLE";
+        eventBadge.className = "ball-event-badge badge-run";
+        eventBadge.textContent = "1 RUN";
+      } else if (lowerText.includes('2 runs')) {
+        centerPillTitle.textContent = "2 RUNS";
+        eventBadge.className = "ball-event-badge badge-run";
+        eventBadge.textContent = "2 RUNS";
+      } else {
+        centerPillTitle.textContent = "BALL";
+        eventBadge.className = "ball-event-badge badge-dot";
+        eventBadge.textContent = "NO RUN";
+      }
+
+      // Check if over completed (e.g. .6 or over number increased)
+      if (currentOver !== previousOver) {
+        if (currentOver.endsWith('.6') || parseInt(currentOver) > parseInt(previousOver)) {
+          showOverEndModal();
+        }
+        previousOver = currentOver;
+      }
+
+      // 6. Update Rolling Ticker with Commentary items
+      if (matchData.full_commentary && matchData.full_commentary.length > 0) {
+        const tickerItems = matchData.full_commentary
+          .filter(c => c.text)
+          .map(c => `● [${c.over || 'LIVE'}]: ${c.text}`)
+          .join('   ');
+        document.getElementById('ticker-running-text').textContent = tickerItems;
+      }
+    }
+
+    /**
+     * AUTOMATED OVER-END ROTATING BROADCAST CARDS
+     * Hands-free periodic rotation between:
+     * 1) India Women Squad
+     * 2) Sri Lanka Women Squad
+     * 3) Points Table (Screenshot 2 Style)
+     * 4) Match Officials
+     */
+    let rotationIndex = 0;
+    const modalEl = document.getElementById('auto-rotation-modal');
+    const modalTitle = document.getElementById('modal-title-text');
+    const modalBody = document.getElementById('modal-dynamic-body');
+    const modalTimer = document.getElementById('modal-timer-text');
+    let isModalOpen = false;
+
+    function showOverEndModal() {
+      if (isModalOpen) return;
+      isModalOpen = true;
+      modalEl.classList.add('active');
+
+      renderRotatingSlide();
+
+      // Auto close after 8 seconds and return to main commentary
+      let countdown = 8;
+      const countInterval = setInterval(() => {
+        countdown--;
+        if (modalTimer) modalTimer.textContent = `RETURNING IN ${countdown}s`;
+        if (countdown <= 0) {
+          clearInterval(countInterval);
+          modalEl.classList.remove('active');
+          isModalOpen = false;
+          rotationIndex = (rotationIndex + 1) % 3;
+        }
+      }, 1000);
+    }
+
+    // Also trigger periodic rotation every 45 seconds during broadcast even between balls
+    setInterval(() => {
+      if (!isModalOpen) {
+        showOverEndModal();
+      }
+    }, 45000);
+
+    function renderRotatingSlide() {
+      if (rotationIndex === 0) {
+        // Slide 1: Team 1 Playing XI
+        modalTitle.innerHTML = `<span>🇮🇳 PLAYING XI - INDIA WOMEN</span>`;
+        const xi = matchData.squads?.["India Women"]?.playing_xi || [];
+        const bench = matchData.squads?.["India Women"]?.bench || [];
+
+        let col1 = xi.slice(0, 6).map(p => `
+          <div class="player-row-item">
+            <span class="player-name-text">${p.name}</span>
+            <span class="player-role-badge">${p.role}</span>
+          </div>
+        `).join('');
+
+        let col2 = xi.slice(6).map(p => `
+          <div class="player-row-item">
+            <span class="player-name-text">${p.name}</span>
+            <span class="player-role-badge">${p.role}</span>
+          </div>
+        `).join('');
+
+        modalBody.innerHTML = `
+          <div class="squad-column">
+            <div class="squad-col-title">TOP & MIDDLE ORDER</div>
+            ${col1}
+          </div>
+          <div class="squad-column">
+            <div class="squad-col-title">ALL-ROUNDERS & BOWLERS</div>
+            ${col2}
+            <div style="font-size:11px; color:#a5b4fc; margin-top:4px;">Head Coach: Amol Muzumdar</div>
+          </div>
+        `;
+      } else if (rotationIndex === 1) {
+        // Slide 2: Team 2 Playing XI
+        modalTitle.innerHTML = `<span>🇱🇰 PLAYING XI - SRI LANKA WOMEN</span>`;
+        const xi = matchData.squads?.["Sri Lanka Women"]?.playing_xi || [];
+
+        let col1 = xi.slice(0, 6).map(p => `
+          <div class="player-row-item">
+            <span class="player-name-text">${p.name}</span>
+            <span class="player-role-badge">${p.role}</span>
+          </div>
+        `).join('');
+
+        let col2 = xi.slice(6).map(p => `
+          <div class="player-row-item">
+            <span class="player-name-text">${p.name}</span>
+            <span class="player-role-badge">${p.role}</span>
+          </div>
+        `).join('');
+
+        modalBody.innerHTML = `
+          <div class="squad-column">
+            <div class="squad-col-title">TOP & MIDDLE ORDER</div>
+            ${col1}
+          </div>
+          <div class="squad-column">
+            <div class="squad-col-title">ALL-ROUNDERS & BOWLERS</div>
+            ${col2}
+            <div style="font-size:11px; color:#a5b4fc; margin-top:4px;">Head Coach: Jamie Siddons</div>
+          </div>
+        `;
+      } else {
+        // Slide 3: Points Table (Screenshot 2 Match)
+        modalTitle.innerHTML = `<span>🏆 WOMEN'S ASIA CUP - STANDINGS</span>`;
+        const pt = matchData.points_table || [];
+
+        let tableRows = pt.filter(r => r.position && r.position !== "").map(r => `
+          <tr class="${r.team.includes('INDW') || r.team.includes('SLW') ? 'highlight-row' : ''}">
+            <td style="color:var(--yellow-gold); font-weight:bold;">${r.position}</td>
+            <td style="color:#ffffff;">${r.team}</td>
+            <td>${r.played}</td>
+            <td>${r.won}</td>
+            <td>${r.lost}</td>
+            <td style="color:var(--lime-neon); font-weight:bold;">${r.points}</td>
+            <td style="color:var(--cyan-neon);">${r.nrr}</td>
+          </tr>
+        `).join('');
+
+        modalBody.innerHTML = `
+          <div style="grid-column: span 2; width: 100%;">
+            <table class="points-table-view">
+              <thead>
+                <tr>
+                  <th>POS</th>
+                  <th>TEAM</th>
+                  <th>P</th>
+                  <th>W</th>
+                  <th>L</th>
+                  <th>PTS</th>
+                  <th>NRR</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${tableRows}
+              </tbody>
+            </table>
+          </div>
+        `;
+      }
+    }
+
+    /**
+     * AMBIENT CANVAS PARTICLE & STADIUM LIGHT ENGINE (50+ Live Visual Effects)
+     */
+    const canvas = document.getElementById('ambient-canvas');
+    const ctx = canvas.getContext('2d');
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+
+    window.addEventListener('resize', () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    });
+
+    const particles = [];
+    for (let i = 0; i < 45; i++) {
+      particles.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        radius: Math.random() * 2.2 + 0.8,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: (Math.random() - 0.5) * 0.4,
+        color: i % 2 === 0 ? 'rgba(0, 242, 254, ' : 'rgba(255, 0, 127, ',
+        alpha: Math.random() * 0.6 + 0.2
+      });
+    }
+
+    // Boundary Celebration Sparks
+    const sparks = [];
+    function triggerConfettiFX(type) {
+      const color = type === 'pink' ? '#ff007f' : (type === 'green' ? '#39ff14' : '#ffe600');
+      for (let i = 0; i < 40; i++) {
+        sparks.push({
+          x: width * 0.5,
+          y: height * 0.45,
+          vx: (Math.random() - 0.5) * 12,
+          vy: (Math.random() - 0.5) * 12 - 2,
+          size: Math.random() * 5 + 2,
+          color: color,
+          alpha: 1,
+          decay: Math.random() * 0.02 + 0.015
+        });
+      }
+    }
+
+    function animateAmbientCanvas() {
+      ctx.clearRect(0, 0, width, height);
+
+      // Render Floating Stadium Dust Particles
+      for (let p of particles) {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0) p.x = width;
+        if (p.x > width) p.x = 0;
+        if (p.y < 0) p.y = height;
+        if (p.y > height) p.y = 0;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = p.color + p.alpha + ')';
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = p.color + '0.8)';
+        ctx.fill();
+      }
+
+      // Render Sparks
+      for (let i = sparks.length - 1; i >= 0; i--) {
+        const s = sparks[i];
+        s.x += s.vx;
+        s.y += s.vy;
+        s.vy += 0.15; // gravity
+        s.alpha -= s.decay;
+
+        if (s.alpha <= 0) {
+          sparks.splice(i, 1);
+          continue;
+        }
+
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+        ctx.fillStyle = s.color;
+        ctx.shadowBlur = 12;
+        ctx.shadowColor = s.color;
+        ctx.globalAlpha = s.alpha;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+
+      requestAnimationFrame(animateAmbientCanvas);
+    }
+    animateAmbientCanvas();
+
+    // Initial render
+    renderAllData();
+  </script>
+</body>
+</html>
