@@ -1254,8 +1254,8 @@
         <div class="team-meta">
           <div class="team-title" id="team1-title">SRI LANKA W</div>
           <div class="team-score-overs">
-            <div class="main-score" id="team1-score">28-1</div>
-            <div class="main-overs" id="team1-overs">4.4 Ov</div>
+            <div class="main-score" id="team1-score">45-1</div>
+            <div class="main-overs" id="team1-overs">7.4 Ov</div>
           </div>
         </div>
       </div>
@@ -1351,10 +1351,10 @@
         <!-- Big Center Live Ball Commentary Card -->
         <div id="live-ball-action-card">
           <div class="ball-action-header">
-            <div class="ball-over-badge" id="live-over-badge">1.3</div>
+            <div class="ball-over-badge" id="live-over-badge">7.4</div>
             <div class="ball-event-badge badge-run" id="live-event-badge">1 RUN</div>
           </div>
-          <div id="live-ball-text">Nandani Sharma to Vishmi Gunaratne, 1 run, tucked away to mid-wicket</div>
+          <div id="live-ball-text">Deepti Sharma to Vishmi Gunaratne, 1 run, tucked away to deep square leg</div>
           
           <!-- Over Ball Bubbles Tray -->
           <div class="over-balls-tray" id="over-balls-tray">
@@ -1438,13 +1438,13 @@
         </div>
         <div class="player-display-name" id="bat1-name">CHAMARI ATHAPATHTHU (C)</div>
         <div class="score-numbers-row">
-          <div class="card-runs" id="bat1-runs">0</div>
-          <div class="card-balls" id="bat1-balls">(1)</div>
+          <div class="card-runs" id="bat1-runs">22</div>
+          <div class="card-balls" id="bat1-balls">(25)</div>
         </div>
         <div class="card-bottom-pills">
-          <div class="stat-pill">4s: <span class="stat-val" id="bat1-fours">0</span></div>
-          <div class="stat-pill">6s: <span class="stat-val" id="bat1-sixes">0</span></div>
-          <div class="stat-pill">SR: <span class="stat-val" id="bat1-sr">0.00</span></div>
+          <div class="stat-pill">4s: <span class="stat-val" id="bat1-fours">2</span></div>
+          <div class="stat-pill">6s: <span class="stat-val" id="bat1-sixes">1</span></div>
+          <div class="stat-pill">SR: <span class="stat-val" id="bat1-sr">88.00</span></div>
         </div>
       </div>
 
@@ -1459,13 +1459,13 @@
         </div>
         <div class="player-display-name" id="bat2-name">VISHMI GUNARATNE</div>
         <div class="score-numbers-row">
-          <div class="card-runs" id="bat2-runs">6</div>
-          <div class="card-balls" id="bat2-balls">(3)</div>
+          <div class="card-runs" id="bat2-runs">17</div>
+          <div class="card-balls" id="bat2-balls">(16)</div>
         </div>
         <div class="card-bottom-pills">
-          <div class="stat-pill">4s: <span class="stat-val" id="bat2-fours">1</span></div>
+          <div class="stat-pill">4s: <span class="stat-val" id="bat2-fours">2</span></div>
           <div class="stat-pill">6s: <span class="stat-val" id="bat2-sixes">0</span></div>
-          <div class="stat-pill">SR: <span class="stat-val" id="bat2-sr">200.00</span></div>
+          <div class="stat-pill">SR: <span class="stat-val" id="bat2-sr">106.25</span></div>
         </div>
       </div>
 
@@ -1478,14 +1478,14 @@
           </div>
           <div style="color: var(--cyan-neon); font-size:12px; font-weight:700;">ACTIVE SPELL</div>
         </div>
-        <div class="player-display-name" id="bowler-name">NANDANI SHARMA</div>
+        <div class="player-display-name" id="bowler-name">DEEPTI SHARMA</div>
         <div class="score-numbers-row">
-          <div class="card-runs" id="bowler-wkts-runs">0-5</div>
-          <div class="card-balls" id="bowler-overs">(0.3)</div>
+          <div class="card-runs" id="bowler-wkts-runs">0-1</div>
+          <div class="card-balls" id="bowler-overs">(0.4)</div>
         </div>
         <div class="card-bottom-pills">
           <div class="stat-pill">Mdn: <span class="stat-val" id="bowler-maidens">0</span></div>
-          <div class="stat-pill">Econ: <span class="stat-val" id="bowler-econ">10.00</span></div>
+          <div class="stat-pill">Econ: <span class="stat-val" id="bowler-econ">1.50</span></div>
         </div>
       </div>
 
@@ -1994,9 +1994,10 @@
     }
 
     /**
-     * VERCEL 5-SECOND POLLER WITH MONOTONIC PROGRESS GUARANTEE
+     * VERCEL LIVE CRICKET POLLER (CORS SAFE, ZERO CUSTOM HEADERS)
      */
-    const BASE_API_URL = "https://cricket-api-v5.vercel.app/?url=" + encodeURIComponent("https://www.cricbuzz.com/live-cricket-scores/169891/indw-vs-slw-final-womens-asia-cup-2026");
+    const CRICBUZZ_URL = "https://www.cricbuzz.com/live-cricket-scores/169891/indw-vs-slw-final-womens-asia-cup-2026";
+    const PROXY_API_URL = "https://cricket-api-v5.vercel.app/?url=" + CRICBUZZ_URL;
 
     async function fetchLiveCricketData() {
       if (isFetching) return;
@@ -2007,13 +2008,11 @@
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 9000);
 
-        // Anti-cache URL parameter prevents Edge CDN backwards routing
-        const uniqueUrl = `${BASE_API_URL}&_cb=${Date.now()}_${Math.floor(Math.random() * 100000)}`;
+        // Salt query parameter breaks caching without triggering CORS preflight OPTIONS!
+        const fetchUrl = `${PROXY_API_URL}&_cb=${Date.now()}_${Math.floor(Math.random() * 100000)}`;
 
-        const response = await fetch(uniqueUrl, {
-          signal: controller.signal,
-          headers: { 'Accept': 'application/json', 'Cache-Control': 'no-cache' },
-          cache: 'no-store'
+        const response = await fetch(fetchUrl, {
+          signal: controller.signal
         });
         clearTimeout(timeoutId);
 
@@ -2034,12 +2033,13 @@
           }
         }
       } catch (err) {
+        console.warn('Live fetch error:', err);
         if (statusDot) statusDot.style.background = '#ffe600';
       } finally {
         isFetching = false;
         LiveEngine.isInitialLoad = false;
         if (fetchTimer) clearTimeout(fetchTimer);
-        fetchTimer = setTimeout(fetchLiveCricketData, 5000);
+        fetchTimer = setTimeout(fetchLiveCricketData, 4000);
       }
     }
 
@@ -2051,12 +2051,7 @@
       const incomingInningsIdx = allInnings.length;
 
       // 1. Detect if an innings changed
-      if (incomingInningsIdx < LiveEngine.activeInningsIdx) {
-        // Obsolete 1st innings cache received -> discard!
-        return;
-      }
       if (incomingInningsIdx > LiveEngine.activeInningsIdx) {
-        // 2nd innings just started! Reset monotonic tracker
         LiveEngine.activeInningsIdx = incomingInningsIdx;
         LiveEngine.maxTotalBalls = 0;
         LiveEngine.maxRuns = 0;
@@ -2084,14 +2079,8 @@
         }
       }
 
-      // Monotonic guard: if edge server returned older balls, NEVER roll back!
-      if (incomingMaxBalls < LiveEngine.maxTotalBalls) {
-        // Stale edge CDN response detected. Maintain forward state.
-        return;
-      }
-
-      // Valid forward progress
-      LiveEngine.maxTotalBalls = incomingMaxBalls;
+      // Monotonically advance: NEVER roll back to lower ball or lower score
+      LiveEngine.maxTotalBalls = Math.max(LiveEngine.maxTotalBalls, incomingMaxBalls);
       LiveEngine.maxRuns = Math.max(LiveEngine.maxRuns, incRuns);
       LiveEngine.maxWkts = Math.max(LiveEngine.maxWkts, incWkts);
     }
@@ -2287,7 +2276,23 @@
       // 5. BOWLER
       const bowlers = inn.bowling || [];
       if (bowlers.length > 0) {
-        const activeBowler = bowlers.find(b => b.overs && b.overs.includes('.')) || bowlers[bowlers.length - 1];
+        let activeBowler = null;
+        const bowlerMatch = ballText.match(/^([A-Za-z\s]+)\s+to\s+/i);
+        if (bowlerMatch && bowlerMatch[1]) {
+          const bName = bowlerMatch[1].trim().toLowerCase();
+          activeBowler = bowlers.find(b => {
+            const curName = (b.name || "").toLowerCase();
+            return curName.includes(bName) || bName.includes(curName) ||
+              bName.split(' ').some(part => part.length > 3 && curName.includes(part));
+          });
+        }
+        if (!activeBowler) {
+          activeBowler = bowlers.find(b => b.overs && b.overs.includes('.'));
+        }
+        if (!activeBowler) {
+          activeBowler = bowlers[bowlers.length - 1];
+        }
+
         document.getElementById('bowler-name').textContent = (activeBowler.name || "BOWLER").toUpperCase();
         document.getElementById('bowler-wkts-runs').textContent = `${activeBowler.wickets || 0}-${activeBowler.runs || 0}`;
         document.getElementById('bowler-overs').textContent = `(${activeBowler.overs || "0.0"})`;
