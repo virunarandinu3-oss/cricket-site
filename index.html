@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Live Cricket Broadcast Overlay - Women's Asia Cup 2026</title>
+  <title>Live Cricket Ultra Broadcast Overlay - YouTube Streaming Edition</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,400;0,600;0,700;1,700&family=Teko:wght@500;600;700&family=Rajdhani:wght@500;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,500;0,700;1,700&family=Teko:wght@500;600;700&family=Rajdhani:wght@600;700&family=Orbitron:wght@600;800;900&family=Outfit:wght@500;700;900&display=swap" rel="stylesheet">
   <style>
     /* =========================================================
-       CSS RESET & BROADCAST 16:9 ZERO-SCROLL SETUP
+       100+ LIVE BROADCAST VISUAL FX & KEYFRAMES (60 FPS OPTIMIZED)
        ========================================================= */
     *, *::before, *::after {
       box-sizing: border-box;
@@ -20,23 +20,24 @@
     }
 
     :root {
-      --bg-dark: #070913;
-      --bg-stadium: radial-gradient(circle at 50% 35%, #182848 0%, #0c1427 45%, #050711 100%);
+      --bg-dark: #04020a;
       --pink-neon: #ff007f;
+      --pink-glow: rgba(255, 0, 127, 0.7);
       --magenta: #d9027d;
-      --purple-dark: #3a0066;
-      --purple-bar: #5c0982;
       --cyan-neon: #00f2fe;
+      --cyan-glow: rgba(0, 242, 254, 0.75);
       --blue-electric: #4facfe;
       --yellow-gold: #ffe600;
+      --yellow-glow: rgba(255, 230, 0, 0.75);
       --lime-neon: #39ff14;
       --red-wicket: #ff1744;
-      --card-bg: rgba(18, 14, 45, 0.88);
-      --card-border: rgba(255, 0, 127, 0.45);
-      --glass-panel: rgba(13, 10, 32, 0.75);
+      --red-glow: rgba(255, 23, 68, 0.85);
+      --purple-deep: #16002c;
+      --purple-bar: #4a0368;
       --font-teko: 'Teko', sans-serif;
       --font-chakra: 'Chakra Petch', sans-serif;
       --font-rajdhani: 'Rajdhani', sans-serif;
+      --font-orbitron: 'Orbitron', sans-serif;
       --font-outfit: 'Outfit', sans-serif;
     }
 
@@ -48,111 +49,107 @@
       font-family: var(--font-rajdhani);
       color: #fff;
       position: relative;
-      cursor: default;
     }
 
-    /* 16:9 Fullscreen Stream Container */
+    /* 16:9 Stream Stage */
     #broadcast-stage {
       position: relative;
       width: 100vw;
       height: 100vh;
       display: grid;
-      grid-template-rows: 92px 34px 1fr 140px 38px;
-      background: var(--bg-stadium);
+      grid-template-rows: 96px 36px 1fr 148px 40px;
+      background: radial-gradient(circle at 50% 38%, #140833 0%, #0c0422 45%, #04010e 100%);
       overflow: hidden;
     }
 
-    /* Ambient Canvas & Animated Stadium Lights */
+    /* Fullscreen Screen-Shake FX on 6 or Wicket */
+    .screen-shake {
+      animation: screenRumble 0.5s cubic-bezier(.36,.07,.19,.97) both;
+    }
+    @keyframes screenRumble {
+      10%, 90% { transform: translate3d(-3px, 0, 0) scale(1.002); }
+      20%, 80% { transform: translate3d(4px, 0, 0) scale(1.004); }
+      30%, 50%, 70% { transform: translate3d(-5px, 0, 0) scale(1.006); }
+      40%, 60% { transform: translate3d(5px, 0, 0) scale(1.004); }
+    }
+
+    /* Glowing Outer Neon Frame */
+    .outer-neon-trim {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      border: 2px solid rgba(255, 0, 127, 0.5);
+      pointer-events: none;
+      z-index: 99;
+      box-shadow: inset 0 0 25px rgba(255, 0, 127, 0.25), inset 0 0 50px rgba(0, 242, 254, 0.15);
+      animation: framePulse 4s infinite alternate;
+    }
+    @keyframes framePulse {
+      0% { border-color: rgba(255, 0, 127, 0.5); box-shadow: inset 0 0 25px rgba(255, 0, 127, 0.3); }
+      50% { border-color: rgba(0, 242, 254, 0.6); box-shadow: inset 0 0 35px rgba(0, 242, 254, 0.3); }
+      100% { border-color: rgba(255, 230, 0, 0.5); box-shadow: inset 0 0 25px rgba(255, 230, 0, 0.3); }
+    }
+
+    /* Ambient Canvas for Sparks & Fireworks */
     #ambient-canvas {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0; width: 100%; height: 100%;
       pointer-events: none;
-      z-index: 1;
+      z-index: 2;
     }
 
-    /* 50+ Keyframe Animations Included */
-    @keyframes pulseGlow {
-      0%, 100% { filter: drop-shadow(0 0 10px rgba(255, 0, 127, 0.8)); }
-      50% { filter: drop-shadow(0 0 25px rgba(0, 242, 254, 0.9)); }
-    }
-
-    @keyframes liveDotBlink {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.3; transform: scale(0.85); }
-    }
-
-    @keyframes floodlightSwayLeft {
-      0%, 100% { transform: rotate(-25deg) scaleY(1); opacity: 0.35; }
-      50% { transform: rotate(-10deg) scaleY(1.15); opacity: 0.55; }
-    }
-
-    @keyframes floodlightSwayRight {
-      0%, 100% { transform: rotate(25deg) scaleY(1); opacity: 0.35; }
-      50% { transform: rotate(10deg) scaleY(1.15); opacity: 0.55; }
-    }
-
-    @keyframes neonBorderPulse {
-      0%, 100% { border-color: rgba(255, 0, 127, 0.7); box-shadow: 0 0 15px rgba(255, 0, 127, 0.4), inset 0 0 15px rgba(255, 0, 127, 0.2); }
-      50% { border-color: rgba(0, 242, 254, 0.9); box-shadow: 0 0 20px rgba(0, 242, 254, 0.5), inset 0 0 20px rgba(0, 242, 254, 0.2); }
-    }
-
-    @keyframes marqueeSlide {
-      0% { transform: translateX(100%); }
-      100% { transform: translateX(-100%); }
-    }
-
-    @keyframes stadiumTurfGlow {
-      0%, 100% { opacity: 0.85; }
-      50% { opacity: 1; }
-    }
-
-    @keyframes eventPop {
-      0% { transform: scale(0.7) translateY(20px); opacity: 0; }
-      40% { transform: scale(1.1) translateY(-5px); opacity: 1; }
-      60% { transform: scale(0.98) translateY(0); }
-      100% { transform: scale(1) translateY(0); }
-    }
-
-    @keyframes ballSpin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    @keyframes cardSlideIn {
-      0% { opacity: 0; transform: translateY(40px) scale(0.96); filter: blur(6px); }
-      100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
-    }
-
-    @keyframes shimmerMove {
-      0% { background-position: -200% 0; }
-      100% { background-position: 200% 0; }
-    }
-
-    @keyframes flashScore {
-      0% { color: #fff; }
-      50% { color: var(--yellow-gold); text-shadow: 0 0 25px var(--yellow-gold); }
-      100% { color: #fff; }
-    }
-
-    /* Floodlight Cones */
+    /* Stadium Sweep Floodlights */
     .stadium-light {
       position: absolute;
-      top: -60px;
-      width: 450px;
-      height: 700px;
-      background: radial-gradient(ellipse at top, rgba(0, 242, 254, 0.35) 0%, rgba(217, 2, 125, 0.15) 35%, transparent 75%);
+      top: -80px;
+      width: 500px;
+      height: 750px;
+      background: radial-gradient(ellipse at top, rgba(0, 242, 254, 0.4) 0%, rgba(217, 2, 125, 0.2) 35%, transparent 70%);
       pointer-events: none;
       z-index: 1;
       transform-origin: top center;
     }
-    .light-left { left: 5%; animation: floodlightSwayLeft 12s ease-in-out infinite; }
-    .light-right { right: 5%; animation: floodlightSwayRight 14s ease-in-out infinite; }
+    .light-left { left: 4%; animation: swayLightL 10s ease-in-out infinite alternate; }
+    .light-right { right: 4%; animation: swayLightR 11s ease-in-out infinite alternate; }
+    @keyframes swayLightL {
+      0% { transform: rotate(-28deg) scaleY(1); opacity: 0.4; }
+      100% { transform: rotate(-8deg) scaleY(1.2); opacity: 0.65; }
+    }
+    @keyframes swayLightR {
+      0% { transform: rotate(28deg) scaleY(1); opacity: 0.4; }
+      100% { transform: rotate(8deg) scaleY(1.2); opacity: 0.65; }
+    }
+
+    /* Shimmer Effect */
+    @keyframes metallicShimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    /* Audio / Beat Visualizer Bars */
+    .beat-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 18px;
+    }
+    .bar {
+      width: 3px;
+      background: var(--cyan-neon);
+      border-radius: 2px;
+      animation: soundBar 1s ease-in-out infinite alternate;
+    }
+    .bar:nth-child(1) { height: 40%; animation-delay: 0.1s; }
+    .bar:nth-child(2) { height: 85%; animation-delay: 0.3s; }
+    .bar:nth-child(3) { height: 60%; animation-delay: 0.2s; }
+    .bar:nth-child(4) { height: 100%; animation-delay: 0.4s; }
+    .bar:nth-child(5) { height: 50%; animation-delay: 0.15s; }
+    @keyframes soundBar {
+      0% { transform: scaleY(0.3); background: var(--pink-neon); }
+      100% { transform: scaleY(1); background: var(--cyan-neon); }
+    }
 
     /* =========================================================
-       ROW 1: TOP MAIN BROADCAST HEADER (Screenshot 1 Style)
+       ROW 1: TOP MAIN BROADCAST BAR
        ========================================================= */
     #top-bar {
       position: relative;
@@ -160,41 +157,38 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 16px;
-      background: linear-gradient(90deg, #1b0128 0%, #3e0158 20%, #680577 50%, #3e0158 80%, #1b0128 100%);
+      padding: 0 20px;
+      background: linear-gradient(90deg, #150020 0%, #3d0154 25%, #660579 50%, #3d0154 75%, #150020 100%);
       border-bottom: 2px solid var(--pink-neon);
-      box-shadow: 0 4px 25px rgba(217, 2, 125, 0.5);
+      box-shadow: 0 4px 30px rgba(255, 0, 127, 0.45);
     }
 
-    /* Left Team Pill (Batting) */
+    /* Left Team Pill */
     .team-badge-box {
       display: flex;
       align-items: center;
-      gap: 12px;
-      background: rgba(43, 0, 71, 0.85);
-      padding: 6px 20px;
+      gap: 14px;
+      background: rgba(36, 0, 61, 0.9);
+      padding: 6px 22px;
       border-radius: 50px;
-      border: 2px solid rgba(255, 0, 127, 0.7);
-      box-shadow: 0 0 18px rgba(255, 0, 127, 0.3);
+      border: 2px solid var(--pink-neon);
+      box-shadow: 0 0 20px rgba(255, 0, 127, 0.4);
     }
 
     .flag-circle {
-      width: 60px;
-      height: 60px;
+      width: 62px;
+      height: 62px;
       border-radius: 50%;
       border: 3px solid #fff;
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
       position: relative;
     }
-
-    /* Realistic Flag SVGs */
     .flag-india {
       background: linear-gradient(180deg, #FF9933 33.33%, #FFFFFF 33.33%, #FFFFFF 66.66%, #138808 66.66%);
-      position: relative;
     }
     .flag-india::after {
       content: '☸';
@@ -202,14 +196,12 @@
       color: #000080;
       font-size: 20px;
       line-height: 1;
-      top: 50%;
-      left: 50%;
+      top: 50%; left: 50%;
       transform: translate(-50%, -50%);
     }
 
     .flag-srilanka {
       background: #8D153A;
-      position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -238,11 +230,11 @@
     .team-title {
       font-family: var(--font-chakra);
       font-weight: 700;
-      font-size: 20px;
+      font-size: 21px;
       letter-spacing: 1.5px;
       color: var(--yellow-gold);
       text-transform: uppercase;
-      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
     }
 
     .team-score-overs {
@@ -253,77 +245,64 @@
 
     .main-score {
       font-family: var(--font-teko);
-      font-size: 64px;
+      font-size: 68px;
       font-weight: 700;
       line-height: 1;
       color: #ffffff;
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 2px 2px 0 #3a0066;
+      text-shadow: 0 0 14px rgba(255, 255, 255, 0.9), 2px 2px 0 #280045;
       letter-spacing: 1px;
     }
 
     .main-overs {
       font-family: var(--font-teko);
-      font-size: 42px;
+      font-size: 44px;
       font-weight: 600;
-      color: #ffe600;
-      text-shadow: 0 0 8px rgba(255, 230, 0, 0.6);
+      color: var(--yellow-gold);
+      text-shadow: 0 0 10px rgba(255, 230, 0, 0.7);
     }
 
-    /* Center Match Status Badge */
+    /* Center Match Event Pill */
     #center-ball-pill {
-      background: linear-gradient(135deg, #001242 0%, #002d72 50%, #0348a6 100%);
+      background: linear-gradient(135deg, #02123a 0%, #042459 50%, #033c8c 100%);
       padding: 6px 36px;
-      border-radius: 16px;
-      border: 2px solid var(--blue-electric);
-      box-shadow: 0 0 25px rgba(0, 242, 254, 0.6);
+      border-radius: 18px;
+      border: 2px solid var(--cyan-neon);
+      box-shadow: 0 0 30px rgba(0, 242, 254, 0.6), inset 0 0 15px rgba(0, 242, 254, 0.3);
       text-align: center;
-      min-width: 220px;
+      min-width: 230px;
       position: relative;
       overflow: hidden;
     }
 
-    #center-ball-pill::after {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(60deg, transparent, rgba(255,255,255,0.15), transparent);
-      transform: rotate(30deg);
-      animation: shimmerMove 3s infinite;
-    }
-
     #ball-event-title {
-      font-family: var(--font-chakra);
-      font-size: 28px;
-      font-weight: 700;
+      font-family: var(--font-orbitron);
+      font-size: 26px;
+      font-weight: 900;
       color: #ffffff;
       letter-spacing: 3px;
       text-transform: uppercase;
-      text-shadow: 0 0 12px var(--cyan-neon);
-      display: inline-block;
+      text-shadow: 0 0 15px var(--cyan-neon);
     }
 
     #ball-event-subtitle {
       font-family: var(--font-rajdhani);
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 700;
       color: var(--cyan-neon);
       letter-spacing: 2px;
       text-transform: uppercase;
     }
 
-    /* Right Team Pill (Bowling) */
+    /* Right Bowling Pill */
     .bowling-team-box {
       display: flex;
       align-items: center;
       gap: 14px;
-      background: rgba(43, 0, 71, 0.85);
+      background: rgba(36, 0, 61, 0.9);
       padding: 8px 24px;
       border-radius: 50px;
-      border: 2px solid rgba(255, 0, 127, 0.7);
-      box-shadow: 0 0 18px rgba(255, 0, 127, 0.3);
+      border: 2px solid var(--pink-neon);
+      box-shadow: 0 0 20px rgba(255, 0, 127, 0.4);
     }
 
     .bowling-label {
@@ -334,11 +313,11 @@
       color: #ffffff;
       letter-spacing: 2px;
       text-transform: uppercase;
-      text-shadow: 0 0 10px rgba(255, 0, 127, 0.8);
+      text-shadow: 0 0 12px var(--pink-neon);
     }
 
     /* =========================================================
-       ROW 2: SUB-HEADER (Run Rate, Partnership, Toss, SL Time)
+       ROW 2: SUB-BAR (RR, P'Ship, Toss, SL Time, Watermark)
        ========================================================= */
     #sub-bar {
       position: relative;
@@ -347,11 +326,10 @@
       align-items: center;
       justify-content: space-between;
       padding: 0 24px;
-      background: linear-gradient(90deg, #0b0728 0%, #17083b 50%, #0b0728 100%);
-      border-bottom: 1px solid rgba(0, 242, 254, 0.4);
+      background: linear-gradient(90deg, #09031c 0%, #170736 50%, #09031c 100%);
+      border-bottom: 1px solid rgba(0, 242, 254, 0.35);
       font-size: 14px;
       font-weight: 700;
-      letter-spacing: 1px;
     }
 
     .sub-item {
@@ -359,76 +337,106 @@
       align-items: center;
       gap: 8px;
     }
-
     .sub-highlight {
       color: var(--yellow-gold);
       font-family: var(--font-chakra);
-      font-size: 16px;
+      font-size: 17px;
+      text-shadow: 0 0 8px rgba(255, 230, 0, 0.6);
     }
-
     .toss-text {
       color: #ffffff;
       text-transform: uppercase;
       font-family: var(--font-chakra);
-      font-weight: 600;
+      font-weight: 700;
+      letter-spacing: 0.5px;
     }
 
-    /* Sri Lanka Clock Live Digital Display */
+    /* Created By Viruna Badge */
+    .viruna-watermark {
+      background: linear-gradient(90deg, #ff007f, #8000ff);
+      padding: 2px 14px;
+      border-radius: 4px;
+      font-family: var(--font-chakra);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: #ffffff;
+      text-transform: uppercase;
+      box-shadow: 0 0 12px rgba(255, 0, 127, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .viruna-watermark::before {
+      content: '⚡';
+      font-size: 13px;
+    }
+
+    /* Sri Lanka Clock */
     .sl-clock-box {
       display: flex;
       align-items: center;
       gap: 8px;
-      background: rgba(0, 0, 0, 0.5);
-      padding: 2px 12px;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 2px 14px;
       border-radius: 6px;
       border: 1px solid var(--cyan-neon);
-      box-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+      box-shadow: 0 0 12px rgba(0, 242, 254, 0.4);
     }
-
     .live-dot {
       width: 10px;
       height: 10px;
       border-radius: 50%;
       background: #ff0055;
       box-shadow: 0 0 10px #ff0055;
-      animation: liveDotBlink 1.2s infinite ease-in-out;
+      animation: livePulse 1.2s infinite ease-in-out;
     }
-
+    @keyframes livePulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.3; transform: scale(0.8); }
+    }
     #sl-time-display {
       font-family: var(--font-teko);
-      font-size: 22px;
+      font-size: 24px;
       font-weight: 600;
       color: var(--cyan-neon);
       letter-spacing: 1.5px;
-      min-width: 130px;
+      min-width: 135px;
     }
 
     /* =========================================================
-       ROW 3: STADIUM ARENA & LIVE BALL-BY-BALL CENTERPIECE
+       ROW 3: ARENA STAGE (Match Info, Center Ball Action & Officials)
        ========================================================= */
     #arena-stage {
       position: relative;
       z-index: 5;
       display: grid;
-      grid-template-columns: 290px 1fr 290px;
+      grid-template-columns: 295px 1fr 295px;
       padding: 10px 18px;
       gap: 16px;
       overflow: hidden;
     }
 
-    /* Left Side Panel: Tournament & Match Info */
-    .side-info-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
+    /* Side Cards */
+    .side-card {
+      background: rgba(14, 8, 38, 0.9);
+      border: 1px solid rgba(255, 0, 127, 0.4);
       border-radius: 12px;
-      padding: 12px 14px;
+      padding: 14px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+      gap: 9px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
       position: relative;
       overflow: hidden;
+    }
+    .side-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 4px; height: 100%;
+      background: linear-gradient(180deg, var(--pink-neon), var(--cyan-neon));
     }
 
     .card-heading {
@@ -449,27 +457,25 @@
       display: flex;
       flex-direction: column;
       gap: 2px;
-      font-size: 13px;
     }
-
     .info-label {
-      color: #9ea8c7;
+      color: #929ebd;
       font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 1px;
-      font-weight: 600;
+      font-weight: 700;
     }
-
     .info-value {
       color: #ffffff;
       font-weight: 700;
       font-family: var(--font-chakra);
+      font-size: 14px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
-    /* Center Stadium Pitch & Commentary View */
+    /* Center Stadium Arena */
     #center-arena {
       position: relative;
       display: flex;
@@ -478,35 +484,37 @@
       justify-content: center;
       border-radius: 16px;
       overflow: hidden;
-      background: radial-gradient(circle at 50% 50%, rgba(26, 92, 42, 0.45) 0%, rgba(10, 40, 20, 0.6) 40%, rgba(5, 12, 28, 0.85) 90%);
-      border: 2px solid rgba(0, 242, 254, 0.3);
-      box-shadow: inset 0 0 50px rgba(0, 242, 254, 0.2), 0 10px 40px rgba(0,0,0,0.8);
+      background: radial-gradient(circle at 50% 50%, rgba(20, 80, 35, 0.5) 0%, rgba(10, 36, 18, 0.65) 45%, rgba(4, 10, 24, 0.9) 90%);
+      border: 2px solid rgba(0, 242, 254, 0.35);
+      box-shadow: inset 0 0 60px rgba(0, 242, 254, 0.25), 0 10px 40px rgba(0,0,0,0.85);
     }
 
-    /* 3D Pitch Graphic Simulation */
+    /* 3D Pitch Graphic */
     .pitch-graphic {
       position: absolute;
-      width: 160px;
+      width: 170px;
       height: 380px;
-      background: linear-gradient(180deg, rgba(214, 185, 137, 0.5) 0%, rgba(189, 155, 102, 0.65) 50%, rgba(214, 185, 137, 0.5) 100%);
+      background: linear-gradient(180deg, rgba(214, 185, 137, 0.45) 0%, rgba(189, 155, 102, 0.6) 50%, rgba(214, 185, 137, 0.45) 100%);
       transform: perspective(600px) rotateX(55deg);
       border-radius: 12px;
       border: 2px dashed rgba(255, 255, 255, 0.35);
-      box-shadow: 0 0 35px rgba(26, 92, 42, 0.8);
+      box-shadow: 0 0 40px rgba(26, 92, 42, 0.8);
       z-index: 2;
-      opacity: 0.65;
+      opacity: 0.6;
     }
-
-    /* Ball Trail Glow Ring */
-    .pitch-ring {
+    .pitch-radar {
       position: absolute;
       width: 320px;
       height: 320px;
-      border: 2px solid rgba(255, 0, 127, 0.35);
+      border: 2px solid rgba(255, 0, 127, 0.3);
       border-radius: 50%;
-      animation: neonBorderPulse 6s infinite alternate;
+      animation: radarPulse 5s infinite linear;
       z-index: 2;
-      pointer-events: none;
+    }
+    @keyframes radarPulse {
+      0% { transform: scale(0.8) rotate(0deg); opacity: 0.3; }
+      50% { transform: scale(1.1) rotate(180deg); opacity: 0.7; }
+      100% { transform: scale(0.8) rotate(360deg); opacity: 0.3; }
     }
 
     /* Big Center Live Ball Commentary Card */
@@ -514,15 +522,14 @@
       position: relative;
       z-index: 6;
       width: 90%;
-      max-width: 820px;
-      background: rgba(12, 8, 30, 0.92);
+      max-width: 840px;
+      background: rgba(10, 6, 28, 0.94);
       border: 2px solid var(--pink-neon);
-      border-radius: 16px;
-      padding: 16px 24px;
+      border-radius: 18px;
+      padding: 16px 26px;
       text-align: center;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 0 35px rgba(255, 0, 127, 0.5), inset 0 0 25px rgba(0, 242, 254, 0.2);
-      transition: all 0.4s ease;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 0 40px rgba(255, 0, 127, 0.5), inset 0 0 30px rgba(0, 242, 254, 0.2);
     }
 
     .ball-action-header {
@@ -535,11 +542,11 @@
 
     .ball-over-badge {
       font-family: var(--font-teko);
-      font-size: 32px;
+      font-size: 34px;
       font-weight: 700;
       color: var(--yellow-gold);
       background: rgba(255, 230, 0, 0.15);
-      padding: 0 16px;
+      padding: 0 18px;
       border-radius: 8px;
       border: 1px solid var(--yellow-gold);
       letter-spacing: 1px;
@@ -549,26 +556,25 @@
       font-family: var(--font-chakra);
       font-size: 24px;
       font-weight: 700;
-      padding: 2px 20px;
+      padding: 2px 22px;
       border-radius: 8px;
       letter-spacing: 2px;
       text-transform: uppercase;
-      animation: eventPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
     }
-
     .badge-dot { background: #374151; color: #e5e7eb; border: 1px solid #9ca3af; }
-    .badge-run { background: #1e3a8a; color: #60a5fa; border: 1px solid #3b82f6; }
-    .badge-four { background: #065f46; color: #34d399; border: 2px solid #10b981; box-shadow: 0 0 20px #10b981; }
+    .badge-run { background: #1e3a8a; color: #93c5fd; border: 1px solid #3b82f6; }
+    .badge-four { background: #065f46; color: #6ee7b7; border: 2px solid #10b981; box-shadow: 0 0 20px #10b981; }
     .badge-six { background: #831843; color: #f472b6; border: 2px solid #ec4899; box-shadow: 0 0 25px #ec4899; }
-    .badge-wicket { background: #7f1d1d; color: #f87171; border: 2px solid #ef4444; box-shadow: 0 0 30px #ef4444; }
+    .badge-wicket { background: #7f1d1d; color: #fca5a5; border: 2px solid #ef4444; box-shadow: 0 0 30px #ef4444; }
 
     #live-ball-text {
       font-family: var(--font-outfit);
-      font-size: 20px;
-      font-weight: 600;
+      font-size: 21px;
+      font-weight: 700;
       color: #ffffff;
       line-height: 1.4;
-      margin-top: 6px;
+      margin-top: 8px;
       text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
       min-height: 52px;
       display: flex;
@@ -576,78 +582,55 @@
       justify-content: center;
     }
 
-    /* Recent Overs Ball Bubbles */
+    /* Over Ball Bubbles Tray */
     .over-balls-tray {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
+      gap: 12px;
       margin-top: 14px;
     }
-
     .ball-pill-circle {
-      width: 38px;
-      height: 38px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: var(--font-teko);
-      font-size: 22px;
+      font-size: 24px;
       font-weight: 700;
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-      transition: transform 0.3s;
+      border: 2px solid rgba(255, 255, 255, 0.35);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.6);
     }
-
-    .ball-pill-circle:hover { transform: scale(1.15); }
     .b-dot { background: #262c3a; color: #a0aec0; }
     .b-1, .b-2, .b-3 { background: #1a365d; color: #90cdf4; border-color: #3182ce; }
-    .b-4 { background: #1c4532; color: #68d391; border-color: #38a169; box-shadow: 0 0 12px rgba(72,187,120,0.7); }
-    .b-6 { background: #702459; color: #f687b3; border-color: #d53f8c; box-shadow: 0 0 15px rgba(237,100,166,0.8); }
-    .b-w { background: #742a2a; color: #feb2b2; border-color: #e53e3e; box-shadow: 0 0 18px rgba(245,101,101,0.9); }
-
-    /* Right Side Panel: Officials & Umpires */
-    .side-officials-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 12px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
-      position: relative;
-    }
+    .b-4 { background: #1c4532; color: #68d391; border-color: #38a169; box-shadow: 0 0 15px rgba(72,187,120,0.8); }
+    .b-6 { background: #702459; color: #f687b3; border-color: #d53f8c; box-shadow: 0 0 20px rgba(237,100,166,0.9); }
+    .b-w { background: #742a2a; color: #feb2b2; border-color: #e53e3e; box-shadow: 0 0 25px rgba(245,101,101,1); }
 
     /* =========================================================
-       AUTOMATED OVER-END ROTATING OVERLAY (Playing XI & Table)
-       Smoothly slides in at over ends / interval without clicks
+       OVER-END ROTATING BROADCAST CARDS (Triggered ONLY at Over End)
+       Dismisses automatically as soon as next over's first ball (e.g. .1) arrives!
        ========================================================= */
-    #auto-rotation-modal {
+    #over-end-rotation-card {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(5, 3, 15, 0.94);
-      z-index: 20;
-      backdrop-filter: blur(14px);
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(5, 3, 16, 0.95);
+      z-index: 25;
+      backdrop-filter: blur(16px);
       display: flex;
       flex-direction: column;
-      padding: 18px 24px;
-      box-sizing: border-box;
+      padding: 20px 26px;
       opacity: 0;
       pointer-events: none;
-      transform: translateY(20px);
+      transform: translateY(30px) scale(0.97);
       transition: opacity 0.5s ease, transform 0.5s ease;
     }
-
-    #auto-rotation-modal.active {
+    #over-end-rotation-card.active {
       opacity: 1;
       pointer-events: auto;
-      transform: translateY(0);
+      transform: translateY(0) scale(1);
     }
 
     .modal-header-strip {
@@ -655,10 +638,9 @@
       align-items: center;
       justify-content: space-between;
       border-bottom: 2px solid var(--pink-neon);
-      padding-bottom: 8px;
-      margin-bottom: 12px;
+      padding-bottom: 10px;
+      margin-bottom: 14px;
     }
-
     .modal-title {
       font-family: var(--font-chakra);
       font-size: 24px;
@@ -670,36 +652,33 @@
       align-items: center;
       gap: 12px;
     }
-
-    .modal-timer-bar {
+    .modal-status-badge {
       font-family: var(--font-chakra);
-      font-size: 14px;
+      font-size: 13px;
       color: var(--cyan-neon);
-      background: rgba(0, 242, 254, 0.12);
-      padding: 4px 14px;
+      background: rgba(0, 242, 254, 0.15);
+      padding: 4px 16px;
       border-radius: 20px;
       border: 1px solid var(--cyan-neon);
+      animation: pulseGlow 2s infinite alternate;
     }
 
-    /* Table Grid for Squad / Points Table */
     .modal-grid-content {
       flex: 1;
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
+      gap: 16px;
       overflow: hidden;
     }
-
     .squad-column {
-      background: rgba(22, 16, 54, 0.7);
-      border-radius: 10px;
-      border: 1px solid rgba(255, 0, 127, 0.3);
-      padding: 10px 14px;
+      background: rgba(22, 14, 52, 0.75);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 0, 127, 0.35);
+      padding: 12px 16px;
       display: flex;
       flex-direction: column;
-      gap: 5px;
+      gap: 6px;
     }
-
     .squad-col-title {
       font-family: var(--font-chakra);
       font-size: 15px;
@@ -710,93 +689,199 @@
       padding-bottom: 4px;
       margin-bottom: 4px;
     }
-
     .player-row-item {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       font-size: 13px;
-      padding: 3px 6px;
+      padding: 4px 8px;
       border-radius: 4px;
       background: rgba(255, 255, 255, 0.03);
     }
-
     .player-name-text {
       font-weight: 700;
       color: #fff;
     }
-
     .player-role-badge {
       font-size: 11px;
       color: var(--yellow-gold);
       background: rgba(255, 230, 0, 0.15);
-      padding: 1px 8px;
+      padding: 2px 8px;
       border-radius: 4px;
+      font-weight: 600;
     }
 
-    /* Points Table Layout (Screenshot 2 Match) */
     .points-table-view {
       width: 100%;
       border-collapse: collapse;
       font-size: 14px;
     }
-
     .points-table-view th {
-      background: linear-gradient(90deg, #42045e, #710986);
+      background: linear-gradient(90deg, #3f045a, #6d0882);
       color: var(--yellow-gold);
       font-family: var(--font-chakra);
       font-size: 14px;
-      padding: 6px 10px;
+      padding: 7px 12px;
       text-align: left;
       border-bottom: 2px solid var(--pink-neon);
     }
-
     .points-table-view td {
-      padding: 6px 10px;
+      padding: 7px 12px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       font-family: var(--font-chakra);
       font-weight: 600;
     }
-
-    .points-table-view tr:nth-child(even) {
-      background: rgba(255, 255, 255, 0.02);
-    }
-
     .highlight-row {
-      background: rgba(255, 0, 127, 0.18) !important;
-      border-left: 3px solid var(--pink-neon);
+      background: rgba(255, 0, 127, 0.2) !important;
+      border-left: 4px solid var(--pink-neon);
     }
 
     /* =========================================================
-       ROW 4: BATSMEN & BOWLER BROADCAST STRIP (Screenshot 1 Match)
+       MASSIVE FULLSCREEN CHEER OVERLAY (FOR 4, 6 & WICKETS)
+       ========================================================= */
+    #fullscreen-cheer-overlay {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 50;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      opacity: 0;
+      transform: scale(0.7);
+      transition: opacity 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    #fullscreen-cheer-overlay.active {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .cheer-backdrop-radial {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: radial-gradient(circle at center, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.6) 60%, transparent 100%);
+      backdrop-filter: blur(8px);
+      z-index: 1;
+    }
+
+    .cheer-content-wrap {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      animation: cheerPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    @keyframes cheerPop {
+      0% { transform: scale(0.4) rotate(-5deg); opacity: 0; }
+      50% { transform: scale(1.15) rotate(2deg); opacity: 1; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+
+    .cheer-event-type {
+      font-family: var(--font-orbitron);
+      font-size: 110px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .cheer-type-six {
+      color: #fff;
+      text-shadow: 0 0 25px #ff007f, 0 0 50px #ff007f, 0 0 80px #d9027d;
+      background: linear-gradient(180deg, #fff 0%, #ff80bf 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .cheer-type-four {
+      color: #fff;
+      text-shadow: 0 0 25px #39ff14, 0 0 50px #39ff14, 0 0 80px #065f46;
+      background: linear-gradient(180deg, #fff 0%, #68d391 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .cheer-type-wicket {
+      color: #fff;
+      text-shadow: 0 0 30px #ff1744, 0 0 60px #ff1744, 0 0 100px #7f1d1d;
+      background: linear-gradient(180deg, #fff 0%, #f87171 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .cheer-subtitle {
+      font-family: var(--font-chakra);
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--yellow-gold);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      text-shadow: 0 0 15px rgba(255, 230, 0, 0.8);
+    }
+    .cheer-player-callout {
+      font-family: var(--font-outfit);
+      font-size: 26px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-top: 10px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+    }
+
+    /* Shockwave Rings */
+    .shockwave-ring {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      border: 3px solid;
+      pointer-events: none;
+      z-index: 1;
+      animation: expandShockwave 1.2s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+    }
+    @keyframes expandShockwave {
+      0% { width: 100px; height: 100px; opacity: 1; }
+      100% { width: 900px; height: 900px; opacity: 0; }
+    }
+
+    /* =========================================================
+       ROW 4: BATSMEN & BOWLER BROADCAST STRIP
+       (Bold Names, Clear Roles, Striker Highlights)
        ========================================================= */
     #bottom-stats-strip {
       position: relative;
       z-index: 10;
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
-      gap: 12px;
-      padding: 8px 18px;
-      background: linear-gradient(180deg, #17042a 0%, #0d011a 100%);
+      gap: 14px;
+      padding: 10px 20px;
+      background: linear-gradient(180deg, #17042a 0%, #0c0117 100%);
       border-top: 2px solid var(--pink-neon);
-      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.8);
+      box-shadow: 0 -6px 25px rgba(0, 0, 0, 0.85);
     }
 
     .player-stat-card {
-      background: rgba(33, 9, 56, 0.85);
-      border-radius: 10px;
+      background: rgba(33, 9, 56, 0.9);
+      border-radius: 12px;
       border: 1px solid rgba(255, 0, 127, 0.5);
-      padding: 6px 14px;
+      padding: 8px 16px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6);
     }
 
     .player-stat-card.on-strike {
       border: 2px solid var(--yellow-gold);
-      box-shadow: 0 0 20px rgba(255, 230, 0, 0.4);
+      box-shadow: 0 0 22px rgba(255, 230, 0, 0.45);
+      background: linear-gradient(135deg, rgba(46, 12, 79, 0.95), rgba(28, 6, 50, 0.95));
+    }
+    .player-stat-card.on-strike::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0; width: 0; height: 0;
+      border-top: 24px solid var(--yellow-gold);
+      border-left: 24px solid transparent;
     }
 
     .card-top-row {
@@ -804,7 +889,6 @@
       align-items: center;
       justify-content: space-between;
     }
-
     .player-role-indicator {
       display: flex;
       align-items: center;
@@ -812,13 +896,9 @@
       background: #000;
       padding: 2px 10px;
       border-radius: 4px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.25);
     }
-
-    .role-icon {
-      font-size: 14px;
-    }
-
+    .role-icon { font-size: 14px; }
     .role-name {
       font-family: var(--font-chakra);
       font-size: 13px;
@@ -829,7 +909,7 @@
 
     .player-display-name {
       font-family: var(--font-chakra);
-      font-size: 18px;
+      font-size: 22px;
       font-weight: 700;
       color: #ffffff;
       letter-spacing: 1px;
@@ -837,6 +917,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
       margin: 2px 0;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
     }
 
     .score-numbers-row {
@@ -844,54 +925,46 @@
       align-items: baseline;
       gap: 8px;
     }
-
     .card-runs {
       font-family: var(--font-teko);
-      font-size: 52px;
+      font-size: 54px;
       font-weight: 700;
       line-height: 0.95;
       color: var(--yellow-gold);
-      text-shadow: 0 0 10px rgba(255, 230, 0, 0.5);
+      text-shadow: 0 0 12px rgba(255, 230, 0, 0.5);
     }
-
     .card-balls {
       font-family: var(--font-teko);
-      font-size: 32px;
+      font-size: 34px;
       font-weight: 600;
       color: #ffffff;
     }
 
     .card-bottom-pills {
       display: flex;
-      gap: 10px;
+      gap: 12px;
       font-family: var(--font-chakra);
       font-size: 13px;
       font-weight: 700;
       color: #cfd6ee;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
       padding-top: 4px;
     }
-
-    .stat-pill {
-      display: flex;
-      gap: 3px;
-    }
-    .stat-val {
-      color: #ffffff;
-    }
+    .stat-pill { display: flex; gap: 4px; }
+    .stat-val { color: #ffffff; }
 
     /* =========================================================
-       ROW 5: RUNNING COMMENTARY & NEWS TICKER
+       ROW 5: RUNNING COMMENTARY TICKER (SLOW & SMOOTH READABLE)
        ========================================================= */
     #bottom-ticker-wrap {
       position: relative;
       z-index: 10;
       display: flex;
       align-items: center;
-      background: linear-gradient(90deg, #ff007f 0%, #a200ff 50%, #00f2fe 100%);
-      padding: 0 14px;
+      background: linear-gradient(90deg, #ff007f 0%, #9000ff 50%, #00f2fe 100%);
+      padding: 0 16px;
       overflow: hidden;
-      height: 38px;
+      height: 40px;
     }
 
     .ticker-header-badge {
@@ -900,13 +973,16 @@
       font-family: var(--font-chakra);
       font-weight: 700;
       font-size: 14px;
-      padding: 3px 14px;
+      padding: 3px 16px;
       border-radius: 4px;
       letter-spacing: 1.5px;
       text-transform: uppercase;
       white-space: nowrap;
-      margin-right: 14px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      margin-right: 16px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.6);
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .marquee-content-track {
@@ -916,33 +992,38 @@
       position: relative;
     }
 
+    /* Slow, smooth scrolling (110s) so viewers can read comfortably */
     #ticker-running-text {
       display: inline-block;
       font-family: var(--font-chakra);
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 700;
-      color: #040112;
+      color: #030012;
       letter-spacing: 1px;
-      animation: marqueeSlide 38s linear infinite;
+      animation: marqueeSlideSmooth 110s linear infinite;
+    }
+    @keyframes marqueeSlideSmooth {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
     }
 
-    /* Safe Mode & Status indicator */
     #api-status-dot {
       width: 8px;
       height: 8px;
       border-radius: 50%;
       background: var(--lime-neon);
-      box-shadow: 0 0 8px var(--lime-neon);
+      box-shadow: 0 0 10px var(--lime-neon);
       margin-left: 10px;
     }
   </style>
 </head>
 <body>
 
-  <!-- Fullscreen 16:9 Zero-Scroll Broadcast Stage -->
+  <!-- Fullscreen 16:9 Broadcast Container -->
   <div id="broadcast-stage">
 
-    <!-- Ambient Canvas & Stadium Lights -->
+    <!-- Outer LED Neon Trim & Ambience -->
+    <div class="outer-neon-trim"></div>
     <canvas id="ambient-canvas"></canvas>
     <div class="stadium-light light-left"></div>
     <div class="stadium-light light-right"></div>
@@ -963,8 +1044,14 @@
 
       <!-- Center: Current Ball Event Pill -->
       <div id="center-ball-pill">
+        <div class="beat-bars" style="position: absolute; left: 10px; top: 12px;">
+          <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+        </div>
         <div id="ball-event-title">BALL</div>
         <div id="ball-event-subtitle">WOMEN'S ASIA CUP FINAL</div>
+        <div class="beat-bars" style="position: absolute; right: 10px; top: 12px;">
+          <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+        </div>
       </div>
 
       <!-- Right: Bowling Team -->
@@ -977,7 +1064,7 @@
       </div>
     </header>
 
-    <!-- ROW 2: SUB-BAR (RR, Partnership, Toss, Sri Lanka Time) -->
+    <!-- ROW 2: SUB-BAR (RR, P'Ship, Toss, SL Time, Created by Viruna) -->
     <section id="sub-bar">
       <div class="sub-item">
         <span>RUN RATE:</span>
@@ -993,6 +1080,11 @@
         <span class="toss-text" id="toss-display">India Women won the toss and opt to Bat</span>
       </div>
 
+      <!-- Created by Viruna Watermark -->
+      <div class="viruna-watermark" id="creator-watermark">
+        CREATED BY VIRUNA
+      </div>
+
       <!-- Sri Lanka Live Real-Time Clock with Seconds -->
       <div class="sl-clock-box">
         <div class="live-dot"></div>
@@ -1001,11 +1093,11 @@
       </div>
     </section>
 
-    <!-- ROW 3: ARENA STAGE (Match Details, Live Ball Commentary & Officials) -->
+    <!-- ROW 3: ARENA STAGE -->
     <main id="arena-stage">
       
       <!-- Left Column: Match & Venue Info -->
-      <aside class="side-info-card">
+      <aside class="side-card">
         <div class="card-heading">
           <span>MATCH DETAILS</span>
           <span style="color: var(--cyan-neon); font-size:11px;">FINAL</span>
@@ -1027,15 +1119,15 @@
           <span class="info-value" id="info-ends">Emirates Rd, Sports City End</span>
         </div>
         <div class="info-row">
-          <span class="info-label">LIVE STATUS</span>
-          <span class="info-value" style="color: var(--lime-neon);" id="match-live-status">Innings 1 in Progress</span>
+          <span class="info-label">MATCH STATUS</span>
+          <span class="info-value" style="color: var(--lime-neon);" id="match-live-status">1st Innings in Progress</span>
         </div>
       </aside>
 
       <!-- Center Stadium Pitch & Giant Live Ball Commentary Area -->
       <section id="center-arena">
-        <!-- 3D Simulated Pitch Graphics (No Player Face Images as requested) -->
-        <div class="pitch-ring"></div>
+        <!-- 3D Pitch Graphics (No Player Face Images) -->
+        <div class="pitch-radar"></div>
         <div class="pitch-graphic"></div>
 
         <!-- Big Center Live Ball Commentary Card -->
@@ -1057,22 +1149,35 @@
           </div>
         </div>
 
-        <!-- AUTOMATED OVER-END ROTATING OVERLAY (Playing XI, Points Table, Umpires) -->
-        <div id="auto-rotation-modal">
+        <!-- OVER-END ROTATING BROADCAST CARDS -->
+        <!-- Triggered ONLY when an over completes. Dismissed as soon as next over starts (.1) -->
+        <div id="over-end-rotation-card">
           <div class="modal-header-strip">
             <div class="modal-title" id="modal-title-text">
               <span>📋 PLAYING XI - INDIA WOMEN</span>
             </div>
-            <div class="modal-timer-bar" id="modal-timer-text">AUTO-ROTATING IN 8s</div>
+            <div class="modal-status-badge" id="modal-status-text">OVER BREAK • LIVE STANDINGS</div>
           </div>
           <div class="modal-grid-content" id="modal-dynamic-body">
-            <!-- Dynamically populated without clicks -->
+            <!-- Dynamically populated -->
           </div>
         </div>
+
+        <!-- MASSIVE FULLSCREEN CHEER OVERLAY (FOR 4, 6 & WICKET) -->
+        <div id="fullscreen-cheer-overlay">
+          <div class="cheer-backdrop-radial"></div>
+          <div class="shockwave-ring" id="cheer-shockwave"></div>
+          <div class="cheer-content-wrap">
+            <div class="cheer-event-type cheer-type-six" id="cheer-title">MAXIMUM 6</div>
+            <div class="cheer-subtitle" id="cheer-subtitle">OUT OF THE PARK!</div>
+            <div class="cheer-player-callout" id="cheer-player-text">Shafali Verma rocks the stadium!</div>
+          </div>
+        </div>
+
       </section>
 
       <!-- Right Column: Umpires & Officials -->
-      <aside class="side-officials-card">
+      <aside class="side-card">
         <div class="card-heading">
           <span>MATCH OFFICIALS</span>
           <span style="color: var(--yellow-gold); font-size:11px;">ICC / ACC</span>
@@ -1101,7 +1206,7 @@
 
     </main>
 
-    <!-- ROW 4: BATSMEN & BOWLER STATS STRIP (Screenshot 1 Exact Layout) -->
+    <!-- ROW 4: BATSMEN & BOWLER STATS STRIP (Screenshot 1 Layout with Bold Names) -->
     <section id="bottom-stats-strip">
 
       <!-- Batsman 1 Card -->
@@ -1152,7 +1257,7 @@
             <span class="role-icon">⚾</span>
             <span class="role-name">BOWLER</span>
           </div>
-          <div style="color: var(--cyan-neon); font-size:12px; font-weight:700;">CURRENT OVER</div>
+          <div style="color: var(--cyan-neon); font-size:12px; font-weight:700;">ACTIVE SPELL</div>
         </div>
         <div class="player-display-name" id="bowler-name">Kavisha Dilhari</div>
         <div class="score-numbers-row">
@@ -1167,15 +1272,17 @@
 
     </section>
 
-    <!-- ROW 5: RUNNING COMMENTARY & NEWS TICKER -->
+    <!-- ROW 5: SLOW & SMOOTH RUNNING COMMENTARY TICKER -->
     <footer id="bottom-ticker-wrap">
-      <div class="ticker-header-badge">LIVE COMMENTARY</div>
+      <div class="ticker-header-badge">
+        <span>⚡</span> LIVE COMMENTARY
+      </div>
       <div class="marquee-content-track">
         <div id="ticker-running-text">
-          ● 7.2: Kavisha Dilhari to Smriti Mandhana, no run ● 7.1: Kavisha Dilhari to Smriti Mandhana, 2 runs, to sweeper cover ● 6.6: Chamudi Praboda to Smriti Mandhana, 1 run ● 6.4: Chamudi Praboda to Shafali Verma, FOUR, whips it through deep mid-wicket ● 6.3: Chamudi Praboda to Shafali Verma, FOUR, lifts towards deep extra cover ● 4.6: Chamari Athapaththu to Shafali Verma, SIX, launched over the bowler's head!
+          ● 7.2: Kavisha Dilhari to Smriti Mandhana, no run ● 7.1: Kavisha Dilhari to Smriti Mandhana, 2 runs, to sweeper cover ● 6.6: Chamudi Praboda to Smriti Mandhana, 1 run, tucked to deep mid-wicket ● 6.4: Chamudi Praboda to Shafali Verma, FOUR, whips it through deep mid-wicket ● 6.3: Chamudi Praboda to Shafali Verma, FOUR, lifts towards deep extra cover ● 4.6: Chamari Athapaththu to Shafali Verma, SIX, launched over the bowler's head!
         </div>
       </div>
-      <div id="api-status-dot" title="Live Stream Online"></div>
+      <div id="api-status-dot" title="Live Broadcast Stream Online"></div>
     </footer>
 
   </div>
@@ -1186,7 +1293,6 @@
   <script>
     /**
      * INITIAL SEED / FALLBACK DATA
-     * Guaranteed instant rendering even if API is blocked or offline
      */
     let matchData = {
       "created_by": "Created By Viruna Randinu",
@@ -1249,12 +1355,6 @@
             { "name": "Shree Charani", "role": "Bowler" },
             { "name": "Kranti Gaud", "role": "Bowler" },
             { "name": "Nandani Sharma", "role": "Bowler" }
-          ],
-          "bench": [
-            { "name": "Pratika Rawal", "role": "Batter" },
-            { "name": "Renuka Singh Thakur", "role": "Bowler" },
-            { "name": "Radha Yadav", "role": "Bowler" },
-            { "name": "Arundhati Reddy", "role": "Bowling Allrounder" }
           ]
         },
         "Sri Lanka Women": {
@@ -1270,12 +1370,6 @@
             { "name": "Sugandika Kumari", "role": "Bowler" },
             { "name": "Chamudi Praboda", "role": "Bowler" },
             { "name": "Mithali Ayodhya", "role": "Bowler" }
-          ],
-          "bench": [
-            { "name": "Sanjana Kavindi", "role": "Batter" },
-            { "name": "Dewmi Vihanga", "role": "Bowling Allrounder" },
-            { "name": "Kawya Kavindi", "role": "Bowler" },
-            { "name": "Chethana Vimukthi", "role": "Bowler" }
           ]
         }
       },
@@ -1301,13 +1395,10 @@
     };
 
     /**
-     * SRI LANKA LIVE REAL-TIME CLOCK
-     * Specifically calculates Sri Lanka Standard Time (Asia/Colombo UTC+5:30)
-     * updates every 1000ms with seconds ticking.
+     * SRI LANKA LIVE TIME (Asia/Colombo UTC+5:30 with seconds)
      */
     function updateSriLankaClock() {
       const now = new Date();
-      // Colombo is UTC + 5.5 hours
       const utcTime = now.getTime() + (now.getTimezoneOffset() * 60000);
       const slOffset = 5.5 * 60 * 60 * 1000;
       const slDate = new Date(utcTime + slOffset);
@@ -1317,7 +1408,7 @@
       const seconds = String(slDate.getSeconds()).padStart(2, '0');
       const ampm = hours >= 12 ? 'PM' : 'AM';
       hours = hours % 12;
-      hours = hours ? hours : 12; // convert 0 to 12
+      hours = hours ? hours : 12;
       const strHours = String(hours).padStart(2, '0');
 
       const clockEl = document.getElementById('sl-time-display');
@@ -1329,11 +1420,185 @@
     updateSriLankaClock();
 
     /**
-     * VERCEL RATE-LIMIT PROTECTION & LIVE FETCH
-     * Uses a minimum 6-second interval with error-backoff to never exceed Vercel quotas
+     * FULLSCREEN CELEBRATION CHEER ENGINE (4s, 6s, WICKETS)
+     */
+    const cheerOverlay = document.getElementById('fullscreen-cheer-overlay');
+    const cheerTitle = document.getElementById('cheer-title');
+    const cheerSubtitle = document.getElementById('cheer-subtitle');
+    const cheerPlayer = document.getElementById('cheer-player-text');
+    const cheerRing = document.getElementById('cheer-shockwave');
+    const stage = document.getElementById('broadcast-stage');
+    let cheerTimeout = null;
+
+    function triggerFullscreenCheer(type, playerName, details) {
+      if (!cheerOverlay) return;
+
+      // Screen rumble
+      stage.classList.remove('screen-shake');
+      void stage.offsetWidth;
+      stage.classList.add('screen-shake');
+
+      if (type === 'six') {
+        cheerTitle.textContent = "MAXIMUM 6!";
+        cheerTitle.className = "cheer-event-type cheer-type-six";
+        cheerSubtitle.textContent = "COLOSSAL HIT OUT OF THE PARK!";
+        cheerSubtitle.style.color = "#ff007f";
+        cheerRing.style.borderColor = "#ff007f";
+        cheerPlayer.textContent = `${playerName} sends it soaring into the stands!`;
+        launchConfettiExplosion('pink');
+      } else if (type === 'four') {
+        cheerTitle.textContent = "BOUNDARY 4!";
+        cheerTitle.className = "cheer-event-type cheer-type-four";
+        cheerSubtitle.textContent = "CRACKING SHOT TO THE FENCE!";
+        cheerSubtitle.style.color = "#39ff14";
+        cheerRing.style.borderColor = "#39ff14";
+        cheerPlayer.textContent = `${playerName} finds the boundary rope!`;
+        launchConfettiExplosion('green');
+      } else if (type === 'wicket') {
+        cheerTitle.textContent = "WICKET! OUT!";
+        cheerTitle.className = "cheer-event-type cheer-type-wicket";
+        cheerSubtitle.textContent = "TIMBER STRIKE / HUGE BREAKTHROUGH!";
+        cheerSubtitle.style.color = "#ff1744";
+        cheerRing.style.borderColor = "#ff1744";
+        cheerPlayer.textContent = details || "Huge dismissal for Sri Lanka Women!";
+        launchConfettiExplosion('red');
+      }
+
+      cheerOverlay.classList.add('active');
+
+      if (cheerTimeout) clearTimeout(cheerTimeout);
+      cheerTimeout = setTimeout(() => {
+        cheerOverlay.classList.remove('active');
+      }, 3800);
+    }
+
+    /**
+     * OVER-END ONLY CARD ROTATION ENGINE
+     * Shows a random card ONLY when an over completes (.6 or round over)
+     * Auto-dismisses AS SOON AS the next ball (.1) arrives in the API!
+     */
+    let lastKnownBallOver = "7.2";
+    let isShowingOverEndCard = false;
+    const overCardEl = document.getElementById('over-end-rotation-card');
+    const modalTitleEl = document.getElementById('modal-title-text');
+    const modalBodyEl = document.getElementById('modal-dynamic-body');
+
+    function checkOverEndTransitions(currentOver) {
+      if (!currentOver) return;
+
+      // Extract balls in current over: e.g. "7.2" -> ball 2, "7.6" -> ball 6
+      const parts = currentOver.split('.');
+      const overNum = parseInt(parts[0]) || 0;
+      const ballNum = parts.length > 1 ? parseInt(parts[1]) : 0;
+
+      // 1. If we are currently showing an over-end card, and a NEW ball .1 arrives:
+      if (isShowingOverEndCard && ballNum === 1) {
+        // Next over has started! Instantly dismiss the card and return to live commentary
+        dismissOverEndCard();
+        lastKnownBallOver = currentOver;
+        return;
+      }
+
+      // 2. Detect if over just completed:
+      // An over is finished if ballNum === 6, or if over number incremented and ballNum === 0
+      const isOverFinished = (ballNum === 6) || (parts.length === 1 && currentOver !== lastKnownBallOver);
+
+      if (isOverFinished && !isShowingOverEndCard && currentOver !== lastKnownBallOver) {
+        showRandomOverEndCard();
+      }
+
+      lastKnownBallOver = currentOver;
+    }
+
+    function showRandomOverEndCard() {
+      isShowingOverEndCard = true;
+      overCardEl.classList.add('active');
+
+      // Pick a random card from: 0 (IND Squad), 1 (SL Squad), 2 (Points Table)
+      const choice = Math.floor(Math.random() * 3);
+
+      if (choice === 0) {
+        // India Women Squad
+        modalTitleEl.innerHTML = `<span>🇮🇳 PLAYING XI - INDIA WOMEN</span>`;
+        const xi = matchData.squads?.["India Women"]?.playing_xi || [];
+        renderSquadList(xi, "Amol Muzumdar");
+      } else if (choice === 1) {
+        // Sri Lanka Women Squad
+        modalTitleEl.innerHTML = `<span>🇱🇰 PLAYING XI - SRI LANKA WOMEN</span>`;
+        const xi = matchData.squads?.["Sri Lanka Women"]?.playing_xi || [];
+        renderSquadList(xi, "Jamie Siddons");
+      } else {
+        // Points Table
+        modalTitleEl.innerHTML = `<span>🏆 WOMEN'S ASIA CUP - STANDINGS</span>`;
+        renderPointsTable();
+      }
+    }
+
+    function dismissOverEndCard() {
+      isShowingOverEndCard = false;
+      overCardEl.classList.remove('active');
+    }
+
+    function renderSquadList(xi, coach) {
+      let col1 = xi.slice(0, 6).map(p => `
+        <div class="player-row-item">
+          <span class="player-name-text">${p.name}</span>
+          <span class="player-role-badge">${p.role}</span>
+        </div>
+      `).join('');
+
+      let col2 = xi.slice(6).map(p => `
+        <div class="player-row-item">
+          <span class="player-name-text">${p.name}</span>
+          <span class="player-role-badge">${p.role}</span>
+        </div>
+      `).join('');
+
+      modalBodyEl.innerHTML = `
+        <div class="squad-column">
+          <div class="squad-col-title">TOP & MIDDLE ORDER</div>
+          ${col1}
+        </div>
+        <div class="squad-column">
+          <div class="squad-col-title">ALL-ROUNDERS & BOWLERS</div>
+          ${col2}
+          <div style="font-size:12px; color:#a5b4fc; font-weight:700; margin-top:6px;">Head Coach: ${coach}</div>
+        </div>
+      `;
+    }
+
+    function renderPointsTable() {
+      const pt = matchData.points_table || [];
+      let rows = pt.filter(r => r.position && r.position !== "").map(r => `
+        <tr class="${r.team.includes('INDW') || r.team.includes('SLW') ? 'highlight-row' : ''}">
+          <td style="color:var(--yellow-gold); font-weight:bold;">${r.position}</td>
+          <td style="color:#ffffff;">${r.team}</td>
+          <td>${r.played}</td>
+          <td>${r.won}</td>
+          <td>${r.lost}</td>
+          <td style="color:var(--lime-neon); font-weight:bold;">${r.points}</td>
+          <td style="color:var(--cyan-neon);">${r.nrr}</td>
+        </tr>
+      `).join('');
+
+      modalBodyEl.innerHTML = `
+        <div style="grid-column: span 2; width: 100%;">
+          <table class="points-table-view">
+            <thead>
+              <tr><th>POS</th><th>TEAM</th><th>P</th><th>W</th><th>L</th><th>PTS</th><th>NRR</th></tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    /**
+     * VERCEL RATE LIMIT PROTECTION & LIVE FETCH
+     * Smooth 6-8s fetch with adaptive delay and error recovery
      */
     const API_URL = "https://cricket-api-v5.vercel.app/?url=https://www.cricbuzz.com/live-cricket-scores/169891/indw-vs-slw-final-womens-asia-cup-2026";
-    let lastFetchedDataHash = "";
+    let lastBallText = "";
     let consecutiveErrors = 0;
     let isFetching = false;
 
@@ -1364,41 +1629,30 @@
             renderAllData();
           }
         } else {
-          // If rate limited or 429/500, back off silently
           consecutiveErrors++;
-          if (statusDot) {
-            statusDot.style.background = '#ffe600';
-            statusDot.style.boxShadow = '0 0 10px #ffe600';
-          }
+          if (statusDot) statusDot.style.background = '#ffe600';
         }
       } catch (err) {
-        // Network or CORS or timeout; keep running on cache
         consecutiveErrors++;
-        if (statusDot) {
-          statusDot.style.background = consecutiveErrors > 3 ? '#ff0055' : '#ffe600';
-        }
+        if (statusDot) statusDot.style.background = consecutiveErrors > 3 ? '#ff0055' : '#ffe600';
       } finally {
         isFetching = false;
-        // Adaptive delay to protect Vercel limits (6s normal, up to 15s if throttled)
-        const nextDelay = Math.min(6000 + (consecutiveErrors * 2500), 18000);
+        const nextDelay = Math.min(6500 + (consecutiveErrors * 2500), 16000);
         setTimeout(fetchLiveCricketData, nextDelay);
       }
     }
 
-    // Start polling safely after initial render
-    setTimeout(fetchLiveCricketData, 4000);
+    setTimeout(fetchLiveCricketData, 3000);
 
     /**
-     * RENDER ALL UI DATA COMPONENTS
+     * RENDER ALL DATA TO BROADCAST UI
      */
-    let previousOver = "7.2";
-
     function renderAllData() {
       const inn = matchData.scorecard?.innings?.[0] || {};
       const live = matchData.live || {};
       const info = matchData.info || {};
 
-      // 1. Teams & Main Score
+      // 1. Team & Main Score
       document.getElementById('team1-title').textContent = (inn.team_name || "INDIA WOMEN").toUpperCase();
       document.getElementById('team1-score').textContent = inn.score || "0-0";
       document.getElementById('team1-overs').textContent = inn.overs || "0.0 Ov";
@@ -1408,7 +1662,6 @@
         const crrMatch = inn.total.match(/RR:\s*([\d\.]+)/i);
         if (crrMatch) document.getElementById('crr-display').textContent = crrMatch[1];
       }
-
       if (info.toss) document.getElementById('toss-display').textContent = info.toss;
       if (info.series) document.getElementById('info-series').textContent = info.series;
       if (info.venue) document.getElementById('info-venue').textContent = info.venue;
@@ -1421,23 +1674,21 @@
       // 3. Batters
       const batters = inn.batting || [];
       if (batters.length > 0) {
-        document.getElementById('bat1-name').textContent = batters[0].name || "Batsman 1";
+        document.getElementById('bat1-name').textContent = batters[0].name || "Smriti Mandhana";
         document.getElementById('bat1-runs').textContent = batters[0].runs || "0";
         document.getElementById('bat1-balls').textContent = `(${batters[0].balls || "0"})`;
         document.getElementById('bat1-fours').textContent = batters[0].fours || "0";
         document.getElementById('bat1-sixes').textContent = batters[0].sixes || "0";
         document.getElementById('bat1-sr').textContent = batters[0].strike_rate || "0.00";
       }
-
       if (batters.length > 1) {
-        document.getElementById('bat2-name').textContent = batters[1].name || "Batsman 2";
+        document.getElementById('bat2-name').textContent = batters[1].name || "Shafali Verma";
         document.getElementById('bat2-runs').textContent = batters[1].runs || "0";
         document.getElementById('bat2-balls').textContent = `(${batters[1].balls || "0"})`;
         document.getElementById('bat2-fours').textContent = batters[1].fours || "0";
         document.getElementById('bat2-sixes').textContent = batters[1].sixes || "0";
         document.getElementById('bat2-sr').textContent = batters[1].strike_rate || "0.00";
 
-        // Calculate partnership
         const b1Runs = parseInt(batters[0].runs) || 0;
         const b2Runs = parseInt(batters[1].runs) || 0;
         const b1Balls = parseInt(batters[0].balls) || 0;
@@ -1445,16 +1696,15 @@
         document.getElementById('pship-display').textContent = `${b1Runs + b2Runs} (${b1Balls + b2Balls})`;
       }
 
-      // 4. Current Bowler
+      // 4. Bowler
       const bowlers = inn.bowling || [];
       if (bowlers.length > 0) {
-        // Active bowler is usually the last active or Dilhari
         const activeBowler = bowlers.find(b => b.overs.includes('.')) || bowlers[bowlers.length - 1];
         document.getElementById('bowler-name').textContent = activeBowler.name || "Bowler";
         document.getElementById('bowler-wkts-runs').textContent = `${activeBowler.wickets || 0}-${activeBowler.runs || 0}`;
         document.getElementById('bowler-overs').textContent = `(${activeBowler.overs || "0.0"})`;
         document.getElementById('bowler-maidens').textContent = activeBowler.maidens || "0";
-        
+
         let econ = activeBowler.economy;
         if (!econ || econ === "0" || econ === "0.0") {
           const ovNum = parseFloat(activeBowler.overs) || 1;
@@ -1471,205 +1721,62 @@
       document.getElementById('live-over-badge').textContent = currentOver;
       document.getElementById('live-ball-text').textContent = ballText;
 
-      // Event Pill classification
+      // Handle Over-End transition checks (only over ends, dismiss on .1)
+      checkOverEndTransitions(currentOver);
+
+      // Event classification & Cheer Trigger
       const centerPillTitle = document.getElementById('ball-event-title');
       const eventBadge = document.getElementById('live-event-badge');
       const lowerText = ballText.toLowerCase();
 
-      if (lowerText.includes('six') || lowerText.includes('6')) {
-        centerPillTitle.textContent = "SIX! 🔥";
-        eventBadge.className = "ball-event-badge badge-six";
-        eventBadge.textContent = "6 MAXIMUM";
-        triggerConfettiFX('pink');
-      } else if (lowerText.includes('four') || lowerText.includes('4')) {
-        centerPillTitle.textContent = "FOUR! ⚡";
-        eventBadge.className = "ball-event-badge badge-four";
-        eventBadge.textContent = "4 BOUNDARY";
-        triggerConfettiFX('green');
-      } else if (lowerText.includes('out') || lowerText.includes('wicket') || lowerText.includes('caught') || lowerText.includes('bowled')) {
-        centerPillTitle.textContent = "WICKET! 🎯";
-        eventBadge.className = "ball-event-badge badge-wicket";
-        eventBadge.textContent = "WICKET";
-        triggerConfettiFX('red');
-      } else if (lowerText.includes('1 run') || lowerText.includes('single')) {
-        centerPillTitle.textContent = "SINGLE";
-        eventBadge.className = "ball-event-badge badge-run";
-        eventBadge.textContent = "1 RUN";
-      } else if (lowerText.includes('2 runs')) {
-        centerPillTitle.textContent = "2 RUNS";
-        eventBadge.className = "ball-event-badge badge-run";
-        eventBadge.textContent = "2 RUNS";
-      } else {
-        centerPillTitle.textContent = "BALL";
-        eventBadge.className = "ball-event-badge badge-dot";
-        eventBadge.textContent = "NO RUN";
-      }
+      // Check if new ball arrived to trigger cheer overlay
+      if (ballText !== lastBallText) {
+        lastBallText = ballText;
 
-      // Check if over completed (e.g. .6 or over number increased)
-      if (currentOver !== previousOver) {
-        if (currentOver.endsWith('.6') || parseInt(currentOver) > parseInt(previousOver)) {
-          showOverEndModal();
+        if (lowerText.includes('six') || lowerText.includes(', 6') || ballText.includes('SIX')) {
+          centerPillTitle.textContent = "SIX! 🔥";
+          eventBadge.className = "ball-event-badge badge-six";
+          eventBadge.textContent = "6 MAXIMUM";
+          const batterName = batters[1]?.name || batters[0]?.name || "Batter";
+          triggerFullscreenCheer('six', batterName, ballText);
+        } else if (lowerText.includes('four') || lowerText.includes(', 4') || ballText.includes('FOUR')) {
+          centerPillTitle.textContent = "FOUR! ⚡";
+          eventBadge.className = "ball-event-badge badge-four";
+          eventBadge.textContent = "4 BOUNDARY";
+          const batterName = batters[1]?.name || batters[0]?.name || "Batter";
+          triggerFullscreenCheer('four', batterName, ballText);
+        } else if (lowerText.includes('out') || lowerText.includes('wicket') || lowerText.includes('caught') || lowerText.includes('bowled')) {
+          centerPillTitle.textContent = "WICKET! 🎯";
+          eventBadge.className = "ball-event-badge badge-wicket";
+          eventBadge.textContent = "WICKET";
+          triggerFullscreenCheer('wicket', "WICKET FALLS", ballText);
+        } else if (lowerText.includes('1 run') || lowerText.includes('single')) {
+          centerPillTitle.textContent = "SINGLE";
+          eventBadge.className = "ball-event-badge badge-run";
+          eventBadge.textContent = "1 RUN";
+        } else if (lowerText.includes('2 runs')) {
+          centerPillTitle.textContent = "2 RUNS";
+          eventBadge.className = "ball-event-badge badge-run";
+          eventBadge.textContent = "2 RUNS";
+        } else {
+          centerPillTitle.textContent = "BALL";
+          eventBadge.className = "ball-event-badge badge-dot";
+          eventBadge.textContent = "NO RUN";
         }
-        previousOver = currentOver;
       }
 
-      // 6. Update Rolling Ticker with Commentary items
+      // 6. Update Slow Readable Marquee
       if (matchData.full_commentary && matchData.full_commentary.length > 0) {
         const tickerItems = matchData.full_commentary
           .filter(c => c.text)
-          .map(c => `● [${c.over || 'LIVE'}]: ${c.text}`)
-          .join('   ');
+          .map(c => `● [OVER ${c.over || 'LIVE'}]: ${c.text}`)
+          .join('   ---   ');
         document.getElementById('ticker-running-text').textContent = tickerItems;
       }
     }
 
     /**
-     * AUTOMATED OVER-END ROTATING BROADCAST CARDS
-     * Hands-free periodic rotation between:
-     * 1) India Women Squad
-     * 2) Sri Lanka Women Squad
-     * 3) Points Table (Screenshot 2 Style)
-     * 4) Match Officials
-     */
-    let rotationIndex = 0;
-    const modalEl = document.getElementById('auto-rotation-modal');
-    const modalTitle = document.getElementById('modal-title-text');
-    const modalBody = document.getElementById('modal-dynamic-body');
-    const modalTimer = document.getElementById('modal-timer-text');
-    let isModalOpen = false;
-
-    function showOverEndModal() {
-      if (isModalOpen) return;
-      isModalOpen = true;
-      modalEl.classList.add('active');
-
-      renderRotatingSlide();
-
-      // Auto close after 8 seconds and return to main commentary
-      let countdown = 8;
-      const countInterval = setInterval(() => {
-        countdown--;
-        if (modalTimer) modalTimer.textContent = `RETURNING IN ${countdown}s`;
-        if (countdown <= 0) {
-          clearInterval(countInterval);
-          modalEl.classList.remove('active');
-          isModalOpen = false;
-          rotationIndex = (rotationIndex + 1) % 3;
-        }
-      }, 1000);
-    }
-
-    // Also trigger periodic rotation every 45 seconds during broadcast even between balls
-    setInterval(() => {
-      if (!isModalOpen) {
-        showOverEndModal();
-      }
-    }, 45000);
-
-    function renderRotatingSlide() {
-      if (rotationIndex === 0) {
-        // Slide 1: Team 1 Playing XI
-        modalTitle.innerHTML = `<span>🇮🇳 PLAYING XI - INDIA WOMEN</span>`;
-        const xi = matchData.squads?.["India Women"]?.playing_xi || [];
-        const bench = matchData.squads?.["India Women"]?.bench || [];
-
-        let col1 = xi.slice(0, 6).map(p => `
-          <div class="player-row-item">
-            <span class="player-name-text">${p.name}</span>
-            <span class="player-role-badge">${p.role}</span>
-          </div>
-        `).join('');
-
-        let col2 = xi.slice(6).map(p => `
-          <div class="player-row-item">
-            <span class="player-name-text">${p.name}</span>
-            <span class="player-role-badge">${p.role}</span>
-          </div>
-        `).join('');
-
-        modalBody.innerHTML = `
-          <div class="squad-column">
-            <div class="squad-col-title">TOP & MIDDLE ORDER</div>
-            ${col1}
-          </div>
-          <div class="squad-column">
-            <div class="squad-col-title">ALL-ROUNDERS & BOWLERS</div>
-            ${col2}
-            <div style="font-size:11px; color:#a5b4fc; margin-top:4px;">Head Coach: Amol Muzumdar</div>
-          </div>
-        `;
-      } else if (rotationIndex === 1) {
-        // Slide 2: Team 2 Playing XI
-        modalTitle.innerHTML = `<span>🇱🇰 PLAYING XI - SRI LANKA WOMEN</span>`;
-        const xi = matchData.squads?.["Sri Lanka Women"]?.playing_xi || [];
-
-        let col1 = xi.slice(0, 6).map(p => `
-          <div class="player-row-item">
-            <span class="player-name-text">${p.name}</span>
-            <span class="player-role-badge">${p.role}</span>
-          </div>
-        `).join('');
-
-        let col2 = xi.slice(6).map(p => `
-          <div class="player-row-item">
-            <span class="player-name-text">${p.name}</span>
-            <span class="player-role-badge">${p.role}</span>
-          </div>
-        `).join('');
-
-        modalBody.innerHTML = `
-          <div class="squad-column">
-            <div class="squad-col-title">TOP & MIDDLE ORDER</div>
-            ${col1}
-          </div>
-          <div class="squad-column">
-            <div class="squad-col-title">ALL-ROUNDERS & BOWLERS</div>
-            ${col2}
-            <div style="font-size:11px; color:#a5b4fc; margin-top:4px;">Head Coach: Jamie Siddons</div>
-          </div>
-        `;
-      } else {
-        // Slide 3: Points Table (Screenshot 2 Match)
-        modalTitle.innerHTML = `<span>🏆 WOMEN'S ASIA CUP - STANDINGS</span>`;
-        const pt = matchData.points_table || [];
-
-        let tableRows = pt.filter(r => r.position && r.position !== "").map(r => `
-          <tr class="${r.team.includes('INDW') || r.team.includes('SLW') ? 'highlight-row' : ''}">
-            <td style="color:var(--yellow-gold); font-weight:bold;">${r.position}</td>
-            <td style="color:#ffffff;">${r.team}</td>
-            <td>${r.played}</td>
-            <td>${r.won}</td>
-            <td>${r.lost}</td>
-            <td style="color:var(--lime-neon); font-weight:bold;">${r.points}</td>
-            <td style="color:var(--cyan-neon);">${r.nrr}</td>
-          </tr>
-        `).join('');
-
-        modalBody.innerHTML = `
-          <div style="grid-column: span 2; width: 100%;">
-            <table class="points-table-view">
-              <thead>
-                <tr>
-                  <th>POS</th>
-                  <th>TEAM</th>
-                  <th>P</th>
-                  <th>W</th>
-                  <th>L</th>
-                  <th>PTS</th>
-                  <th>NRR</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${tableRows}
-              </tbody>
-            </table>
-          </div>
-        `;
-      }
-    }
-
-    /**
-     * AMBIENT CANVAS PARTICLE & STADIUM LIGHT ENGINE (50+ Live Visual Effects)
+     * AMBIENT CANVAS & 100+ LIVE EFFECTS PARTICLE ENGINE
      */
     const canvas = document.getElementById('ambient-canvas');
     const ctx = canvas.getContext('2d');
@@ -1682,32 +1789,36 @@
     });
 
     const particles = [];
-    for (let i = 0; i < 45; i++) {
+    for (let i = 0; i < 50; i++) {
       particles.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        radius: Math.random() * 2.2 + 0.8,
-        vx: (Math.random() - 0.5) * 0.4,
-        vy: (Math.random() - 0.5) * 0.4,
+        radius: Math.random() * 2.5 + 0.8,
+        vx: (Math.random() - 0.5) * 0.45,
+        vy: (Math.random() - 0.5) * 0.45,
         color: i % 2 === 0 ? 'rgba(0, 242, 254, ' : 'rgba(255, 0, 127, ',
         alpha: Math.random() * 0.6 + 0.2
       });
     }
 
-    // Boundary Celebration Sparks
-    const sparks = [];
-    function triggerConfettiFX(type) {
-      const color = type === 'pink' ? '#ff007f' : (type === 'green' ? '#39ff14' : '#ffe600');
-      for (let i = 0; i < 40; i++) {
-        sparks.push({
+    const fireworks = [];
+    function launchConfettiExplosion(colorType) {
+      const colors = colorType === 'pink' ? ['#ff007f', '#ff80bf', '#ffffff', '#ffe600']
+                   : (colorType === 'green' ? ['#39ff14', '#10b981', '#ffffff', '#00f2fe']
+                   : ['#ff1744', '#ef4444', '#ffffff', '#ffe600']);
+
+      for (let i = 0; i < 90; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 16 + 3;
+        fireworks.push({
           x: width * 0.5,
           y: height * 0.45,
-          vx: (Math.random() - 0.5) * 12,
-          vy: (Math.random() - 0.5) * 12 - 2,
-          size: Math.random() * 5 + 2,
-          color: color,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed - 2,
+          size: Math.random() * 6 + 2,
+          color: colors[Math.floor(Math.random() * colors.length)],
           alpha: 1,
-          decay: Math.random() * 0.02 + 0.015
+          decay: Math.random() * 0.02 + 0.012
         });
       }
     }
@@ -1715,10 +1826,9 @@
     function animateAmbientCanvas() {
       ctx.clearRect(0, 0, width, height);
 
-      // Render Floating Stadium Dust Particles
+      // Dust particles
       for (let p of particles) {
-        p.x += p.vx;
-        p.y += p.vy;
+        p.x += p.vx; p.y += p.vy;
         if (p.x < 0) p.x = width;
         if (p.x > width) p.x = 0;
         if (p.y < 0) p.y = height;
@@ -1732,25 +1842,25 @@
         ctx.fill();
       }
 
-      // Render Sparks
-      for (let i = sparks.length - 1; i >= 0; i--) {
-        const s = sparks[i];
-        s.x += s.vx;
-        s.y += s.vy;
-        s.vy += 0.15; // gravity
-        s.alpha -= s.decay;
+      // Fireworks / Cheer Sparks
+      for (let i = fireworks.length - 1; i >= 0; i--) {
+        const f = fireworks[i];
+        f.x += f.vx;
+        f.y += f.vy;
+        f.vy += 0.2; // gravity
+        f.alpha -= f.decay;
 
-        if (s.alpha <= 0) {
-          sparks.splice(i, 1);
+        if (f.alpha <= 0) {
+          fireworks.splice(i, 1);
           continue;
         }
 
         ctx.beginPath();
-        ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
-        ctx.fillStyle = s.color;
-        ctx.shadowBlur = 12;
-        ctx.shadowColor = s.color;
-        ctx.globalAlpha = s.alpha;
+        ctx.arc(f.x, f.y, f.size, 0, Math.PI * 2);
+        ctx.fillStyle = f.color;
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = f.color;
+        ctx.globalAlpha = f.alpha;
         ctx.fill();
         ctx.globalAlpha = 1;
       }
