@@ -1286,7 +1286,7 @@
     <section id="sub-bar">
       <div class="sub-item">
         <span>CRR:</span>
-        <span class="sub-highlight" id="crr-display">7.33</span>
+        <span class="sub-highlight" id="crr-display">6.33</span>
       </div>
 
       <div class="sub-item">
@@ -1295,7 +1295,12 @@
       </div>
 
       <div class="sub-item">
-        <span class="toss-text" id="toss-display">TARGET: 184 (SLW NEED 173 RUNS)</span>
+        <span>P'SHIP:</span>
+        <span class="sub-highlight" id="pship-display">15 (14)</span>
+      </div>
+
+      <div class="sub-item">
+        <span class="toss-text" id="toss-display">TARGET: 184 (SLW NEED 108 RUNS IN 48 BALLS)</span>
       </div>
 
       <!-- Created by Viruna Watermark -->
@@ -1331,6 +1336,10 @@
         <div class="info-row">
           <span class="info-label">TARGET</span>
           <span class="info-value" style="color: var(--yellow-gold);" id="info-target-score">184 Runs (from 20 Ov)</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">CAPACITY</span>
+          <span class="info-value" id="info-capacity">25,000 Spectators</span>
         </div>
         <div class="info-row">
           <span class="info-label">PITCH ENDS</span>
@@ -1589,30 +1598,30 @@
       }
     }
 
-    // Stadium Crowd Cheering Sound Engine (Punchy 0.85 Volume + Audio Ducking)
+    // Stadium Crowd Cheering Sound Engine (Comfortable 0.52 Volume + Audio Ducking)
     const cheerAudio = new Audio(CHEER_SOUND_URL);
     cheerAudio.preload = "auto";
-    cheerAudio.volume = 0.85;
+    cheerAudio.volume = 0.52;
 
     function playCheerSound() {
       try {
-        // TV Broadcast Audio Ducking: lowers music to 0.08 so the stadium crowd roar is punchy!
+        // TV Broadcast Audio Ducking: lowers music to 0.10 so the stadium crowd roar is clear!
         if (bgAudio && isMusicPlaying) {
-          bgAudio.volume = 0.08;
+          bgAudio.volume = 0.10;
           if (musicDuckingTimeout) clearTimeout(musicDuckingTimeout);
           musicDuckingTimeout = setTimeout(() => {
-            if (isMusicPlaying) bgAudio.volume = 0.32;
+            if (isMusicPlaying) bgAudio.volume = 0.30;
           }, 4200);
         }
 
         cheerAudio.currentTime = 0;
-        cheerAudio.volume = 0.85;
+        cheerAudio.volume = 0.52;
         const p = cheerAudio.play();
         if (p !== undefined) {
           p.catch(() => {
             // Backup instance if primary is busy
             const freshCheer = new Audio(CHEER_SOUND_URL);
-            freshCheer.volume = 0.85;
+            freshCheer.volume = 0.52;
             freshCheer.play().catch(() => {});
           });
         }
@@ -1637,7 +1646,7 @@
         cheerAudio.play().then(() => {
           cheerAudio.pause();
           cheerAudio.currentTime = 0;
-          cheerAudio.volume = 0.85;
+          cheerAudio.volume = 0.52;
         }).catch(() => {});
 
         // Start music if paused
@@ -1979,18 +1988,35 @@
     }
 
     /**
-     * FILTER DISMISSED BATTERS (Removes out batters from active display)
+     * FILTER DISMISSED BATTERS (Accurately detects active batters currently at crease)
      */
     function filterAliveBatters(allBatters) {
       if (!allBatters || allBatters.length === 0) return [];
-      return allBatters.filter(b => {
-        if (!b.dismissal) return true;
-        const d = b.dismissal.toLowerCase().trim();
-        if (d === 'batting' || d === 'not out') return true;
-        const isDismissed = /\b(out|caught|bowled|lbw|run out|stumped|c\s+.*b\s+)\b/i.test(d) ||
-                            /^[cb]\s+/i.test(d);
-        return !isDismissed;
+
+      // 1. Batters explicitly marked 'batting' or 'not out'
+      const currentlyBatting = allBatters.filter(b => {
+        const d = (b.dismissal || "").toLowerCase().trim();
+        return d === 'batting' || d === 'not out' || d.includes('not out');
       });
+      if (currentlyBatting.length >= 2) return currentlyBatting.slice(0, 2);
+
+      // 2. Identify any dismissed batter (c, b, st, lbw, run out, etc.)
+      const isDismissedText = (dismissal) => {
+        if (!dismissal) return false;
+        const d = dismissal.toLowerCase().trim();
+        if (d === 'batting' || d === 'not out' || d.includes('not out')) return false;
+        return /\b(out|caught|bowled|lbw|run out|stumped|hit wicket|retired)\b/i.test(d) ||
+               /^[cbs]\s+/i.test(d) || /^st\s+/i.test(d) || d.length > 0;
+      };
+
+      const notDismissed = allBatters.filter(b => !isDismissedText(b.dismissal));
+      if (notDismissed.length >= 2) return notDismissed.slice(0, 2);
+      if (currentlyBatting.length > 0) {
+        const other = allBatters.find(b => b !== currentlyBatting[0] && !isDismissedText(b.dismissal));
+        if (other) return [currentlyBatting[0], other];
+        return currentlyBatting;
+      }
+      return notDismissed.length > 0 ? notDismissed : allBatters.slice(-2);
     }
 
     /**
@@ -2086,235 +2112,258 @@
     }
 
     /**
+     * SAFE DOM HELPERS (Prevents any unhandled null errors)
+     */
+    function setText(id, text) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = (text !== undefined && text !== null) ? text : "";
+    }
+
+    function setHTML(id, html) {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = (html !== undefined && html !== null) ? html : "";
+    }
+
+    /**
      * ATOMIC SYNCHRONOUS RENDER (DYNAMIC PILL, 2ND INNINGS & ON-STRIKE)
      */
     function renderAllData() {
       if (!matchData) return;
 
-      const allInnings = matchData.scorecard?.innings || [];
-      const inn = allInnings[allInnings.length - 1] || allInnings[0] || {};
-      const inn1 = allInnings[0] || {};
-      const live = matchData.live || {};
-      const info = matchData.info || {};
-      const comm = matchData.full_commentary || [];
+      try {
+        const allInnings = matchData.scorecard?.innings || [];
+        const inn = allInnings[allInnings.length - 1] || allInnings[0] || {};
+        const inn1 = allInnings[0] || {};
+        const live = matchData.live || {};
+        const info = matchData.info || {};
+        const comm = matchData.full_commentary || [];
 
-      const isSecondInnings = allInnings.length >= 2;
-      const battingTeam = (inn.team_name || (isSecondInnings ? "Sri Lanka Women" : "India Women")).toUpperCase();
-      const isSriLankaBatting = battingTeam.includes('SRI LANKA');
+        const isSecondInnings = allInnings.length >= 2;
+        const battingTeam = (inn.team_name || (isSecondInnings ? "Sri Lanka Women" : "India Women")).toUpperCase();
+        const isSriLankaBatting = battingTeam.includes('SRI LANKA');
 
-      // 0. Match Title Strip
-      const matchTitle = info.match || info.match_title || "INDW vs SLW • FINAL • WOMEN'S ASIA CUP 2026";
-      document.getElementById('match-title-text').textContent = matchTitle.toUpperCase() + (info.venue ? ` — ${info.venue.toUpperCase()}` : "");
+        // 0. Match Title Strip
+        const matchTitle = info.match || info.match_title || "INDW vs SLW • FINAL • WOMEN'S ASIA CUP 2026";
+        setText('match-title-text', matchTitle.toUpperCase() + (info.venue ? ` — ${info.venue.toUpperCase()}` : ""));
 
-      // 1. Team & Main Score (Synchronized Monotonic Progress)
-      const currentOversStr = ballsToOversString(LiveEngine.maxTotalBalls);
-      const currentScoreStr = (LiveEngine.maxRuns > 0 || LiveEngine.maxWkts > 0)
-        ? `${LiveEngine.maxRuns}-${LiveEngine.maxWkts}`
-        : (inn.score || "0-0");
+        // 1. Team & Main Score (Synchronized Monotonic Progress)
+        const currentOversStr = ballsToOversString(LiveEngine.maxTotalBalls);
+        const currentScoreStr = (LiveEngine.maxRuns > 0 || LiveEngine.maxWkts > 0)
+          ? `${LiveEngine.maxRuns}-${LiveEngine.maxWkts}`
+          : (inn.score || "0-0");
 
-      document.getElementById('team1-title').textContent = battingTeam;
-      document.getElementById('team1-score').textContent = currentScoreStr;
-      document.getElementById('team1-overs').textContent = `${currentOversStr} Ov`;
+        setText('team1-title', battingTeam);
+        setText('team1-score', currentScoreStr);
+        setText('team1-overs', `${currentOversStr} Ov`);
 
-      const team1Flag = document.getElementById('team1-flag');
-      const team2Flag = document.getElementById('team2-flag');
-      if (team1Flag && team2Flag) {
-        if (isSriLankaBatting) {
-          team1Flag.className = "flag-circle flag-srilanka";
-          team2Flag.className = "flag-circle flag-india";
-          document.getElementById('team2-title').textContent = "INDIA WOMEN";
-        } else {
-          team1Flag.className = "flag-circle flag-india";
-          team2Flag.className = "flag-circle flag-srilanka";
-          document.getElementById('team2-title').textContent = "SRI LANKA W";
+        const team1Flag = document.getElementById('team1-flag');
+        const team2Flag = document.getElementById('team2-flag');
+        if (team1Flag && team2Flag) {
+          if (isSriLankaBatting) {
+            team1Flag.className = "flag-circle flag-srilanka";
+            team2Flag.className = "flag-circle flag-india";
+            setText('team2-title', "INDIA WOMEN");
+          } else {
+            team1Flag.className = "flag-circle flag-india";
+            team2Flag.className = "flag-circle flag-srilanka";
+            setText('team2-title', "SRI LANKA W");
+          }
         }
-      }
 
-      // 2. CRR, Target & Sub-bar Equation
-      if (inn.total) {
-        const crrMatch = inn.total.match(/RR:\s*([\d\.]+)/i);
-        if (crrMatch) document.getElementById('crr-display').textContent = crrMatch[1];
-      }
+        // 2. CRR, Target & Sub-bar Equation
+        if (inn.total) {
+          const crrMatch = inn.total.match(/RR:\s*([\d\.]+)/i);
+          if (crrMatch) setText('crr-display', crrMatch[1]);
+        }
 
-      if (isSecondInnings) {
-        const inn1Runs = parseInt(inn1.score) || 183;
-        const target = inn1Runs + 1;
-        const slRuns = LiveEngine.maxRuns || parseInt(inn.score) || 0;
-        const runsNeeded = Math.max(0, target - slRuns);
-        const ballsRemaining = Math.max(0, 120 - LiveEngine.maxTotalBalls);
-        const reqRR = ballsRemaining > 0 ? ((runsNeeded / ballsRemaining) * 6).toFixed(2) : "0.00";
+        if (isSecondInnings) {
+          const inn1Runs = parseInt(inn1.score) || 183;
+          const target = inn1Runs + 1;
+          const slRuns = LiveEngine.maxRuns || parseInt(inn.score) || 0;
+          const runsNeeded = Math.max(0, target - slRuns);
+          const ballsRemaining = Math.max(0, 120 - LiveEngine.maxTotalBalls);
+          const reqRR = ballsRemaining > 0 ? ((runsNeeded / ballsRemaining) * 6).toFixed(2) : "0.00";
 
-        document.getElementById('req-rr-display').textContent = reqRR;
-        document.getElementById('toss-display').textContent = `TARGET: ${target} (SLW NEED ${runsNeeded} RUNS IN ${ballsRemaining} BALLS)`;
-        document.getElementById('info-target-score').textContent = `${target} Runs (from 20 Ov)`;
-        document.getElementById('match-live-status').textContent = "Sri Lanka Women Chase";
-      } else {
-        if (info.toss) document.getElementById('toss-display').textContent = info.toss;
-      }
+          setText('req-rr-display', reqRR);
+          setText('toss-display', `TARGET: ${target} (SLW NEED ${runsNeeded} RUNS IN ${ballsRemaining} BALLS)`);
+          setText('info-target-score', `${target} Runs (from 20 Ov)`);
+          setText('match-live-status', "Sri Lanka Women Chase");
+        } else {
+          if (info.toss) setText('toss-display', info.toss);
+        }
 
-      if (info.series) document.getElementById('info-series').textContent = info.series;
-      if (info.venue) document.getElementById('info-venue').textContent = info.venue;
-      if (info.capacity) document.getElementById('info-capacity').textContent = info.capacity + " Spectators";
-      if (info.ends) document.getElementById('info-ends').textContent = info.ends;
-      if (info.umpires) document.getElementById('umpire-onfield').textContent = info.umpires;
-      if (info.third_umpire) document.getElementById('umpire-third').textContent = info.third_umpire;
-      if (info.referee) document.getElementById('umpire-referee').textContent = info.referee;
+        if (info.series) setText('info-series', info.series);
+        if (info.venue) setText('info-venue', info.venue);
+        if (info.capacity) setText('info-capacity', info.capacity + " Spectators");
+        if (info.ends) setText('info-ends', info.ends);
+        if (info.umpires) setText('umpire-onfield', info.umpires);
+        if (info.third_umpire) setText('umpire-third', info.third_umpire);
+        if (info.referee) setText('umpire-referee', info.referee);
 
-      // 3. TOP CENTER PILL & LIVE BALL ACTION (DYNAMIC: BALL / OVER / 6 / 4 / WICKET)
-      const latestDelivery = comm.find(c => c.over) || live.latest_ball || {};
-      const ballText = live.latest_update || latestDelivery.text || "Play in progress";
-      const eventObj = detectDeliveryEvent(latestDelivery.badge, ballText);
+        // 3. TOP CENTER PILL & LIVE BALL ACTION (DYNAMIC: BALL / OVER / 6 / 4 / WICKET)
+        const latestDelivery = (comm && comm.length > 0) ? (comm.find(c => c.over) || comm[0]) : (live.latest_ball || {});
+        const ballText = live.latest_update || latestDelivery.text || "Play in progress";
+        const eventObj = detectDeliveryEvent(latestDelivery.badge, ballText);
 
-      document.getElementById('live-over-badge').textContent = currentOversStr || "--";
-      document.getElementById('live-ball-text').textContent = ballText;
+        // Sync center over badge with either latest ball over or current overs
+        const ballOver = latestDelivery.over || live.latest_ball?.over || currentOversStr;
+        setText('live-over-badge', ballOver || "--");
+        setText('live-ball-text', ballText);
 
-      const centerPill = document.getElementById('center-ball-pill');
-      const centerPillTitle = document.getElementById('ball-event-title');
-      const centerPillSub = document.getElementById('ball-event-subtitle');
-      const eventBadge = document.getElementById('live-event-badge');
+        const centerPill = document.getElementById('center-ball-pill');
+        const centerPillTitle = document.getElementById('ball-event-title');
+        const centerPillSub = document.getElementById('ball-event-subtitle');
+        const eventBadge = document.getElementById('live-event-badge');
 
-      // Center pitch card event badge
-      eventBadge.className = `ball-event-badge badge-${eventObj.type}`;
-      eventBadge.textContent = eventObj.label;
+        // Center pitch card event badge
+        if (eventBadge) {
+          eventBadge.className = `ball-event-badge badge-${eventObj.type}`;
+          eventBadge.textContent = eventObj.label;
+        }
 
-      const isOverCompleted = (LiveEngine.maxTotalBalls > 0 && LiveEngine.maxTotalBalls % 6 === 0);
-      const completedOverNum = Math.floor(LiveEngine.maxTotalBalls / 6);
+        const isOverCompleted = (LiveEngine.maxTotalBalls > 0 && LiveEngine.maxTotalBalls % 6 === 0);
+        const completedOverNum = Math.floor(LiveEngine.maxTotalBalls / 6);
 
-      if (isOverCompleted) {
-        // OVER COMPLETED: Display "OVER" in top box & trigger over card
-        centerPill.className = "pill-over";
-        centerPillTitle.textContent = "OVER";
-        centerPillSub.textContent = `END OF OVER ${completedOverNum}`;
-        showRandomOverEndCard();
-      } else {
-        // BALL IN PROGRESS: Display ball result (6, 4, WICKET, 1 RUN, BALL)
-        centerPill.className = `pill-${eventObj.type}`;
-        centerPillTitle.textContent = eventObj.title;
-        centerPillSub.textContent = `OVER ${currentOversStr}`;
+        if (isOverCompleted) {
+          // OVER COMPLETED: Display "OVER" in top box & trigger over card
+          if (centerPill) centerPill.className = "pill-over";
+          if (centerPillTitle) centerPillTitle.textContent = "OVER";
+          if (centerPillSub) centerPillSub.textContent = `END OF OVER ${completedOverNum}`;
+          showRandomOverEndCard();
+        } else {
+          // BALL IN PROGRESS: Display ball result (6, 4, WICKET, 1 RUN, BALL)
+          if (centerPill) centerPill.className = `pill-${eventObj.type}`;
+          if (centerPillTitle) centerPillTitle.textContent = eventObj.title;
+          if (centerPillSub) centerPillSub.textContent = `OVER ${currentOversStr}`;
 
-        // Dismiss over break card immediately when next over begins (.1)
-        if (LiveEngine.maxTotalBalls % 6 === 1) {
+          // Dismiss over break card whenever match is in active over
           dismissOverEndCard();
         }
-      }
 
-      // Dynamic Over Balls Tray (6 bubbles for current over)
-      const currentOverIndex = isOverCompleted ? (completedOverNum - 1) : Math.floor(LiveEngine.maxTotalBalls / 6);
-      renderOverBallsTray(comm, currentOverIndex);
+        // Dynamic Over Balls Tray (6 bubbles for current over)
+        const currentOverIndex = isOverCompleted ? (completedOverNum - 1) : Math.floor(LiveEngine.maxTotalBalls / 6);
+        renderOverBallsTray(comm, currentOverIndex);
 
-      // Trigger Fullscreen Cheer & Stadium Roar Sound on 4, 6 or genuine Wicket
-      const deliveryId = `${currentOversStr}_${eventObj.type}_${ballText.slice(0, 24)}`;
-      if (deliveryId !== LiveEngine.lastCelebratedBallId) {
-        LiveEngine.lastCelebratedBallId = deliveryId;
-        if (!LiveEngine.isInitialLoad && (eventObj.type === 'six' || eventObj.type === 'four' || eventObj.type === 'wicket')) {
-          const bName = isSriLankaBatting ? "Sri Lanka Batter" : "India Batter";
-          triggerFullscreenCheer(eventObj.type, bName, ballText);
-        }
-      }
-
-      // 4. BATSMEN: Strike Assignment from commentary
-      const allBatters = inn.batting || [];
-      let activeBatters = filterAliveBatters(allBatters);
-      if (activeBatters.length < 2) {
-        activeBatters = allBatters.slice(-2);
-      }
-
-      const strikerFromText = getStrikerFromBall(ballText);
-
-      if (activeBatters.length > 0) {
-        const b1 = activeBatters[0];
-        const b1NameLower = (b1.name || "").toLowerCase();
-        document.getElementById('bat1-name').textContent = b1.name ? b1.name.toUpperCase() : "BATSMAN 1";
-        document.getElementById('bat1-runs').textContent = b1.runs || "0";
-        document.getElementById('bat1-balls').textContent = `(${b1.balls || "0"})`;
-        document.getElementById('bat1-fours').textContent = b1.fours || "0";
-        document.getElementById('bat1-sixes').textContent = b1.sixes || "0";
-        document.getElementById('bat1-sr').textContent = b1.strike_rate || "0.00";
-
-        const b1IsStriker = strikerFromText && b1NameLower.split(' ').some(part => part.length > 2 && strikerFromText.includes(part));
-        const card1 = document.getElementById('card-bat1');
-        const tag1 = document.getElementById('bat1-strike-tag');
-
-        if (b1IsStriker) {
-          card1.classList.add('on-strike');
-          tag1.textContent = "★ ON STRIKE";
-        } else {
-          card1.classList.remove('on-strike');
-          tag1.textContent = "NON-STRIKER";
-        }
-      }
-
-      if (activeBatters.length > 1) {
-        const b2 = activeBatters[1];
-        const b2NameLower = (b2.name || "").toLowerCase();
-        document.getElementById('bat2-name').textContent = b2.name ? b2.name.toUpperCase() : "BATSMAN 2";
-        document.getElementById('bat2-runs').textContent = b2.runs || "0";
-        document.getElementById('bat2-balls').textContent = `(${b2.balls || "0"})`;
-        document.getElementById('bat2-fours').textContent = b2.fours || "0";
-        document.getElementById('bat2-sixes').textContent = b2.sixes || "0";
-        document.getElementById('bat2-sr').textContent = b2.strike_rate || "0.00";
-
-        const b1Runs = parseInt(activeBatters[0].runs) || 0;
-        const b2Runs = parseInt(b2.runs) || 0;
-        const b1Balls = parseInt(activeBatters[0].balls) || 0;
-        const b2Balls = parseInt(b2.balls) || 0;
-        document.getElementById('pship-display').textContent = `${b1Runs + b2Runs} (${b1Balls + b2Balls})`;
-
-        const b2IsStriker = strikerFromText && b2NameLower.split(' ').some(part => part.length > 2 && strikerFromText.includes(part));
-        const card2 = document.getElementById('card-bat2');
-        const tag2 = document.getElementById('bat2-strike-tag');
-
-        if (b2IsStriker || (!document.getElementById('card-bat1').classList.contains('on-strike') && activeBatters.length === 2)) {
-          card2.classList.add('on-strike');
-          tag2.textContent = "★ ON STRIKE";
-        } else {
-          card2.classList.remove('on-strike');
-          tag2.textContent = "NON-STRIKER";
-        }
-      }
-
-      // 5. BOWLER
-      const bowlers = inn.bowling || [];
-      if (bowlers.length > 0) {
-        let activeBowler = null;
-        const bowlerMatch = ballText.match(/^([A-Za-z\s]+)\s+to\s+/i);
-        if (bowlerMatch && bowlerMatch[1]) {
-          const bName = bowlerMatch[1].trim().toLowerCase();
-          activeBowler = bowlers.find(b => {
-            const curName = (b.name || "").toLowerCase();
-            return curName.includes(bName) || bName.includes(curName) ||
-              bName.split(' ').some(part => part.length > 3 && curName.includes(part));
-          });
-        }
-        if (!activeBowler) {
-          activeBowler = bowlers.find(b => b.overs && b.overs.includes('.'));
-        }
-        if (!activeBowler) {
-          activeBowler = bowlers[bowlers.length - 1];
+        // Trigger Fullscreen Cheer & Stadium Roar Sound on 4, 6 or genuine Wicket
+        const deliveryId = `${currentOversStr}_${eventObj.type}_${ballText.slice(0, 24)}`;
+        if (deliveryId !== LiveEngine.lastCelebratedBallId) {
+          LiveEngine.lastCelebratedBallId = deliveryId;
+          if (!LiveEngine.isInitialLoad && (eventObj.type === 'six' || eventObj.type === 'four' || eventObj.type === 'wicket')) {
+            const bName = isSriLankaBatting ? "Sri Lanka Batter" : "India Batter";
+            triggerFullscreenCheer(eventObj.type, bName, ballText);
+          }
         }
 
-        document.getElementById('bowler-name').textContent = (activeBowler.name || "BOWLER").toUpperCase();
-        document.getElementById('bowler-wkts-runs').textContent = `${activeBowler.wickets || 0}-${activeBowler.runs || 0}`;
-        document.getElementById('bowler-overs').textContent = `(${activeBowler.overs || "0.0"})`;
-        document.getElementById('bowler-maidens').textContent = activeBowler.maidens || "0";
-
-        let econ = activeBowler.economy;
-        if (!econ || econ === "0" || econ === "0.0") {
-          const ovNum = parseFloat(activeBowler.overs) || 1;
-          econ = (parseInt(activeBowler.runs) / ovNum).toFixed(2);
+        // 4. BATSMEN: Strike Assignment from commentary
+        const allBatters = inn.batting || [];
+        let activeBatters = filterAliveBatters(allBatters);
+        if (activeBatters.length < 2) {
+          activeBatters = allBatters.slice(-2);
         }
-        document.getElementById('bowler-econ').textContent = econ;
-      }
 
-      // 6. RUNNING COMMENTARY TICKER (Smooth 140s marquee)
-      if (comm && comm.length > 0) {
-        const tickerString = comm
-          .filter(c => c.text)
-          .map(c => `● [OVER ${c.over || 'LIVE'}]: ${c.text}`)
-          .join('    ──────────    ');
-        
-        document.getElementById('ticker-text-1').textContent = tickerString;
-        document.getElementById('ticker-text-2').textContent = tickerString;
+        const strikerFromText = getStrikerFromBall(ballText);
+
+        if (activeBatters.length > 0) {
+          const b1 = activeBatters[0];
+          const b1NameLower = (b1.name || "").toLowerCase();
+          setText('bat1-name', b1.name ? b1.name.toUpperCase() : "BATSMAN 1");
+          setText('bat1-runs', b1.runs || "0");
+          setText('bat1-balls', `(${b1.balls || "0"})`);
+          setText('bat1-fours', b1.fours || "0");
+          setText('bat1-sixes', b1.sixes || "0");
+          setText('bat1-sr', b1.strike_rate || "0.00");
+
+          const b1IsStriker = strikerFromText && b1NameLower.split(' ').some(part => part.length > 2 && strikerFromText.includes(part));
+          const card1 = document.getElementById('card-bat1');
+          const tag1 = document.getElementById('bat1-strike-tag');
+
+          if (b1IsStriker) {
+            if (card1) card1.classList.add('on-strike');
+            if (tag1) tag1.textContent = "★ ON STRIKE";
+          } else {
+            if (card1) card1.classList.remove('on-strike');
+            if (tag1) tag1.textContent = "NON-STRIKER";
+          }
+        }
+
+        if (activeBatters.length > 1) {
+          const b2 = activeBatters[1];
+          const b2NameLower = (b2.name || "").toLowerCase();
+          setText('bat2-name', b2.name ? b2.name.toUpperCase() : "BATSMAN 2");
+          setText('bat2-runs', b2.runs || "0");
+          setText('bat2-balls', `(${b2.balls || "0"})`);
+          setText('bat2-fours', b2.fours || "0");
+          setText('bat2-sixes', b2.sixes || "0");
+          setText('bat2-sr', b2.strike_rate || "0.00");
+
+          const b1Runs = parseInt(activeBatters[0].runs) || 0;
+          const b2Runs = parseInt(b2.runs) || 0;
+          const b1Balls = parseInt(activeBatters[0].balls) || 0;
+          const b2Balls = parseInt(b2.balls) || 0;
+          setText('pship-display', `${b1Runs + b2Runs} (${b1Balls + b2Balls})`);
+
+          const b2IsStriker = strikerFromText && b2NameLower.split(' ').some(part => part.length > 2 && strikerFromText.includes(part));
+          const card2 = document.getElementById('card-bat2');
+          const tag2 = document.getElementById('bat2-strike-tag');
+          const card1 = document.getElementById('card-bat1');
+          const isB1OnStrike = card1 ? card1.classList.contains('on-strike') : false;
+
+          if (b2IsStriker || (!isB1OnStrike && activeBatters.length === 2)) {
+            if (card2) card2.classList.add('on-strike');
+            if (tag2) tag2.textContent = "★ ON STRIKE";
+          } else {
+            if (card2) card2.classList.remove('on-strike');
+            if (tag2) tag2.textContent = "NON-STRIKER";
+          }
+        }
+
+        // 5. BOWLER
+        const bowlers = inn.bowling || [];
+        if (bowlers.length > 0) {
+          let activeBowler = null;
+          const bowlerMatch = ballText.match(/^([A-Za-z\s]+)\s+to\s+/i);
+          if (bowlerMatch && bowlerMatch[1]) {
+            const bName = bowlerMatch[1].trim().toLowerCase();
+            activeBowler = bowlers.find(b => {
+              const curName = (b.name || "").toLowerCase();
+              return curName.includes(bName) || bName.includes(curName) ||
+                bName.split(' ').some(part => part.length > 3 && curName.includes(part));
+            });
+          }
+          if (!activeBowler) {
+            activeBowler = bowlers.find(b => b.overs && b.overs.includes('.'));
+          }
+          if (!activeBowler) {
+            activeBowler = bowlers[bowlers.length - 1];
+          }
+
+          if (activeBowler) {
+            setText('bowler-name', (activeBowler.name || "BOWLER").toUpperCase());
+            setText('bowler-wkts-runs', `${activeBowler.wickets || 0}-${activeBowler.runs || 0}`);
+            setText('bowler-overs', `(${activeBowler.overs || "0.0"})`);
+            setText('bowler-maidens', activeBowler.maidens || "0");
+
+            let econ = activeBowler.economy;
+            if (!econ || econ === "0" || econ === "0.0") {
+              const ovNum = parseFloat(activeBowler.overs) || 1;
+              econ = (parseInt(activeBowler.runs) / ovNum).toFixed(2);
+            }
+            setText('bowler-econ', econ);
+          }
+        }
+
+        // 6. RUNNING COMMENTARY TICKER (Smooth 140s marquee)
+        if (comm && comm.length > 0) {
+          const tickerString = comm
+            .filter(c => c.text)
+            .map(c => `● [OVER ${c.over || 'LIVE'}]: ${c.text}`)
+            .join('    ──────────    ');
+          
+          setText('ticker-text-1', tickerString);
+          setText('ticker-text-2', tickerString);
+        }
+      } catch (err) {
+        console.error('Error during renderAllData:', err);
       }
     }
 
@@ -2322,13 +2371,15 @@
      * AMBIENT CANVAS VISUAL FX (LIGHTWEIGHT 60 FPS, 0% CPU LAG)
      */
     const canvas = document.getElementById('ambient-canvas');
-    const ctx = canvas.getContext('2d');
-    let width = canvas.width = window.innerWidth;
-    let height = canvas.height = window.innerHeight;
+    const ctx = canvas && canvas.getContext ? canvas.getContext('2d') : null;
+    let width = canvas ? (canvas.width = window.innerWidth) : 1920;
+    let height = canvas ? (canvas.height = window.innerHeight) : 1080;
 
     window.addEventListener('resize', () => {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
+      if (canvas) {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      }
     });
 
     const particles = [];
@@ -2346,6 +2397,7 @@
 
     const fireworks = [];
     function launchConfettiExplosion(colorType) {
+      if (!ctx) return;
       const colors = colorType === 'pink' ? ['#ff007f', '#ff80bf', '#ffffff', '#ffe600']
                    : (colorType === 'green' ? ['#39ff14', '#10b981', '#ffffff', '#00f2fe']
                    : ['#ff1744', '#ef4444', '#ffffff', '#ffe600']);
@@ -2361,12 +2413,13 @@
           size: Math.random() * 5 + 2,
           color: colors[Math.floor(Math.random() * colors.length)],
           alpha: 1,
-          decay: Math.random() * 0.025 + 0.015
+          decay: Math.random() * 0.02 + 0.015
         });
       }
     }
 
     function animateAmbientCanvas() {
+      if (!ctx) return;
       ctx.clearRect(0, 0, width, height);
 
       for (let p of particles) {
