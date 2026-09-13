@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,600;0,700;1,700&family=Teko:wght@500;600;700&family=Rajdhani:wght@600;700;800&family=Orbitron:wght@700;900&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
   <style>
     /* =========================================================
-       100+ LIVE BROADCAST VISUAL FX & KEYFRAMES (60 FPS)
+       ULTRA BROADCAST 100+ VISUAL FX & KEYFRAMES (60 FPS)
        ========================================================= */
     *, *::before, *::after {
       box-sizing: border-box;
@@ -877,12 +877,14 @@
       justify-content: space-between;
       position: relative;
       box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6);
+      transition: all 0.3s ease;
     }
 
+    /* Dynamic On-Strike Gold Glow */
     .player-stat-card.on-strike {
-      border: 2px solid var(--yellow-gold);
-      box-shadow: 0 0 22px rgba(255, 230, 0, 0.45);
-      background: linear-gradient(135deg, rgba(46, 12, 79, 0.95), rgba(28, 6, 50, 0.95));
+      border: 2.5px solid var(--yellow-gold) !important;
+      box-shadow: 0 0 25px rgba(255, 230, 0, 0.5), inset 0 0 15px rgba(255, 230, 0, 0.2) !important;
+      background: linear-gradient(135deg, rgba(50, 14, 85, 0.96), rgba(30, 8, 55, 0.96)) !important;
     }
     .player-stat-card.on-strike::before {
       content: '';
@@ -913,6 +915,18 @@
       font-weight: 700;
       color: var(--yellow-gold);
       letter-spacing: 1.5px;
+    }
+
+    .strike-tag {
+      font-family: var(--font-chakra);
+      font-size: 12px;
+      font-weight: 700;
+      color: #929ebd;
+      letter-spacing: 1px;
+    }
+    .player-stat-card.on-strike .strike-tag {
+      color: var(--yellow-gold) !important;
+      text-shadow: 0 0 8px var(--yellow-gold);
     }
 
     .player-display-name {
@@ -1004,7 +1018,7 @@
       display: flex;
     }
 
-    /* Starts at 0% immediately so text is visible on screen the second you open */
+    /* Seamless double-strip crawls at ultra-slow 420s */
     .seamless-marquee-inner {
       display: inline-flex;
       white-space: nowrap;
@@ -1062,18 +1076,18 @@
         <div class="team-meta">
           <div class="team-title" id="team1-title">INDIA WOMEN</div>
           <div class="team-score-overs">
-            <div class="main-score" id="team1-score">153-2</div>
-            <div class="main-overs" id="team1-overs">16.1 Ov</div>
+            <div class="main-score" id="team1-score">163-3</div>
+            <div class="main-overs" id="team1-overs">18.0 Ov</div>
           </div>
         </div>
       </div>
 
-      <!-- Center: Current Ball Event Pill -->
+      <!-- Center: Current Ball Event Pill (Resets back to BALL after 5s) -->
       <div id="center-ball-pill">
         <div class="beat-bars" style="position: absolute; left: 10px; top: 12px;">
           <div class="bar"></div><div class="bar"></div><div class="bar"></div>
         </div>
-        <div id="ball-event-title">SIX! 🔥</div>
+        <div id="ball-event-title">BALL</div>
         <div id="ball-event-subtitle">WOMEN'S ASIA CUP FINAL</div>
         <div class="beat-bars" style="position: absolute; right: 10px; top: 12px;">
           <div class="bar"></div><div class="bar"></div><div class="bar"></div>
@@ -1094,12 +1108,12 @@
     <section id="sub-bar">
       <div class="sub-item">
         <span>RUN RATE:</span>
-        <span class="sub-highlight" id="crr-display">9.46</span>
+        <span class="sub-highlight" id="crr-display">9.05</span>
       </div>
 
       <div class="sub-item">
         <span>P'SHIP:</span>
-        <span class="sub-highlight" id="pship-display">25 (15)</span>
+        <span class="sub-highlight" id="pship-display">16 (17)</span>
       </div>
 
       <div class="sub-item">
@@ -1159,19 +1173,19 @@
         <!-- Big Center Live Ball Commentary Card -->
         <div id="live-ball-action-card">
           <div class="ball-action-header">
-            <div class="ball-over-badge" id="live-over-badge">16.1</div>
-            <div class="ball-event-badge badge-six" id="live-event-badge">6 MAXIMUM</div>
+            <div class="ball-over-badge" id="live-over-badge">17.6</div>
+            <div class="ball-event-badge badge-run" id="live-event-badge">1 RUN</div>
           </div>
-          <div id="live-ball-text">Mithali Ayodhya to Richa Ghosh, SIX, that has been thumped over deep mid-wicket into the stands!</div>
+          <div id="live-ball-text">Chamari Athapaththu to Deepti Sharma, 1 run, comes down the track and mistimes the loft safely to long-on</div>
           
           <!-- Over Ball Bubbles Tray -->
           <div class="over-balls-tray" id="over-balls-tray">
-            <div class="ball-pill-circle b-6">6</div>
             <div class="ball-pill-circle b-1">1</div>
-            <div class="ball-pill-circle b-w">W</div>
+            <div class="ball-pill-circle b-1">1</div>
             <div class="ball-pill-circle b-dot">0</div>
+            <div class="ball-pill-circle b-w">W</div>
             <div class="ball-pill-circle b-1">1</div>
-            <div class="ball-pill-circle b-1">1</div>
+            <div class="ball-pill-circle b-6">6</div>
           </div>
         </div>
 
@@ -1196,7 +1210,7 @@
           <div class="cheer-content-wrap">
             <div class="cheer-event-type cheer-type-six" id="cheer-title">MAXIMUM 6</div>
             <div class="cheer-subtitle" id="cheer-subtitle">OUT OF THE PARK!</div>
-            <div class="cheer-player-callout" id="cheer-player-text">Thumped over the ropes!</div>
+            <div class="cheer-player-callout" id="cheer-player-text">Shafali Verma rocks the stadium!</div>
           </div>
         </div>
 
@@ -1232,47 +1246,48 @@
 
     </main>
 
-    <!-- ROW 4: BATSMEN & BOWLER STATS STRIP (Bold Names, High Contrast, Guaranteed Zero Cutoff) -->
+    <!-- ROW 4: BATSMEN & BOWLER STATS STRIP (DYNAMIC ON-STRIKE INDICATOR) -->
     <section id="bottom-stats-strip">
 
       <!-- Batsman 1 Card -->
-      <div class="player-stat-card on-strike" id="card-bat1">
+      <div class="player-stat-card" id="card-bat1">
         <div class="card-top-row">
           <div class="player-role-indicator">
             <span class="role-icon">🏏</span>
             <span class="role-name">BATSMAN</span>
           </div>
-          <div style="color: var(--yellow-gold); font-size:12px; font-weight:700;">★ ON STRIKE</div>
+          <div class="strike-tag" id="bat1-strike-tag">NON-STRIKER</div>
         </div>
-        <div class="player-display-name" id="bat1-name">RICHA GHOSH (WK)</div>
+        <div class="player-display-name" id="bat1-name">HARMANPREET KAUR (C)</div>
         <div class="score-numbers-row">
           <div class="card-runs" id="bat1-runs">14</div>
-          <div class="card-balls" id="bat1-balls">(5)</div>
+          <div class="card-balls" id="bat1-balls">(13)</div>
         </div>
         <div class="card-bottom-pills">
           <div class="stat-pill">4s: <span class="stat-val" id="bat1-fours">1</span></div>
-          <div class="stat-pill">6s: <span class="stat-val" id="bat1-sixes">1</span></div>
-          <div class="stat-pill">SR: <span class="stat-val" id="bat1-sr">280.00</span></div>
+          <div class="stat-pill">6s: <span class="stat-val" id="bat1-sixes">0</span></div>
+          <div class="stat-pill">SR: <span class="stat-val" id="bat1-sr">107.69</span></div>
         </div>
       </div>
 
       <!-- Batsman 2 Card -->
-      <div class="player-stat-card" id="card-bat2">
+      <div class="player-stat-card on-strike" id="card-bat2">
         <div class="card-top-row">
           <div class="player-role-indicator">
             <span class="role-icon">🏏</span>
             <span class="role-name">BATSMAN</span>
           </div>
+          <div class="strike-tag" id="bat2-strike-tag">★ ON STRIKE</div>
         </div>
-        <div class="player-display-name" id="bat2-name">HARMANPREET KAUR (C)</div>
+        <div class="player-display-name" id="bat2-name">DEEPTI SHARMA</div>
         <div class="score-numbers-row">
-          <div class="card-runs" id="bat2-runs">11</div>
-          <div class="card-balls" id="bat2-balls">(10)</div>
+          <div class="card-runs" id="bat2-runs">2</div>
+          <div class="card-balls" id="bat2-balls">(4)</div>
         </div>
         <div class="card-bottom-pills">
           <div class="stat-pill">4s: <span class="stat-val" id="bat2-fours">0</span></div>
           <div class="stat-pill">6s: <span class="stat-val" id="bat2-sixes">0</span></div>
-          <div class="stat-pill">SR: <span class="stat-val" id="bat2-sr">110.00</span></div>
+          <div class="stat-pill">SR: <span class="stat-val" id="bat2-sr">50.00</span></div>
         </div>
       </div>
 
@@ -1285,14 +1300,14 @@
           </div>
           <div style="color: var(--cyan-neon); font-size:12px; font-weight:700;">ACTIVE SPELL</div>
         </div>
-        <div class="player-display-name" id="bowler-name">MITHALI AYODHYA</div>
+        <div class="player-display-name" id="bowler-name">CHAMARI ATHAPATHTHU</div>
         <div class="score-numbers-row">
-          <div class="card-runs" id="bowler-wkts-runs">0-24</div>
-          <div class="card-balls" id="bowler-overs">(2.1)</div>
+          <div class="card-runs" id="bowler-wkts-runs">1-31</div>
+          <div class="card-balls" id="bowler-overs">(3.0)</div>
         </div>
         <div class="card-bottom-pills">
           <div class="stat-pill">Mdn: <span class="stat-val" id="bowler-maidens">0</span></div>
-          <div class="stat-pill">Econ: <span class="stat-val" id="bowler-econ">11.08</span></div>
+          <div class="stat-pill">Econ: <span class="stat-val" id="bowler-econ">10.33</span></div>
         </div>
       </div>
 
@@ -1305,8 +1320,8 @@
       </div>
       <div class="marquee-content-track">
         <div class="seamless-marquee-inner" id="seamless-marquee-inner">
-          <span class="ticker-item-text" id="ticker-text-1">● [LIVE]: Loading cricket broadcast commentary feed...</span>
-          <span class="ticker-item-text" id="ticker-text-2">● [LIVE]: Loading cricket broadcast commentary feed...</span>
+          <span class="ticker-item-text" id="ticker-text-1">● [17.6]: Chamari Athapaththu to Deepti Sharma, 1 run, comes down the track and mistimes loft safely to long-on ● [17.5]: Chamari Athapaththu to Harmanpreet Kaur, 1 run ● [17.4]: Chamari Athapaththu to Deepti Sharma, 1 run ● [17.1]: Chamari Athapaththu to Richa Ghosh, OUT caught by Dilhari</span>
+          <span class="ticker-item-text" id="ticker-text-2">● [17.6]: Chamari Athapaththu to Deepti Sharma, 1 run, comes down the track and mistimes loft safely to long-on ● [17.5]: Chamari Athapaththu to Harmanpreet Kaur, 1 run ● [17.4]: Chamari Athapaththu to Deepti Sharma, 1 run ● [17.1]: Chamari Athapaththu to Richa Ghosh, OUT caught by Dilhari</span>
         </div>
       </div>
       <div id="api-status-dot" title="Live Broadcast Online"></div>
@@ -1316,14 +1331,12 @@
 
   <!-- =========================================================
        CRICKET BROADCAST CORE JAVASCRIPT ENGINE
-       ========================================================= -->
+       ========================================================= */
   <script>
-    /**
-     * CACHE-FIRST ARCHITECTURE
-     * Check localStorage so a refresh NEVER shows ancient or wrong overs
-     */
-    const CACHE_KEY = "cricket_live_overlay_cache_v3";
+    const CACHE_KEY = "cricket_live_overlay_cache_v4";
     let matchData = null;
+    let isInitialLoad = true; // Prevents false cheering on page load/refresh
+    let pillResetTimer = null;
 
     try {
       const cached = localStorage.getItem(CACHE_KEY);
@@ -1358,8 +1371,20 @@
     updateSriLankaClock();
 
     /**
-     * CRITICAL BUG FIX: SAFE WICKET / SIX / FOUR DETECTION
-     * Does NOT trigger false Wicket on "mid-wicket", "outside", etc.
+     * EXTRACT ACTIVE BATTER ON STRIKE FROM COMMENTARY
+     * Looks at "Bowler to [Striker Name],"
+     */
+    function getStrikerFromBall(ballText) {
+      if (!ballText) return "";
+      const match = ballText.match(/\bto\s+([^,]+),/i);
+      if (match && match[1]) {
+        return match[1].trim().toLowerCase();
+      }
+      return "";
+    }
+
+    /**
+     * ACCURATE BALL EVENT DETECTION (NO FALSE WICKETS ON MID-WICKET)
      */
     function detectBallEvent(ball) {
       const badge = (ball.badge || "").toUpperCase();
@@ -1378,10 +1403,9 @@
         .replace(/without/g, '');
 
       // 3. Genuine Wicket Check
-      // Matches "out Caught", "out Bowled", "out Lbw", "Run Out", "THATS OUT", "b Bowler"
       const isGenuineWicket = 
         /\b(thats out|run out|c & b|stumped|hit wicket)\b/i.test(cleaned) ||
-        /\bout\s+(caught|bowled|lbw|hit wicket)/i.test(cleaned) ||
+        /\bout\s+(caught|bowled|lbw|hit wicket|run out)/i.test(cleaned) ||
         /\b(caught|bowled|lbw)\s+by\b/i.test(cleaned);
 
       if (isGenuineWicket) {
@@ -1409,7 +1433,7 @@
     }
 
     /**
-     * FULLSCREEN CELEBRATION CHEER ENGINE (Only triggers on genuine events)
+     * FULLSCREEN CELEBRATION CHEER ENGINE (Only triggers on NEW ball events)
      */
     const cheerOverlay = document.getElementById('fullscreen-cheer-overlay');
     const cheerTitle = document.getElementById('cheer-title');
@@ -1487,7 +1511,7 @@
       }
 
       // 2. Exact over completed condition:
-      // Either latest ball is .6, OR oversStr is an exact integer: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20
+      // Either latest ball is .6, OR oversStr is an exact integer: 1, 2, 3, 4 ... 20
       const isBallSix = (ballNum === 6);
       const isIntegerOver = oversStr && /^(1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20)(\.0)?\s*(Ov)?$/i.test(oversStr.trim());
 
@@ -1611,7 +1635,6 @@
               statusDot.style.background = '#39ff14';
               statusDot.style.boxShadow = '0 0 10px #39ff14';
             }
-            // Realtime update across all elements at once
             renderAllData();
           }
         }
@@ -1619,8 +1642,25 @@
         if (statusDot) statusDot.style.background = '#ffe600';
       } finally {
         isFetching = false;
+        isInitialLoad = false;
         setTimeout(fetchLiveCricketData, 5000);
       }
+    }
+
+    /**
+     * FILTER OUT DISMISSED BATTERS (NEVER SHOW OUT PLAYERS)
+     */
+    function filterAliveBatters(allBatters) {
+      if (!allBatters || allBatters.length === 0) return [];
+      return allBatters.filter(b => {
+        if (!b.dismissal) return true;
+        const d = b.dismissal.toLowerCase().trim();
+        if (d === 'batting' || d === 'not out') return true;
+        // Check if out:
+        const isDismissed = /\b(out|caught|bowled|lbw|run out|stumped|c\s+.*b\s+)\b/i.test(d) ||
+                            /^[cb]\s+/i.test(d);
+        return !isDismissed;
+      });
     }
 
     /**
@@ -1656,27 +1696,72 @@
       if (info.third_umpire) document.getElementById('umpire-third').textContent = info.third_umpire;
       if (info.referee) document.getElementById('umpire-referee').textContent = info.referee;
 
-      // 3. BATSMEN: Active batters currently on the crease!
-      const allBatters = inn.batting || [];
-      let activeBatters = allBatters.filter(b => b.dismissal && b.dismissal.toLowerCase().includes('batting'));
-      if (activeBatters.length < 2) {
-        const notOuts = allBatters.filter(b => !b.dismissal || b.dismissal.toLowerCase().includes('not out') || b.dismissal.toLowerCase().includes('batting'));
-        if (notOuts.length >= 2) activeBatters = notOuts;
-        else activeBatters = allBatters.slice(-2);
+      // 3. LIVE BALL & EVENT
+      const currentBall = live.latest_ball || {};
+      const ballOver = currentBall.over || (inn.overs ? inn.overs.replace(' Ov', '') : "");
+      const ballText = live.latest_update || currentBall.text || "Play in progress";
+
+      document.getElementById('live-over-badge').textContent = ballOver || "--";
+      document.getElementById('live-ball-text').textContent = ballText;
+
+      checkOverEndTransitions(inn.overs, ballOver);
+
+      // Detect Event safely
+      const eventObj = detectBallEvent({ badge: currentBall.badge, text: ballText, latest_update: live.latest_update });
+      const centerPillTitle = document.getElementById('ball-event-title');
+      const eventBadge = document.getElementById('live-event-badge');
+
+      eventBadge.className = `ball-event-badge badge-${eventObj.type}`;
+      eventBadge.textContent = eventObj.label;
+
+      // Show event in top pill for 5s, then automatically revert to BALL
+      if (eventObj.type === 'six' || eventObj.type === 'four' || eventObj.type === 'wicket') {
+        centerPillTitle.textContent = eventObj.title;
+        if (pillResetTimer) clearTimeout(pillResetTimer);
+        pillResetTimer = setTimeout(() => {
+          centerPillTitle.textContent = "BALL";
+        }, 5000);
+      } else {
+        centerPillTitle.textContent = eventObj.title;
       }
+
+      // 4. BATSMEN: Active batters currently on crease + DYNAMIC ON-STRIKE CALCULATION!
+      const allBatters = inn.batting || [];
+      let activeBatters = filterAliveBatters(allBatters);
+      if (activeBatters.length < 2) {
+        // Fallback to last 2 who are not confirmed out
+        activeBatters = allBatters.slice(-2);
+      }
+
+      const strikerFromText = getStrikerFromBall(ballText);
 
       if (activeBatters.length > 0) {
         const b1 = activeBatters[0];
+        const b1NameLower = (b1.name || "").toLowerCase();
         document.getElementById('bat1-name').textContent = b1.name ? b1.name.toUpperCase() : "BATSMAN 1";
         document.getElementById('bat1-runs').textContent = b1.runs || "0";
         document.getElementById('bat1-balls').textContent = `(${b1.balls || "0"})`;
         document.getElementById('bat1-fours').textContent = b1.fours || "0";
         document.getElementById('bat1-sixes').textContent = b1.sixes || "0";
         document.getElementById('bat1-sr').textContent = b1.strike_rate || "0.00";
+
+        // Check if B1 is on strike
+        const b1IsStriker = strikerFromText && b1NameLower.split(' ').some(part => part.length > 2 && strikerFromText.includes(part));
+        const card1 = document.getElementById('card-bat1');
+        const tag1 = document.getElementById('bat1-strike-tag');
+
+        if (b1IsStriker) {
+          card1.classList.add('on-strike');
+          tag1.textContent = "★ ON STRIKE";
+        } else {
+          card1.classList.remove('on-strike');
+          tag1.textContent = "NON-STRIKER";
+        }
       }
 
       if (activeBatters.length > 1) {
         const b2 = activeBatters[1];
+        const b2NameLower = (b2.name || "").toLowerCase();
         document.getElementById('bat2-name').textContent = b2.name ? b2.name.toUpperCase() : "BATSMAN 2";
         document.getElementById('bat2-runs').textContent = b2.runs || "0";
         document.getElementById('bat2-balls').textContent = `(${b2.balls || "0"})`;
@@ -1689,9 +1774,22 @@
         const b1Balls = parseInt(activeBatters[0].balls) || 0;
         const b2Balls = parseInt(b2.balls) || 0;
         document.getElementById('pship-display').textContent = `${b1Runs + b2Runs} (${b1Balls + b2Balls})`;
+
+        // Check if B2 is on strike
+        const b2IsStriker = strikerFromText && b2NameLower.split(' ').some(part => part.length > 2 && strikerFromText.includes(part));
+        const card2 = document.getElementById('card-bat2');
+        const tag2 = document.getElementById('bat2-strike-tag');
+
+        if (b2IsStriker || (!document.getElementById('card-bat1').classList.contains('on-strike') && activeBatters.length === 2)) {
+          card2.classList.add('on-strike');
+          tag2.textContent = "★ ON STRIKE";
+        } else {
+          card2.classList.remove('on-strike');
+          tag2.textContent = "NON-STRIKER";
+        }
       }
 
-      // 4. BOWLER
+      // 5. BOWLER
       const bowlers = inn.bowling || [];
       if (bowlers.length > 0) {
         const activeBowler = bowlers.find(b => b.overs && b.overs.includes('.')) || bowlers[bowlers.length - 1];
@@ -1708,27 +1806,8 @@
         document.getElementById('bowler-econ').textContent = econ;
       }
 
-      // 5. LIVE BALL & COMMENTARY EVENT DETECTION (NO FALSE WICKET ON MID-WICKET!)
-      const currentBall = live.latest_ball || {};
-      const ballOver = currentBall.over || (inn.overs ? inn.overs.replace(' Ov', '') : "");
-      const ballText = live.latest_update || currentBall.text || "Play in progress";
-
-      document.getElementById('live-over-badge').textContent = ballOver || "--";
-      document.getElementById('live-ball-text').textContent = ballText;
-
-      checkOverEndTransitions(inn.overs, ballOver);
-
-      // Safe event detection
-      const eventObj = detectBallEvent({ badge: currentBall.badge, text: ballText, latest_update: live.latest_update });
-      const centerPillTitle = document.getElementById('ball-event-title');
-      const eventBadge = document.getElementById('live-event-badge');
-
-      centerPillTitle.textContent = eventObj.title;
-      eventBadge.className = `ball-event-badge badge-${eventObj.type}`;
-      eventBadge.textContent = eventObj.label;
-
-      // Only cheer when a NEW ball arrives and it's a 4, 6, or GENUINE wicket
-      if (ballText !== lastBallText) {
+      // Only trigger fullscreen celebration when watching live and NEW ball arrives (NOT on refresh!)
+      if (!isInitialLoad && ballText !== lastBallText) {
         lastBallText = ballText;
 
         if (eventObj.type === 'wicket') {
@@ -1740,6 +1819,8 @@
           const bName = activeBatters[0]?.name || "Batter";
           triggerFullscreenCheer('four', bName, ballText);
         }
+      } else {
+        lastBallText = ballText;
       }
 
       // 6. Seamless ultra-slow marquee (Visible IMMEDIATELY from second 0)
