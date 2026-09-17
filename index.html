@@ -169,6 +169,10 @@
       text-shadow: 0 0 8px rgba(0, 242, 254, 0.6);
       flex: 1;
       text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding: 0 10px;
     }
 
     /* Music & Audio Control Badges */
@@ -289,7 +293,10 @@
       overflow: hidden;
       box-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
       position: relative;
+      flex-shrink: 0;
     }
+
+    /* National Flag Emblems */
     .flag-india {
       background: linear-gradient(180deg, #FF9933 33.33%, #FFFFFF 33.33%, #FFFFFF 66.66%, #138808 66.66%);
     }
@@ -325,6 +332,68 @@
       filter: drop-shadow(0 0 2px #FFBE29);
     }
 
+    .flag-japan {
+      background: #ffffff;
+      position: relative;
+    }
+    .flag-japan::after {
+      content: '';
+      position: absolute;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #bc002d;
+      box-shadow: 0 0 10px rgba(188, 0, 45, 0.6);
+    }
+
+    .flag-england {
+      background: #ffffff;
+      position: relative;
+    }
+    .flag-england::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 42%; width: 16%; height: 100%;
+      background: #ce1124;
+    }
+    .flag-england::after {
+      content: '';
+      position: absolute;
+      top: 42%; left: 0; width: 100%; height: 16%;
+      background: #ce1124;
+    }
+
+    .flag-australia {
+      background: #00008b;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+    .flag-australia::after { content: '⭐'; font-size: 22px; }
+
+    .flag-pakistan {
+      background: #01411c;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .flag-pakistan::after { content: '🌙'; font-size: 20px; }
+
+    .flag-generic {
+      background: linear-gradient(135deg, #3a0078, #6900b8);
+      font-family: var(--font-teko);
+      font-size: 26px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-shadow: 0 0 8px rgba(255,255,255,0.8);
+    }
+
     .team-meta {
       display: flex;
       flex-direction: column;
@@ -338,6 +407,10 @@
       color: var(--yellow-gold);
       text-transform: uppercase;
       text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      max-width: 250px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .team-score-overs {
@@ -378,78 +451,52 @@
       transition: all 0.35s ease;
     }
 
-    /* Dynamic states for center-ball-pill */
+    #center-ball-pill.pill-upcoming {
+      background: linear-gradient(135deg, #1c0042 0%, #3e0b6d 50%, #0c2b5c 100%);
+      border-color: var(--yellow-gold);
+      box-shadow: 0 0 30px rgba(255, 230, 0, 0.7), inset 0 0 15px rgba(255, 230, 0, 0.3);
+    }
+    #center-ball-pill.pill-upcoming #ball-event-title {
+      text-shadow: 0 0 15px var(--yellow-gold);
+      color: #ffffff;
+    }
+    #center-ball-pill.pill-upcoming #ball-event-subtitle {
+      color: var(--yellow-gold);
+    }
+
     #center-ball-pill.pill-six {
       background: linear-gradient(135deg, #4a032d 0%, #831843 50%, #db2777 100%);
       border-color: #ff007f;
       box-shadow: 0 0 40px rgba(255, 0, 127, 0.9), inset 0 0 20px rgba(255, 0, 127, 0.5);
     }
-    #center-ball-pill.pill-six #ball-event-title {
-      text-shadow: 0 0 20px #ff007f;
-      color: #ffffff;
-    }
-    #center-ball-pill.pill-six #ball-event-subtitle {
-      color: #ff80bf;
-    }
+    #center-ball-pill.pill-six #ball-event-title { text-shadow: 0 0 20px #ff007f; color: #ffffff; }
+    #center-ball-pill.pill-six #ball-event-subtitle { color: #ff80bf; }
 
     #center-ball-pill.pill-four {
       background: linear-gradient(135deg, #023820 0%, #065f46 50%, #059669 100%);
       border-color: #39ff14;
       box-shadow: 0 0 40px rgba(57, 255, 20, 0.9), inset 0 0 20px rgba(57, 255, 20, 0.5);
     }
-    #center-ball-pill.pill-four #ball-event-title {
-      text-shadow: 0 0 20px #39ff14;
-      color: #ffffff;
-    }
-    #center-ball-pill.pill-four #ball-event-subtitle {
-      color: #6ee7b7;
-    }
+    #center-ball-pill.pill-four #ball-event-title { text-shadow: 0 0 20px #39ff14; color: #ffffff; }
+    #center-ball-pill.pill-four #ball-event-subtitle { color: #6ee7b7; }
 
     #center-ball-pill.pill-wicket {
       background: linear-gradient(135deg, #4c0505 0%, #7f1d1d 50%, #dc2626 100%);
       border-color: #ff1744;
       box-shadow: 0 0 45px rgba(255, 23, 68, 1), inset 0 0 25px rgba(255, 23, 68, 0.6);
     }
-    #center-ball-pill.pill-wicket #ball-event-title {
-      text-shadow: 0 0 25px #ff1744;
-      color: #ffffff;
-    }
-    #center-ball-pill.pill-wicket #ball-event-subtitle {
-      color: #fca5a5;
-    }
+    #center-ball-pill.pill-wicket #ball-event-title { text-shadow: 0 0 25px #ff1744; color: #ffffff; }
+    #center-ball-pill.pill-wicket #ball-event-subtitle { color: #fca5a5; }
 
     #center-ball-pill.pill-over {
       background: linear-gradient(135deg, #3d2800 0%, #785200 50%, #b45309 100%);
       border-color: var(--yellow-gold);
       box-shadow: 0 0 35px rgba(255, 230, 0, 0.85), inset 0 0 20px rgba(255, 230, 0, 0.4);
     }
-    #center-ball-pill.pill-over #ball-event-title {
-      text-shadow: 0 0 20px var(--yellow-gold);
-      color: #ffffff;
-    }
-    #center-ball-pill.pill-over #ball-event-subtitle {
-      color: var(--yellow-gold);
-    }
+    #center-ball-pill.pill-over #ball-event-title { text-shadow: 0 0 20px var(--yellow-gold); color: #ffffff; }
+    #center-ball-pill.pill-over #ball-event-subtitle { color: var(--yellow-gold); }
 
-    #center-ball-pill.pill-run {
-      background: linear-gradient(135deg, #02123a 0%, #0f3460 50%, #1a365d 100%);
-      border-color: var(--cyan-neon);
-      box-shadow: 0 0 30px rgba(0, 242, 254, 0.6), inset 0 0 15px rgba(0, 242, 254, 0.3);
-    }
-    #center-ball-pill.pill-run #ball-event-title {
-      text-shadow: 0 0 15px var(--cyan-neon);
-    }
-    #center-ball-pill.pill-run #ball-event-subtitle {
-      color: var(--cyan-neon);
-    }
-
-    #center-ball-pill.pill-wide, #center-ball-pill.pill-noball {
-      background: linear-gradient(135deg, #3d2b00 0%, #684805 50%, #b45309 100%);
-      border-color: #f59e0b;
-      box-shadow: 0 0 30px #f59e0b;
-    }
-
-    #center-ball-pill.pill-ball {
+    #center-ball-pill.pill-run, #center-ball-pill.pill-ball {
       background: linear-gradient(135deg, #02123a 0%, #042459 50%, #033c8c 100%);
       border-color: var(--cyan-neon);
       box-shadow: 0 0 30px rgba(0, 242, 254, 0.6), inset 0 0 15px rgba(0, 242, 254, 0.3);
@@ -531,6 +578,10 @@
       font-family: var(--font-chakra);
       font-weight: 700;
       letter-spacing: 0.5px;
+      max-width: 480px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     /* Created By Viruna Badge */
@@ -696,6 +747,233 @@
       50% { transform: scale(1.1) rotate(180deg); opacity: 0.7; }
       100% { transform: scale(0.8) rotate(360deg); opacity: 0.3; }
     }
+
+    /* =========================================================
+       UPCOMING MATCH COUNTDOWN ARENA OVERLAY (BROADCAST STANDBY)
+       ========================================================= */
+    #countdown-stage {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: radial-gradient(circle at 50% 35%, rgba(25, 6, 60, 0.97) 0%, rgba(9, 2, 25, 0.98) 60%, #03000b 100%);
+      z-index: 22;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 28px;
+      backdrop-filter: blur(16px);
+      border: 2px solid rgba(0, 242, 254, 0.45);
+      box-shadow: inset 0 0 80px rgba(0, 242, 254, 0.2), 0 0 40px rgba(255, 0, 127, 0.3);
+      transition: opacity 0.45s ease, transform 0.45s ease;
+    }
+    #countdown-stage.hidden {
+      display: none !important;
+    }
+
+    .cd-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      border-bottom: 1px solid rgba(255, 0, 127, 0.35);
+      padding-bottom: 8px;
+      margin-bottom: 10px;
+    }
+
+    .cd-live-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 0, 127, 0.15);
+      border: 1px solid var(--pink-neon);
+      padding: 3px 14px;
+      border-radius: 20px;
+      font-family: var(--font-chakra);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--pink-neon);
+      letter-spacing: 1.5px;
+    }
+    .cd-pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--pink-neon);
+      box-shadow: 0 0 10px var(--pink-neon);
+      animation: liveDotPulse 1s infinite alternate;
+    }
+
+    .cd-sleep-indicator {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0, 242, 254, 0.12);
+      border: 1px solid var(--cyan-neon);
+      padding: 3px 14px;
+      border-radius: 20px;
+      font-family: var(--font-chakra);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--cyan-neon);
+      letter-spacing: 1px;
+    }
+
+    .cd-versus-box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      margin: 4px 0 8px 0;
+      width: 100%;
+    }
+    .cd-team {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+    }
+    .cd-team-left { justify-content: flex-end; text-align: right; }
+    .cd-team-right { justify-content: flex-start; text-align: left; }
+    .cd-team-name {
+      font-family: var(--font-chakra);
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: #ffffff;
+      text-transform: uppercase;
+      text-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+    }
+    .cd-vs-badge {
+      font-family: var(--font-orbitron);
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--yellow-gold);
+      background: linear-gradient(135deg, #3d005e, #7900b8);
+      border: 2px solid var(--yellow-gold);
+      padding: 4px 14px;
+      border-radius: 50px;
+      box-shadow: 0 0 20px rgba(255, 230, 0, 0.6);
+      letter-spacing: 2px;
+    }
+
+    .cd-match-subtitle {
+      font-family: var(--font-chakra);
+      font-size: 13px;
+      font-weight: 700;
+      color: #cbd5e1;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    /* Giant Digital LED Clock Grid */
+    .cd-clock-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin: 4px 0 14px 0;
+    }
+    .cd-unit-box {
+      background: rgba(10, 4, 30, 0.85);
+      border: 2px solid var(--cyan-neon);
+      border-radius: 14px;
+      padding: 6px 18px;
+      text-align: center;
+      min-width: 105px;
+      box-shadow: 0 0 30px rgba(0, 242, 254, 0.4), inset 0 0 20px rgba(0, 242, 254, 0.2);
+    }
+    .cd-digit {
+      font-family: var(--font-teko);
+      font-size: 78px;
+      font-weight: 700;
+      line-height: 0.9;
+      color: #ffffff;
+      text-shadow: 0 0 20px var(--cyan-neon), 0 0 35px var(--cyan-neon);
+      letter-spacing: 1px;
+    }
+    .cd-unit-name {
+      font-family: var(--font-chakra);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--yellow-gold);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+    .cd-colon {
+      font-family: var(--font-teko);
+      font-size: 60px;
+      font-weight: 700;
+      color: var(--yellow-gold);
+      text-shadow: 0 0 15px var(--yellow-gold);
+      line-height: 0.9;
+      animation: colonBlink 1s infinite alternate;
+    }
+    @keyframes colonBlink {
+      0% { opacity: 0.3; }
+      100% { opacity: 1; }
+    }
+
+    /* Toss Alert Strip */
+    .cd-toss-strip {
+      width: 90%;
+      max-width: 680px;
+      background: rgba(20, 10, 45, 0.9);
+      border: 1.5px solid rgba(255, 230, 0, 0.5);
+      border-radius: 30px;
+      padding: 6px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 0 20px rgba(255, 230, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+    .cd-toss-strip.toss-imminent {
+      border-color: #ff1744 !important;
+      background: linear-gradient(90deg, rgba(76, 5, 5, 0.9), rgba(127, 29, 29, 0.9)) !important;
+      box-shadow: 0 0 35px rgba(255, 23, 68, 0.8), inset 0 0 15px rgba(255, 23, 68, 0.5) !important;
+      animation: pulseTossAlert 1.2s infinite alternate;
+    }
+    @keyframes pulseTossAlert {
+      0% { transform: scale(0.98); box-shadow: 0 0 20px rgba(255, 23, 68, 0.6); }
+      100% { transform: scale(1.02); box-shadow: 0 0 45px rgba(255, 23, 68, 1); }
+    }
+    .cd-toss-strip.toss-decided {
+      border-color: var(--yellow-gold) !important;
+      background: linear-gradient(90deg, rgba(61, 40, 0, 0.9), rgba(120, 82, 0, 0.9)) !important;
+      box-shadow: 0 0 35px rgba(255, 230, 0, 0.8) !important;
+    }
+    .cd-toss-icon { font-size: 18px; }
+    .cd-toss-message {
+      font-family: var(--font-chakra);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: #ffffff;
+      text-transform: uppercase;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Schedule Info Strip */
+    .cd-info-strip {
+      display: flex;
+      gap: 20px;
+      margin-top: 12px;
+      font-family: var(--font-chakra);
+      font-size: 12px;
+    }
+    .cd-info-item {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .cd-info-lbl { color: #94a3b8; font-weight: 700; }
+    .cd-info-val { color: #ffffff; font-weight: 700; letter-spacing: 1px; }
 
     /* Live Ball Commentary Action Card */
     #live-ball-action-card {
@@ -1140,7 +1418,7 @@
     .stat-val { color: #ffffff; }
 
     /* =========================================================
-       ROW 5: RUNNING COMMENTARY TICKER (140s SMOOTH PACE)
+       ROW 5: RUNNING COMMENTARY TICKER (SMOOTH & RELAXED SPEED)
        ========================================================= */
     #bottom-ticker-wrap {
       position: relative;
@@ -1183,7 +1461,7 @@
     .seamless-marquee-inner {
       display: inline-flex;
       white-space: nowrap;
-      animation: seamlessCrawl 140s linear infinite;
+      animation: seamlessCrawl 200s linear infinite;
     }
 
     @keyframes seamlessCrawl {
@@ -1197,17 +1475,19 @@
       font-weight: 700;
       color: #030012;
       letter-spacing: 1px;
-      padding-right: 40px;
+      padding-right: 50px;
     }
 
     #api-status-dot {
-      width: 8px;
-      height: 8px;
+      width: 10px;
+      height: 10px;
       border-radius: 50%;
       background: var(--lime-neon);
       box-shadow: 0 0 10px var(--lime-neon);
-      margin-left: 10px;
+      margin-left: 12px;
       z-index: 2;
+      transition: all 0.3s ease;
+      cursor: help;
     }
   </style>
 </head>
@@ -1231,7 +1511,7 @@
     <div id="match-header-strip">
       <div style="display: flex; align-items: center; gap: 8px;">
         <span class="match-trophy">🏆</span>
-        <span style="font-size: 11px; color: var(--yellow-gold);">WOMEN'S ASIA CUP 2026 FINAL</span>
+        <span style="font-size: 11px; color: var(--yellow-gold);" id="series-badge-text">WOMEN'S ASIA CUP 2026</span>
       </div>
 
       <span id="match-title-text">SRI LANKA WOMEN vs INDIA WOMEN — DUBAI INTERNATIONAL STADIUM</span>
@@ -1254,19 +1534,19 @@
         <div class="team-meta">
           <div class="team-title" id="team1-title">SRI LANKA W</div>
           <div class="team-score-overs">
-            <div class="main-score" id="team1-score">45-1</div>
-            <div class="main-overs" id="team1-overs">7.4 Ov</div>
+            <div class="main-score" id="team1-score">--</div>
+            <div class="main-overs" id="team1-overs">0.0 Ov</div>
           </div>
         </div>
       </div>
 
-      <!-- Center: Current Ball Event Pill (DYNAMIC BALL / OVER / 6 / 4 / WICKET) -->
+      <!-- Center: Current Ball Event Pill (DYNAMIC BALL / OVER / 6 / 4 / WICKET / COUNTDOWN) -->
       <div id="center-ball-pill" class="pill-ball">
         <div class="beat-bars" style="position: absolute; left: 10px; top: 12px;">
           <div class="bar"></div><div class="bar"></div><div class="bar"></div>
         </div>
         <div id="ball-event-title">BALL</div>
-        <div id="ball-event-subtitle">WOMEN'S ASIA CUP FINAL</div>
+        <div id="ball-event-subtitle">LIVE CRICKET BROADCAST</div>
         <div class="beat-bars" style="position: absolute; right: 10px; top: 12px;">
           <div class="bar"></div><div class="bar"></div><div class="bar"></div>
         </div>
@@ -1276,7 +1556,7 @@
       <div class="bowling-team-box">
         <div class="team-meta" style="text-align: right;">
           <div class="team-title" id="team2-title">INDIA WOMEN</div>
-          <div class="bowling-label">BOWLING</div>
+          <div class="bowling-label" id="team2-status-label">BOWLING</div>
         </div>
         <div class="flag-circle flag-india" id="team2-flag"></div>
       </div>
@@ -1286,21 +1566,21 @@
     <section id="sub-bar">
       <div class="sub-item">
         <span>CRR:</span>
-        <span class="sub-highlight" id="crr-display">6.33</span>
+        <span class="sub-highlight" id="crr-display">--</span>
       </div>
 
       <div class="sub-item">
         <span>REQ RR:</span>
-        <span class="sub-highlight" id="req-rr-display">9.30</span>
+        <span class="sub-highlight" id="req-rr-display">--</span>
       </div>
 
       <div class="sub-item">
         <span>P'SHIP:</span>
-        <span class="sub-highlight" id="pship-display">15 (14)</span>
+        <span class="sub-highlight" id="pship-display">--</span>
       </div>
 
       <div class="sub-item">
-        <span class="toss-text" id="toss-display">TARGET: 184 (SLW NEED 108 RUNS IN 48 BALLS)</span>
+        <span class="toss-text" id="toss-display">TOSS: AWAITING CAPTAINS</span>
       </div>
 
       <!-- Created by Viruna Watermark -->
@@ -1323,19 +1603,19 @@
       <aside class="side-card">
         <div class="card-heading">
           <span>MATCH DETAILS</span>
-          <span style="color: var(--cyan-neon); font-size:11px;">FINAL</span>
+          <span style="color: var(--cyan-neon); font-size:11px;" id="info-badge-type">LIVE</span>
         </div>
         <div class="info-row">
           <span class="info-label">SERIES</span>
-          <span class="info-value" id="info-series">Women's Asia Cup 2026</span>
+          <span class="info-value" id="info-series">ICC / ACC Tournament</span>
         </div>
         <div class="info-row">
           <span class="info-label">VENUE</span>
-          <span class="info-value" id="info-venue">Dubai Intl Cricket Stadium</span>
+          <span class="info-value" id="info-venue">International Stadium</span>
         </div>
         <div class="info-row">
-          <span class="info-label">TARGET</span>
-          <span class="info-value" style="color: var(--yellow-gold);" id="info-target-score">184 Runs (from 20 Ov)</span>
+          <span class="info-label">TARGET / EQUATION</span>
+          <span class="info-value" style="color: var(--yellow-gold);" id="info-target-score">Yet to Bat</span>
         </div>
         <div class="info-row">
           <span class="info-label">CAPACITY</span>
@@ -1343,36 +1623,104 @@
         </div>
         <div class="info-row">
           <span class="info-label">PITCH ENDS</span>
-          <span class="info-value" id="info-ends">Emirates Rd, Sports City End</span>
+          <span class="info-value" id="info-ends">Main Pavilion End</span>
         </div>
         <div class="info-row">
           <span class="info-label">MATCH STATUS</span>
-          <span class="info-value" style="color: var(--lime-neon);" id="match-live-status">Sri Lanka Women Chase</span>
+          <span class="info-value" style="color: var(--lime-neon);" id="match-live-status">Connecting Live...</span>
         </div>
       </aside>
 
-      <!-- Center Stadium Pitch & Giant Live Ball Commentary Area -->
+      <!-- Center Stadium Pitch, Live Ball Commentary & Upcoming Countdown Arena -->
       <section id="center-arena">
-        <!-- 3D Pitch Graphics (No Player Face Images) -->
+        
+        <!-- UPCOMING MATCH LIVE COUNTDOWN ARENA (Displayed when match is UPCOMING) -->
+        <div id="countdown-stage" class="hidden">
+          <div class="cd-header-row">
+            <div class="cd-live-badge">
+              <div class="cd-pulse-dot"></div>
+              <span>PRE-MATCH BROADCAST • COUNTDOWN</span>
+            </div>
+            <div class="cd-sleep-indicator" id="cd-sleep-status" title="Smart Poller: Local clock ticks without querying API">
+              <span>⚡ API SLEEP MODE ACTIVE</span>
+            </div>
+          </div>
+
+          <div class="cd-versus-box">
+            <div class="cd-team cd-team-left">
+              <div class="cd-team-name" id="cd-name-team1">JAPAN WOMEN</div>
+              <div class="flag-circle flag-japan" id="cd-flag-team1"></div>
+            </div>
+            <div class="cd-vs-badge">VS</div>
+            <div class="cd-team cd-team-right">
+              <div class="flag-circle flag-india" id="cd-flag-team2"></div>
+              <div class="cd-team-name" id="cd-name-team2">INDIA WOMEN</div>
+            </div>
+          </div>
+
+          <div class="cd-match-subtitle" id="cd-match-subtitle">MATCH STARTS IN</div>
+
+          <!-- Giant Digital LED Countdown Clock (Ticks Locally via Browser Clock) -->
+          <div class="cd-clock-container">
+            <div class="cd-unit-box">
+              <div class="cd-digit" id="cd-hours">00</div>
+              <div class="cd-unit-name">HOURS</div>
+            </div>
+            <div class="cd-colon">:</div>
+            <div class="cd-unit-box">
+              <div class="cd-digit" id="cd-mins">00</div>
+              <div class="cd-unit-name">MINUTES</div>
+            </div>
+            <div class="cd-colon">:</div>
+            <div class="cd-unit-box">
+              <div class="cd-digit" id="cd-secs">00</div>
+              <div class="cd-unit-name">SECONDS</div>
+            </div>
+          </div>
+
+          <!-- Toss Alert Banner -->
+          <div class="cd-toss-strip" id="cd-toss-strip">
+            <div class="cd-toss-icon" id="cd-toss-icon">⏳</div>
+            <div class="cd-toss-message" id="cd-toss-message">TOSS UPDATE: Scheduled 15-30 mins before match start</div>
+          </div>
+
+          <!-- Schedule & Venue Details -->
+          <div class="cd-info-strip">
+            <div class="cd-info-item">
+              <span class="cd-info-lbl">START TIME (SL):</span>
+              <span class="cd-info-val" id="cd-sl-start-time">--:-- PM</span>
+            </div>
+            <div class="cd-info-item">
+              <span class="cd-info-lbl">VENUE:</span>
+              <span class="cd-info-val" id="cd-venue-disp">Stadium</span>
+            </div>
+            <div class="cd-info-item">
+              <span class="cd-info-lbl">POLLER:</span>
+              <span class="cd-info-val" id="cd-poller-state-disp" style="color: var(--lime-neon);">API SLEEPING</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3D Pitch Graphics -->
         <div class="pitch-radar"></div>
         <div class="pitch-graphic"></div>
 
         <!-- Big Center Live Ball Commentary Card -->
         <div id="live-ball-action-card">
           <div class="ball-action-header">
-            <div class="ball-over-badge" id="live-over-badge">7.4</div>
-            <div class="ball-event-badge badge-run" id="live-event-badge">1 RUN</div>
+            <div class="ball-over-badge" id="live-over-badge">0.0</div>
+            <div class="ball-event-badge badge-run" id="live-event-badge">LIVE PLAY</div>
           </div>
-          <div id="live-ball-text">Deepti Sharma to Vishmi Gunaratne, 1 run, tucked away to deep square leg</div>
+          <div id="live-ball-text">Awaiting first delivery...</div>
           
           <!-- Over Ball Bubbles Tray -->
           <div class="over-balls-tray" id="over-balls-tray">
-            <div class="ball-pill-circle b-1">1</div>
-            <div class="ball-pill-circle b-4">4</div>
-            <div class="ball-pill-circle b-1">1</div>
-            <div class="ball-pill-circle b-w">W</div>
-            <div class="ball-pill-circle b-dot">0</div>
-            <div class="ball-pill-circle b-1">1</div>
+            <div class="ball-pill-circle b-dot">•</div>
+            <div class="ball-pill-circle b-dot">•</div>
+            <div class="ball-pill-circle b-dot">•</div>
+            <div class="ball-pill-circle b-dot">•</div>
+            <div class="ball-pill-circle b-dot">•</div>
+            <div class="ball-pill-circle b-dot">•</div>
           </div>
         </div>
 
@@ -1397,7 +1745,7 @@
           <div class="cheer-content-wrap">
             <div class="cheer-event-type cheer-type-six" id="cheer-title">MAXIMUM 6</div>
             <div class="cheer-subtitle" id="cheer-subtitle">OUT OF THE PARK!</div>
-            <div class="cheer-player-callout" id="cheer-player-text">Shafali Verma rocks the stadium!</div>
+            <div class="cheer-player-callout" id="cheer-player-text">Batter sends it soaring into the stands!</div>
           </div>
         </div>
 
@@ -1411,23 +1759,23 @@
         </div>
         <div class="info-row">
           <span class="info-label">ON-FIELD UMPIRES</span>
-          <span class="info-value" id="umpire-onfield">Saleema Imtiaz, Shathira Jakir</span>
+          <span class="info-value" id="umpire-onfield">Appointed Umpires</span>
         </div>
         <div class="info-row">
           <span class="info-label">THIRD UMPIRE</span>
-          <span class="info-value" id="umpire-third">Rokeya Sultana</span>
+          <span class="info-value" id="umpire-third">TV Umpire</span>
         </div>
         <div class="info-row">
           <span class="info-label">MATCH REFEREE</span>
-          <span class="info-value" id="umpire-referee">Supriya Das</span>
+          <span class="info-value" id="umpire-referee">Match Referee</span>
         </div>
         <div class="info-row">
-          <span class="info-label">HEAD COACH (SL)</span>
-          <span class="info-value">Jamie Siddons</span>
+          <span class="info-label">HEAD COACH (TEAM 1)</span>
+          <span class="info-value" id="coach-team1">Head Coach</span>
         </div>
         <div class="info-row">
-          <span class="info-label">HEAD COACH (IND)</span>
-          <span class="info-value">Amol Muzumdar</span>
+          <span class="info-label">HEAD COACH (TEAM 2)</span>
+          <span class="info-value" id="coach-team2">Head Coach</span>
         </div>
       </aside>
 
@@ -1441,19 +1789,19 @@
         <div class="card-top-row">
           <div class="player-role-indicator">
             <span class="role-icon">🏏</span>
-            <span class="role-name">BATSMAN</span>
+            <span class="role-name" id="bat1-role-title">BATSMAN</span>
           </div>
           <div class="strike-tag" id="bat1-strike-tag">NON-STRIKER</div>
         </div>
-        <div class="player-display-name" id="bat1-name">CHAMARI ATHAPATHTHU (C)</div>
+        <div class="player-display-name" id="bat1-name">BATTER 1</div>
         <div class="score-numbers-row">
-          <div class="card-runs" id="bat1-runs">22</div>
-          <div class="card-balls" id="bat1-balls">(25)</div>
+          <div class="card-runs" id="bat1-runs">0</div>
+          <div class="card-balls" id="bat1-balls">(0)</div>
         </div>
         <div class="card-bottom-pills">
-          <div class="stat-pill">4s: <span class="stat-val" id="bat1-fours">2</span></div>
-          <div class="stat-pill">6s: <span class="stat-val" id="bat1-sixes">1</span></div>
-          <div class="stat-pill">SR: <span class="stat-val" id="bat1-sr">88.00</span></div>
+          <div class="stat-pill">4s: <span class="stat-val" id="bat1-fours">0</span></div>
+          <div class="stat-pill">6s: <span class="stat-val" id="bat1-sixes">0</span></div>
+          <div class="stat-pill">SR: <span class="stat-val" id="bat1-sr">0.00</span></div>
         </div>
       </div>
 
@@ -1462,19 +1810,19 @@
         <div class="card-top-row">
           <div class="player-role-indicator">
             <span class="role-icon">🏏</span>
-            <span class="role-name">BATSMAN</span>
+            <span class="role-name" id="bat2-role-title">BATSMAN</span>
           </div>
           <div class="strike-tag" id="bat2-strike-tag">★ ON STRIKE</div>
         </div>
-        <div class="player-display-name" id="bat2-name">VISHMI GUNARATNE</div>
+        <div class="player-display-name" id="bat2-name">BATTER 2</div>
         <div class="score-numbers-row">
-          <div class="card-runs" id="bat2-runs">17</div>
-          <div class="card-balls" id="bat2-balls">(16)</div>
+          <div class="card-runs" id="bat2-runs">0</div>
+          <div class="card-balls" id="bat2-balls">(0)</div>
         </div>
         <div class="card-bottom-pills">
-          <div class="stat-pill">4s: <span class="stat-val" id="bat2-fours">2</span></div>
+          <div class="stat-pill">4s: <span class="stat-val" id="bat2-fours">0</span></div>
           <div class="stat-pill">6s: <span class="stat-val" id="bat2-sixes">0</span></div>
-          <div class="stat-pill">SR: <span class="stat-val" id="bat2-sr">106.25</span></div>
+          <div class="stat-pill">SR: <span class="stat-val" id="bat2-sr">0.00</span></div>
         </div>
       </div>
 
@@ -1483,35 +1831,35 @@
         <div class="card-top-row">
           <div class="player-role-indicator">
             <span class="role-icon">⚾</span>
-            <span class="role-name">BOWLER</span>
+            <span class="role-name" id="bowler-role-title">BOWLER</span>
           </div>
-          <div style="color: var(--cyan-neon); font-size:12px; font-weight:700;">ACTIVE SPELL</div>
+          <div style="color: var(--cyan-neon); font-size:12px; font-weight:700;" id="bowler-spell-tag">ACTIVE SPELL</div>
         </div>
-        <div class="player-display-name" id="bowler-name">DEEPTI SHARMA</div>
+        <div class="player-display-name" id="bowler-name">BOWLER</div>
         <div class="score-numbers-row">
-          <div class="card-runs" id="bowler-wkts-runs">0-1</div>
-          <div class="card-balls" id="bowler-overs">(0.4)</div>
+          <div class="card-runs" id="bowler-wkts-runs">0-0</div>
+          <div class="card-balls" id="bowler-overs">(0.0)</div>
         </div>
         <div class="card-bottom-pills">
           <div class="stat-pill">Mdn: <span class="stat-val" id="bowler-maidens">0</span></div>
-          <div class="stat-pill">Econ: <span class="stat-val" id="bowler-econ">1.50</span></div>
+          <div class="stat-pill">Econ: <span class="stat-val" id="bowler-econ">0.00</span></div>
         </div>
       </div>
 
     </section>
 
-    <!-- ROW 5: RUNNING COMMENTARY TICKER (140s SMOOTH SPEED) -->
+    <!-- ROW 5: RUNNING COMMENTARY TICKER (SMOOTH & CHRONOLOGICAL DELIVERIES) -->
     <footer id="bottom-ticker-wrap">
       <div class="ticker-header-badge">
         <span>⚡</span> LIVE COMMENTARY
       </div>
       <div class="marquee-content-track">
         <div class="seamless-marquee-inner" id="seamless-marquee-inner">
-          <span class="ticker-item-text" id="ticker-text-1">● [1.3]: Nandani Sharma to Vishmi Gunaratne, 1 run, to mid-wicket ● [1.2]: Nandani Sharma to Vishmi Gunaratne, FOUR, drives handsomely through covers ● [0.4]: Kranti Gaud to Imesha Dulani, OUT bowled! ● [0.3]: Kranti Gaud to Imesha Dulani, FOUR, crunched past point!</span>
-          <span class="ticker-item-text" id="ticker-text-2">● [1.3]: Nandani Sharma to Vishmi Gunaratne, 1 run, to mid-wicket ● [1.2]: Nandani Sharma to Vishmi Gunaratne, FOUR, drives handsomely through covers ● [0.4]: Kranti Gaud to Imesha Dulani, OUT bowled! ● [0.3]: Kranti Gaud to Imesha Dulani, FOUR, crunched past point!</span>
+          <span class="ticker-item-text" id="ticker-text-1">● [BROADCAST]: Connecting to Ultra Live Cricket Feed... ● Live Stream Overlay Ready</span>
+          <span class="ticker-item-text" id="ticker-text-2">● [BROADCAST]: Connecting to Ultra Live Cricket Feed... ● Live Stream Overlay Ready</span>
         </div>
       </div>
-      <div id="api-status-dot" title="Live Broadcast Online"></div>
+      <div id="api-status-dot" title="Live Broadcast Connected"></div>
     </footer>
 
   </div>
@@ -1610,7 +1958,7 @@
           bgAudio.volume = 0.10;
           if (musicDuckingTimeout) clearTimeout(musicDuckingTimeout);
           musicDuckingTimeout = setTimeout(() => {
-            if (isMusicPlaying) bgAudio.volume = 0.30;
+            if (isMusicPlaying) bgAudio.volume = 0.32;
           }, 4200);
         }
 
@@ -1619,7 +1967,6 @@
         const p = cheerAudio.play();
         if (p !== undefined) {
           p.catch(() => {
-            // Backup instance if primary is busy
             const freshCheer = new Audio(CHEER_SOUND_URL);
             freshCheer.volume = 0.52;
             freshCheer.play().catch(() => {});
@@ -1634,14 +1981,13 @@
     function testCheerSound() {
       playCheerSound();
       if (typeof triggerFullscreenCheer === 'function') {
-        triggerFullscreenCheer('six', 'Sri Lanka Batter', 'TEST CHEER SHOT 🔥');
+        triggerFullscreenCheer('six', 'Batter', 'COLOSSAL MAXIMUM SHOT 🔥');
       }
     }
 
     // Audio Unlock System (Handles strict browser autoplay policies)
     function unlockAllAudio() {
       try {
-        // Unlock cheer audio channel
         cheerAudio.volume = 0.01;
         cheerAudio.play().then(() => {
           cheerAudio.pause();
@@ -1649,7 +1995,6 @@
           cheerAudio.volume = 0.52;
         }).catch(() => {});
 
-        // Start music if paused
         if (!isMusicPlaying) {
           playCurrentTrack();
         }
@@ -1662,35 +2007,55 @@
       if (banner) banner.style.display = 'none';
     }
 
-    // Auto-attempt playback on start
-    setTimeout(() => {
-      playCurrentTrack();
-    }, 400);
-
-    // Any pointer / key event unlocks all audio immediately
+    setTimeout(() => { playCurrentTrack(); }, 400);
     window.addEventListener('pointerdown', unlockAllAudio, { once: true });
     window.addEventListener('keydown', unlockAllAudio, { once: true });
   </script>
 
   <!-- =========================================================
-       CRICKET BROADCAST CORE ENGINE (FLICKER-FREE & 2ND INNINGS)
+       CRICKET BROADCAST CORE ENGINE (SMART ADAPTIVE POLLER)
        ========================================================= -->
   <script>
-    const CACHE_KEY = "cricket_live_overlay_cache_v7";
+    const CACHE_KEY = "cricket_live_overlay_cache_v8";
     let matchData = null;
     let fetchTimer = null;
+    let countdownInterval = null;
     let isFetching = false;
+    let isTabVisible = !document.hidden;
 
     /**
-     * MONOTONIC ANTI-ROLLBACK ENGINE (ELIMINATES 7.5 -> 7.3 BACKWARDS JUMPS)
+     * DYNAMIC API URL BUILDER (SUPPORTS ?match=170933, ?id=169891, or full cricbuzz url)
+     */
+    function getApiEndpoint() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const m = urlParams.get('match') || urlParams.get('id') || urlParams.get('url');
+      const API_BASE = "https://cricket-api-v5.vercel.app";
+
+      if (!m) {
+        // Default match: Women's Asia Cup Final (or active target match)
+        return `${API_BASE}/https://www.cricbuzz.com/live-cricket-scores/169891/indw-vs-slw-final-womens-asia-cup-2026`;
+      }
+      const trimmed = m.trim();
+      if (/^\d+$/.test(trimmed)) {
+        return `${API_BASE}/${trimmed}`;
+      }
+      if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+        return `${API_BASE}/${trimmed}`;
+      }
+      return `${API_BASE}/?url=${encodeURIComponent(trimmed)}`;
+    }
+
+    /**
+     * MONOTONIC INTEGRITY FILTER (ELIMINATES 7.5 -> 7.3 BACKWARDS JUMPS)
      */
     const LiveEngine = {
-      activeInningsIdx: 2, // Default to 2 for Sri Lanka Chase
-      maxTotalBalls: 0,    // Monotonic total balls count
-      maxRuns: 0,          // Monotonic runs
-      maxWkts: 0,          // Monotonic wickets
+      activeInningsIdx: 1,
+      maxTotalBalls: 0,
+      maxRuns: 0,
+      maxWkts: 0,
       lastCelebratedBallId: "",
-      isInitialLoad: true
+      isInitialLoad: true,
+      lastTossAnnounced: ""
     };
 
     try {
@@ -1701,7 +2066,7 @@
     } catch (e) {}
 
     /**
-     * SRI LANKA LIVE TIME (Asia/Colombo UTC+5:30 with ticking seconds)
+     * SRI LANKA LIVE REAL-TIME CLOCK (Asia/Colombo UTC+5:30 with seconds)
      */
     function updateSriLankaClock() {
       try {
@@ -1743,9 +2108,6 @@
       return `${ov}.${rem}`;
     }
 
-    /**
-     * EXTRACT ACTIVE BATTER ON STRIKE FROM COMMENTARY ("to [Striker],")
-     */
     function getStrikerFromBall(ballText) {
       if (!ballText) return "";
       const match = ballText.match(/\bto\s+([^,]+),/i);
@@ -1762,7 +2124,6 @@
       const b = (badge || "").toUpperCase().trim();
       const text = (rawText || "").toLowerCase();
 
-      // 1. Genuine Wicket Check
       if (b === 'W') return { type: 'wicket', title: 'WICKET', label: 'WICKET 🎯' };
 
       const cleanedForWicket = text
@@ -1778,31 +2139,78 @@
         return { type: 'wicket', title: 'WICKET', label: 'WICKET 🎯' };
       }
 
-      // 2. Six Check
       if (b === '6' || /\b(six|maximum|into the stands)\b/i.test(text)) {
         return { type: 'six', title: 'SIX', label: '6 MAXIMUM' };
       }
 
-      // 3. Four Check
       if (b === '4' || /\b(four|boundary|races away for four|to the fence)\b/i.test(text)) {
         return { type: 'four', title: 'FOUR', label: '4 BOUNDARY' };
       }
 
-      // 4. Wide & No Ball
-      if (/\b(wide)\b/i.test(text)) {
-        return { type: 'wide', title: 'WIDE', label: 'WIDE BALL' };
-      }
-      if (/\b(no ball)\b/i.test(text)) {
-        return { type: 'noball', title: 'NO BALL', label: 'NO BALL' };
-      }
-
-      // 5. Runs
+      if (/\b(wide)\b/i.test(text)) return { type: 'wide', title: 'WIDE', label: 'WIDE BALL' };
+      if (/\b(no ball)\b/i.test(text)) return { type: 'noball', title: 'NO BALL', label: 'NO BALL' };
       if (/\b(1 run|single)\b/i.test(text)) return { type: 'run', title: '1 RUN', label: '1 RUN' };
       if (/\b(2 runs)\b/i.test(text)) return { type: 'run', title: '2 RUNS', label: '2 RUNS' };
       if (/\b(3 runs)\b/i.test(text)) return { type: 'run', title: '3 RUNS', label: '3 RUNS' };
 
-      // 6. Dot / normal ball
       return { type: 'ball', title: 'BALL', label: 'DOT BALL' };
+    }
+
+    /**
+     * DYNAMIC NATIONAL FLAG / EMBLEM HELPER
+     */
+    function applyTeamFlag(el, teamName) {
+      if (!el) return;
+      const t = (teamName || "").toLowerCase();
+      el.className = "flag-circle";
+      el.innerHTML = "";
+
+      if (t.includes('sri lanka') || t.includes('slw') || t.includes('sl')) {
+        el.classList.add('flag-srilanka');
+      } else if (t.includes('india') || t.includes('indw') || t.includes('ind')) {
+        el.classList.add('flag-india');
+      } else if (t.includes('japan') || t.includes('jpnw') || t.includes('jpn')) {
+        el.classList.add('flag-japan');
+      } else if (t.includes('england') || t.includes('eng')) {
+        el.classList.add('flag-england');
+      } else if (t.includes('australia') || t.includes('aus')) {
+        el.classList.add('flag-australia');
+      } else if (t.includes('pakistan') || t.includes('pak')) {
+        el.classList.add('flag-pakistan');
+      } else {
+        el.classList.add('flag-generic');
+        const initials = (teamName || "TM").split(' ').map(w => w[0]).join('').slice(0, 3).toUpperCase();
+        el.textContent = initials;
+      }
+    }
+
+    /**
+     * SAFE DOM HELPERS
+     */
+    function setText(id, text) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = (text !== undefined && text !== null) ? text : "";
+    }
+
+    function setHTML(id, html) {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = (html !== undefined && html !== null) ? html : "";
+    }
+
+    function updateApiStatusDot(status, tooltip) {
+      const dot = document.getElementById('api-status-dot');
+      if (!dot) return;
+      if (status === 'live') {
+        dot.style.background = 'var(--lime-neon)';
+        dot.style.boxShadow = '0 0 10px var(--lime-neon)';
+      } else if (status === 'waiting') {
+        dot.style.background = 'var(--yellow-gold)';
+        dot.style.boxShadow = '0 0 10px var(--yellow-gold)';
+      } else if (status === 'sleeping') {
+        dot.style.background = '#6b7280';
+        dot.style.boxShadow = '0 0 8px #6b7280';
+      }
+      if (tooltip) dot.title = tooltip;
     }
 
     /**
@@ -1819,7 +2227,7 @@
     function triggerFullscreenCheer(type, playerName, details) {
       if (!cheerOverlay) return;
 
-      playCheerSound(); // Audio roars with broadcast ducking!
+      playCheerSound();
 
       stage.classList.remove('screen-shake');
       void stage.offsetWidth;
@@ -1872,17 +2280,20 @@
       isShowingOverEndCard = true;
       overCardEl.classList.add('active');
 
+      const squads = matchData.squads || {};
+      const teamKeys = Object.keys(squads);
+
       const choice = Math.floor(Math.random() * 3);
-      if (choice === 0) {
-        modalTitleEl.innerHTML = `<span>🇱🇰 PLAYING XI - SRI LANKA WOMEN</span>`;
-        const xi = matchData.squads?.["Sri Lanka Women"]?.playing_xi || [];
-        renderSquadList(xi, "Jamie Siddons");
-      } else if (choice === 1) {
-        modalTitleEl.innerHTML = `<span>🇮🇳 PLAYING XI - INDIA WOMEN</span>`;
-        const xi = matchData.squads?.["India Women"]?.playing_xi || [];
-        renderSquadList(xi, "Amol Muzumdar");
+      if (choice === 0 && teamKeys.length > 0) {
+        const teamName = teamKeys[0];
+        modalTitleEl.innerHTML = `<span>📋 PLAYING XI - ${teamName.toUpperCase()}</span>`;
+        renderSquadList(squads[teamName]?.playing_xi || [], matchData.info?.coach1 || "Head Coach");
+      } else if (choice === 1 && teamKeys.length > 1) {
+        const teamName = teamKeys[1];
+        modalTitleEl.innerHTML = `<span>📋 PLAYING XI - ${teamName.toUpperCase()}</span>`;
+        renderSquadList(squads[teamName]?.playing_xi || [], matchData.info?.coach2 || "Head Coach");
       } else {
-        modalTitleEl.innerHTML = `<span>🏆 WOMEN'S ASIA CUP - STANDINGS</span>`;
+        modalTitleEl.innerHTML = `<span>🏆 TOURNAMENT STANDINGS & TABLE</span>`;
         renderPointsTable();
       }
     }
@@ -1895,37 +2306,41 @@
     }
 
     function renderSquadList(xi, coach) {
-      let col1 = xi.slice(0, 6).map(p => `
+      let col1 = (xi.slice(0, 6) || []).map(p => `
         <div class="player-row-item">
-          <span class="player-name-text">${p.name}</span>
-          <span class="player-role-badge">${p.role}</span>
+          <span class="player-name-text">${p.name || "Player"}</span>
+          <span class="player-role-badge">${p.role || "Squad"}</span>
         </div>
       `).join('');
 
-      let col2 = xi.slice(6).map(p => `
+      let col2 = (xi.slice(6) || []).map(p => `
         <div class="player-row-item">
-          <span class="player-name-text">${p.name}</span>
-          <span class="player-role-badge">${p.role}</span>
+          <span class="player-name-text">${p.name || "Player"}</span>
+          <span class="player-role-badge">${p.role || "Squad"}</span>
         </div>
       `).join('');
 
       modalBodyEl.innerHTML = `
         <div class="squad-column">
           <div class="squad-col-title">TOP & MIDDLE ORDER</div>
-          ${col1}
+          ${col1 || '<div style="color:#94a3b8; font-size:12px;">Squad list will appear here</div>'}
         </div>
         <div class="squad-column">
           <div class="squad-col-title">ALL-ROUNDERS & BOWLERS</div>
           ${col2}
-          <div style="font-size:12px; color:#a5b4fc; font-weight:700; margin-top:6px;">Head Coach: ${coach}</div>
+          <div style="font-size:12px; color:#a5b4fc; font-weight:700; margin-top:6px;">Official Team Sheet</div>
         </div>
       `;
     }
 
     function renderPointsTable() {
       const pt = matchData?.points_table || [];
+      if (!pt || pt.length === 0) {
+        modalBodyEl.innerHTML = `<div style="grid-column: span 2; text-align:center; padding:30px; color:#94a3b8; font-family:var(--font-chakra); font-size:16px;">LIVE TOURNAMENT STANDINGS UPDATE IN PROGRESS</div>`;
+        return;
+      }
       let rows = pt.filter(r => r.position && r.position !== "").map(r => `
-        <tr class="${r.team.includes('INDW') || r.team.includes('SLW') ? 'highlight-row' : ''}">
+        <tr>
           <td style="color:var(--yellow-gold); font-weight:bold;">${r.position}</td>
           <td style="color:#ffffff;">${r.team}</td>
           <td>${r.played}</td>
@@ -1949,7 +2364,7 @@
     }
 
     /**
-     * DYNAMIC OVER BALLS TRAY (Shows the 6 balls of the current over)
+     * DYNAMIC OVER BALLS TRAY (Shows 6 balls for the active over)
      */
     function renderOverBallsTray(fullCommentary, currentOverNum) {
       const trayEl = document.getElementById('over-balls-tray');
@@ -1988,19 +2403,17 @@
     }
 
     /**
-     * FILTER DISMISSED BATTERS (Accurately detects active batters currently at crease)
+     * FILTER DISMISSED BATTERS (Active batters at crease)
      */
     function filterAliveBatters(allBatters) {
       if (!allBatters || allBatters.length === 0) return [];
 
-      // 1. Batters explicitly marked 'batting' or 'not out'
       const currentlyBatting = allBatters.filter(b => {
         const d = (b.dismissal || "").toLowerCase().trim();
         return d === 'batting' || d === 'not out' || d.includes('not out');
       });
       if (currentlyBatting.length >= 2) return currentlyBatting.slice(0, 2);
 
-      // 2. Identify any dismissed batter (c, b, st, lbw, run out, etc.)
       const isDismissedText = (dismissal) => {
         if (!dismissal) return false;
         const d = dismissal.toLowerCase().trim();
@@ -2020,22 +2433,114 @@
     }
 
     /**
-     * VERCEL LIVE CRICKET POLLER (CORS SAFE, ZERO CUSTOM HEADERS)
+     * CLIENT-SIDE LOCAL COUNTDOWN TICKER (0 API CALLS SPAM)
      */
-    const CRICBUZZ_URL = "https://www.cricbuzz.com/live-cricket-scores/169891/indw-vs-slw-final-womens-asia-cup-2026";
-    const PROXY_API_URL = "https://cricket-api-v5.vercel.app/?url=" + CRICBUZZ_URL;
+    function tickLocalCountdown() {
+      if (!matchData) return;
+      const matchState = matchData.match_state || {};
+      const targetTimestamp = matchState.matchStartTimestamp;
+      if (!targetTimestamp) return;
 
+      const now = Date.now();
+      const diff = targetTimestamp - now;
+
+      const hoursEl = document.getElementById('cd-hours');
+      const minsEl = document.getElementById('cd-mins');
+      const secsEl = document.getElementById('cd-secs');
+
+      if (diff <= 0) {
+        // Scheduled match start time has arrived!
+        if (hoursEl) hoursEl.textContent = "00";
+        if (minsEl) minsEl.textContent = "00";
+        if (secsEl) secsEl.textContent = "00";
+
+        setText('cd-match-subtitle', "MATCH STARTING NOW • GOING LIVE");
+        setText('cd-poller-state-disp', "LIVE POLLER ACTIVE");
+        
+        // Wake up API poller immediately to check for live play
+        if (isTabVisible && !isFetching) {
+          fetchLiveCricketData();
+        }
+        return;
+      }
+
+      // Calculate HH:MM:SS locally from browser clock
+      const totalSeconds = Math.floor(diff / 1000);
+      const hours = Math.floor(totalSeconds / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+
+      if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
+      if (minsEl) minsEl.textContent = String(minutes).padStart(2, '0');
+      if (secsEl) secsEl.textContent = String(seconds).padStart(2, '0');
+
+      // TOSS WATCH NOTIFICATION: If within 15 minutes of start
+      const tossStrip = document.getElementById('cd-toss-strip');
+      const tossIcon = document.getElementById('cd-toss-icon');
+      const tossMsg = document.getElementById('cd-toss-message');
+      const hasToss = matchData.info?.toss || matchData.match_summary?.toss;
+
+      if (hasToss) {
+        if (tossStrip) {
+          tossStrip.className = "cd-toss-strip toss-decided";
+        }
+        if (tossIcon) tossIcon.textContent = "🪙";
+        if (tossMsg) tossMsg.textContent = `TOSS: ${hasToss.toUpperCase()}`;
+      } else if (diff <= 15 * 60 * 1000) {
+        // Within 15 minutes: TOSS IMMINENT WAITING MODE!
+        if (tossStrip) {
+          tossStrip.className = "cd-toss-strip toss-imminent";
+        }
+        if (tossIcon) tossIcon.textContent = "🔴";
+        if (tossMsg) tossMsg.textContent = "TOSS UPDATE WAITING... CAPTAINS AT THE CENTER";
+      } else {
+        if (tossStrip) {
+          tossStrip.className = "cd-toss-strip";
+        }
+        if (tossIcon) tossIcon.textContent = "⏳";
+        if (tossMsg) tossMsg.textContent = "TOSS UPDATE: SCHEDULED 15-30 MINS BEFORE MATCH START";
+      }
+    }
+
+    /**
+     * TAB INACTIVITY / OFFLINE PAUSE ENGINE (document.hidden)
+     */
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        isTabVisible = false;
+        if (fetchTimer) {
+          clearTimeout(fetchTimer);
+          fetchTimer = null;
+        }
+        updateApiStatusDot('sleeping', 'TAB INACTIVE • POLLING PAUSED TO SAVE BANDWIDTH');
+        setText('cd-sleep-status', "💤 TAB INACTIVE • SLEEPING");
+        console.log('Stream overlay paused: Tab hidden, halted API requests.');
+      } else {
+        isTabVisible = true;
+        updateApiStatusDot('live', 'LIVE BROADCAST CONNECTED');
+        setText('cd-sleep-status', "⚡ SLEEP MODE ACTIVE");
+        console.log('Stream overlay resumed: Tab visible, refreshing live data.');
+        fetchLiveCricketData();
+      }
+    });
+
+    /**
+     * VERCEL LIVE CRICKET POLLER (SMART ADAPTIVE INTERVALS)
+     */
     async function fetchLiveCricketData() {
-      if (isFetching) return;
+      // If tab is inactive or already fetching, do not send request
+      if (!isTabVisible || isFetching) return;
       isFetching = true;
-      const statusDot = document.getElementById('api-status-dot');
+
+      let nextPollDelay = 4000; // Default live match polling delay (4s)
 
       try {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 9000);
 
-        // Salt query parameter breaks caching without triggering CORS preflight OPTIONS!
-        const fetchUrl = `${PROXY_API_URL}&_cb=${Date.now()}_${Math.floor(Math.random() * 100000)}`;
+        const baseUrl = getApiEndpoint();
+        const sep = baseUrl.includes('?') ? '&' : '?';
+        const fetchUrl = `${baseUrl}${sep}_cb=${Date.now()}_${Math.floor(Math.random() * 100000)}`;
 
         const response = await fetch(fetchUrl, {
           signal: controller.signal
@@ -2044,39 +2549,77 @@
 
         if (response.ok) {
           const freshData = await response.json();
-          if (freshData && freshData.scorecard && freshData.scorecard.innings) {
-            processIncomingCricketData(freshData);
+          if (freshData) {
             matchData = freshData;
+            processIncomingCricketData(freshData);
             try {
               localStorage.setItem(CACHE_KEY, JSON.stringify(freshData));
             } catch (e) {}
 
-            if (statusDot) {
-              statusDot.style.background = '#39ff14';
-              statusDot.style.boxShadow = '0 0 10px #39ff14';
-            }
             renderAllData();
+
+            // Calculate next poll delay based on match status and countdown
+            const matchState = freshData.match_state || {};
+            const status = matchState.status || "IN_PROGRESS";
+            const targetTimestamp = matchState.matchStartTimestamp;
+
+            if (status === "UPCOMING" && targetTimestamp) {
+              const diff = targetTimestamp - Date.now();
+
+              if (diff > 15 * 60 * 1000) {
+                // More than 15 mins to match start:
+                // SLEEP API POLLING! Countdown ticks locally in browser.
+                // Wake up at the 15-minute mark (capped at 15 minutes maximum check)
+                const timeUntil15m = diff - (15 * 60 * 1000);
+                nextPollDelay = Math.min(timeUntil15m, 15 * 60 * 1000);
+                updateApiStatusDot('sleeping', `MATCH UPCOMING • SLEEPING FOR ${Math.round(nextPollDelay / 60000)} MINS`);
+                setText('cd-sleep-status', `⚡ API SLEEPING (~${Math.round(nextPollDelay / 60000)}m)`);
+                setText('cd-poller-state-disp', `SLEEPING (${Math.round(nextPollDelay / 60000)}m)`);
+              } else if (diff > 0) {
+                // Within 15 mins to match start:
+                // TOSS WINDOW! Poll every 15s to capture toss announcement
+                nextPollDelay = 15000;
+                updateApiStatusDot('waiting', 'TOSS WATCH • POLLING EVERY 15s');
+                setText('cd-sleep-status', "🔴 TOSS WATCH (POLL 15s)");
+                setText('cd-poller-state-disp', "POLLING FOR TOSS (15s)");
+              } else {
+                // Starting time reached: poll every 4s for first ball
+                nextPollDelay = 4000;
+                updateApiStatusDot('live', 'MATCH STARTING • LIVE FEED');
+              }
+            } else if (status === "COMPLETED") {
+              // Completed match: poll every 60s
+              nextPollDelay = 60000;
+              updateApiStatusDot('live', 'MATCH COMPLETED');
+            } else {
+              // Live match in progress: 4000ms
+              nextPollDelay = 4000;
+              updateApiStatusDot('live', 'LIVE STREAM BROADCAST');
+            }
           }
         }
       } catch (err) {
         console.warn('Live fetch error:', err);
-        if (statusDot) statusDot.style.background = '#ffe600';
+        updateApiStatusDot('waiting', 'CONNECTION RETRYING...');
+        nextPollDelay = 8000;
       } finally {
         isFetching = false;
         LiveEngine.isInitialLoad = false;
         if (fetchTimer) clearTimeout(fetchTimer);
-        fetchTimer = setTimeout(fetchLiveCricketData, 4000);
+        // Only schedule next poll if tab is currently active
+        if (isTabVisible) {
+          fetchTimer = setTimeout(fetchLiveCricketData, nextPollDelay);
+        }
       }
     }
 
     /**
-     * MONOTONIC INTEGRITY FILTER (PROTECTION AGAINST 7.5 -> 7.3 JUMPS)
+     * MONOTONIC INTEGRITY FILTER (PROTECTION AGAINST BACKWARDS JUMPS)
      */
     function processIncomingCricketData(freshData) {
       const allInnings = freshData.scorecard?.innings || [];
       const incomingInningsIdx = allInnings.length;
 
-      // 1. Detect if an innings changed
       if (incomingInningsIdx > LiveEngine.activeInningsIdx) {
         LiveEngine.activeInningsIdx = incomingInningsIdx;
         LiveEngine.maxTotalBalls = 0;
@@ -2088,13 +2631,11 @@
       const live = freshData.live || {};
       const comm = freshData.full_commentary || [];
 
-      // Calculate total balls bowled from all available fields in the payload
       const scBalls = oversStringToBalls(inn.overs);
       const liveBalls = oversStringToBalls(live.latest_ball?.over);
       const commBalls = oversStringToBalls(comm.find(c => c.over)?.over);
       const incomingMaxBalls = Math.max(scBalls, liveBalls, commBalls);
 
-      // Parse runs & wickets
       let incRuns = 0;
       let incWkts = 0;
       if (inn.score) {
@@ -2105,27 +2646,13 @@
         }
       }
 
-      // Monotonically advance: NEVER roll back to lower ball or lower score
       LiveEngine.maxTotalBalls = Math.max(LiveEngine.maxTotalBalls, incomingMaxBalls);
       LiveEngine.maxRuns = Math.max(LiveEngine.maxRuns, incRuns);
       LiveEngine.maxWkts = Math.max(LiveEngine.maxWkts, incWkts);
     }
 
     /**
-     * SAFE DOM HELPERS (Prevents any unhandled null errors)
-     */
-    function setText(id, text) {
-      const el = document.getElementById(id);
-      if (el) el.textContent = (text !== undefined && text !== null) ? text : "";
-    }
-
-    function setHTML(id, html) {
-      const el = document.getElementById(id);
-      if (el) el.innerHTML = (html !== undefined && html !== null) ? html : "";
-    }
-
-    /**
-     * ATOMIC SYNCHRONOUS RENDER (DYNAMIC PILL, 2ND INNINGS & ON-STRIKE)
+     * ATOMIC SYNCHRONOUS RENDER (DYNAMIC PILL, 2ND INNINGS, COUNTDOWN & ON-STRIKE)
      */
     function renderAllData() {
       if (!matchData) return;
@@ -2137,14 +2664,151 @@
         const live = matchData.live || {};
         const info = matchData.info || {};
         const comm = matchData.full_commentary || [];
+        const matchState = matchData.match_state || {};
+        const matchSummary = matchData.match_summary || {};
+
+        const status = matchState.status || "IN_PROGRESS";
+        const isUpcoming = (status === "UPCOMING");
+        const isCompleted = (status === "COMPLETED");
+
+        // Team names extraction
+        let team1Name = "Sri Lanka Women";
+        let team2Name = "India Women";
+
+        if (matchSummary.team1?.name && matchSummary.team2?.name) {
+          team1Name = matchSummary.team1.name;
+          team2Name = matchSummary.team2.name;
+        } else if (info.team1 && info.team2) {
+          team1Name = info.team1;
+          team2Name = info.team2;
+        }
+
+        // 0. Match Header Title
+        const matchTitle = info.match || info.match_title || `${team1Name} vs ${team2Name}`;
+        setText('match-title-text', matchTitle.toUpperCase() + (info.venue ? ` — ${info.venue.toUpperCase()}` : ""));
+        if (info.series) setText('series-badge-text', info.series.toUpperCase());
+
+        // Side card info
+        if (info.series) setText('info-series', info.series);
+        if (info.venue) setText('info-venue', info.venue);
+        if (info.capacity) setText('info-capacity', `${info.capacity} Spectators`);
+        if (info.ends) setText('info-ends', info.ends);
+        if (info.umpires) setText('umpire-onfield', info.umpires);
+        if (info.third_umpire) setText('umpire-third', info.third_umpire);
+        if (info.referee) setText('umpire-referee', info.referee);
+
+        // Coach info
+        const squads = matchData.squads || {};
+        const teamKeys = Object.keys(squads);
+        if (teamKeys.length > 0) setText('coach-team1', `${teamKeys[0]} Staff`);
+        if (teamKeys.length > 1) setText('coach-team2', `${teamKeys[1]} Staff`);
+
+        // =========================================================
+        // SCENARIO A: UPCOMING MATCH (COUNTDOWN ARENA DISPLAY)
+        // =========================================================
+        const cdStage = document.getElementById('countdown-stage');
+        const liveCard = document.getElementById('live-ball-action-card');
+        const centerPill = document.getElementById('center-ball-pill');
+        const centerPillTitle = document.getElementById('ball-event-title');
+        const centerPillSub = document.getElementById('ball-event-subtitle');
+
+        if (isUpcoming) {
+          // Show countdown arena, hide live ball commentary card
+          if (cdStage) cdStage.classList.remove('hidden');
+          if (liveCard) liveCard.style.display = 'none';
+
+          // Team confrontation on countdown stage
+          setText('cd-name-team1', team1Name.toUpperCase());
+          setText('cd-name-team2', team2Name.toUpperCase());
+          applyTeamFlag(document.getElementById('cd-flag-team1'), team1Name);
+          applyTeamFlag(document.getElementById('cd-flag-team2'), team2Name);
+
+          setText('cd-venue-disp', info.venue || "International Stadium");
+          setText('info-badge-type', "PREVIEW");
+          setText('match-live-status', "Match Starts Soon");
+          setText('info-target-score', "Awaiting Toss");
+
+          // Start time formatted
+          if (matchState.start_time) {
+            try {
+              const d = new Date(matchState.start_time);
+              const slH = (d.getUTCHours() + 5 + Math.floor((d.getUTCMinutes() + 30) / 60)) % 24;
+              const slM = (d.getUTCMinutes() + 30) % 60;
+              const ampm = slH >= 12 ? 'PM' : 'AM';
+              const h12 = slH % 12 || 12;
+              setText('cd-sl-start-time', `${String(h12).padStart(2, '0')}:${String(slM).padStart(2, '0')} ${ampm}`);
+            } catch (e) {}
+          }
+
+          // Top Bar in Upcoming Mode
+          setText('team1-title', team1Name.toUpperCase());
+          setText('team1-score', "YET TO BAT");
+          setText('team1-overs', "0.0 Ov");
+          applyTeamFlag(document.getElementById('team1-flag'), team1Name);
+
+          setText('team2-title', team2Name.toUpperCase());
+          setText('team2-status-label', "YET TO BOWL");
+          applyTeamFlag(document.getElementById('team2-flag'), team2Name);
+
+          // Center Pill
+          if (centerPill) centerPill.className = "pill-upcoming";
+          if (centerPillTitle) centerPillTitle.textContent = "COUNTDOWN";
+          if (centerPillSub) centerPillSub.textContent = "MATCH STARTS SOON";
+
+          // Sub-bar
+          setText('crr-display', "--");
+          setText('req-rr-display', "--");
+          setText('pship-display', "--");
+          const tossText = matchSummary.toss || info.toss || "AWAITING TOSS UPDATE";
+          setText('toss-display', `TOSS: ${tossText.toUpperCase()}`);
+
+          // Bottom stats strip in preview mode
+          setText('bat1-role-title', "KEY BATTER");
+          setText('bat1-strike-tag', team1Name.toUpperCase());
+          setText('bat1-name', `${team1Name} Squad`);
+          setText('bat1-runs', "XI");
+          setText('bat1-balls', "(Announced)");
+
+          setText('bat2-role-title', "KEY BATTER");
+          setText('bat2-strike-tag', team2Name.toUpperCase());
+          setText('bat2-name', `${team2Name} Squad`);
+          setText('bat2-runs', "XI");
+          setText('bat2-balls', "(Announced)");
+
+          setText('bowler-role-title', "PREVIEW");
+          setText('bowler-spell-tag', "STARTING SOON");
+          setText('bowler-name', "VENUE / PITCH");
+          setText('bowler-wkts-runs', "READY");
+          setText('bowler-overs', "(Ready)");
+
+          // Ensure local countdown tick runs every second
+          if (!countdownInterval) {
+            countdownInterval = setInterval(tickLocalCountdown, 1000);
+          }
+          tickLocalCountdown();
+
+          // Bottom Marquee Ticker in Upcoming Mode (Smooth 200s crawl)
+          const upMarquee = `● [PREVIEW]: ${team1Name} vs ${team2Name} ● [VENUE]: ${info.venue || 'International Ground'} ● [TOSS]: ${tossText.toUpperCase()} ● [BROADCAST]: Ultra Live 4K Streaming Overlay by Viruna ● Countdown Active`;
+          setText('ticker-text-1', upMarquee);
+          setText('ticker-text-2', upMarquee);
+
+          return; // Finished rendering upcoming mode!
+        }
+
+        // =========================================================
+        // SCENARIO B: LIVE MATCH (IN_PROGRESS) OR COMPLETED
+        // =========================================================
+        if (cdStage) cdStage.classList.add('hidden');
+        if (liveCard) liveCard.style.display = 'block';
+
+        if (countdownInterval) {
+          clearInterval(countdownInterval);
+          countdownInterval = null;
+        }
 
         const isSecondInnings = allInnings.length >= 2;
-        const battingTeam = (inn.team_name || (isSecondInnings ? "Sri Lanka Women" : "India Women")).toUpperCase();
-        const isSriLankaBatting = battingTeam.includes('SRI LANKA');
-
-        // 0. Match Title Strip
-        const matchTitle = info.match || info.match_title || "INDW vs SLW • FINAL • WOMEN'S ASIA CUP 2026";
-        setText('match-title-text', matchTitle.toUpperCase() + (info.venue ? ` — ${info.venue.toUpperCase()}` : ""));
+        const battingTeam = (inn.team_name || (isSecondInnings ? team2Name : team1Name)).toUpperCase();
+        const bowlingTeam = (battingTeam === team1Name.toUpperCase() ? team2Name : team1Name).toUpperCase();
 
         // 1. Team & Main Score (Synchronized Monotonic Progress)
         const currentOversStr = ballsToOversString(LiveEngine.maxTotalBalls);
@@ -2155,106 +2819,98 @@
         setText('team1-title', battingTeam);
         setText('team1-score', currentScoreStr);
         setText('team1-overs', `${currentOversStr} Ov`);
+        applyTeamFlag(document.getElementById('team1-flag'), battingTeam);
 
-        const team1Flag = document.getElementById('team1-flag');
-        const team2Flag = document.getElementById('team2-flag');
-        if (team1Flag && team2Flag) {
-          if (isSriLankaBatting) {
-            team1Flag.className = "flag-circle flag-srilanka";
-            team2Flag.className = "flag-circle flag-india";
-            setText('team2-title', "INDIA WOMEN");
-          } else {
-            team1Flag.className = "flag-circle flag-india";
-            team2Flag.className = "flag-circle flag-srilanka";
-            setText('team2-title', "SRI LANKA W");
-          }
-        }
+        setText('team2-title', bowlingTeam);
+        setText('team2-status-label', isCompleted ? "RESULT" : "BOWLING");
+        applyTeamFlag(document.getElementById('team2-flag'), bowlingTeam);
 
         // 2. CRR, Target & Sub-bar Equation
         if (inn.total) {
           const crrMatch = inn.total.match(/RR:\s*([\d\.]+)/i);
           if (crrMatch) setText('crr-display', crrMatch[1]);
+        } else if (matchSummary.curr_run_rate) {
+          setText('crr-display', matchSummary.curr_run_rate);
         }
 
         if (isSecondInnings) {
-          const inn1Runs = parseInt(inn1.score) || 183;
-          const target = inn1Runs + 1;
-          const slRuns = LiveEngine.maxRuns || parseInt(inn.score) || 0;
-          const runsNeeded = Math.max(0, target - slRuns);
-          const ballsRemaining = Math.max(0, 120 - LiveEngine.maxTotalBalls);
-          const reqRR = ballsRemaining > 0 ? ((runsNeeded / ballsRemaining) * 6).toFixed(2) : "0.00";
+          const target = matchSummary.target || (parseInt(inn1.score) ? parseInt(inn1.score) + 1 : 184);
+          const curRuns = LiveEngine.maxRuns || parseInt(inn.score) || 0;
+          const runsNeeded = matchSummary.runs_needed !== null && matchSummary.runs_needed !== undefined 
+            ? matchSummary.runs_needed 
+            : Math.max(0, target - curRuns);
+          const ballsRemaining = matchSummary.balls_remaining !== null && matchSummary.balls_remaining !== undefined
+            ? matchSummary.balls_remaining
+            : Math.max(0, 120 - LiveEngine.maxTotalBalls);
+
+          const reqRR = matchSummary.req_run_rate || (ballsRemaining > 0 ? ((runsNeeded / ballsRemaining) * 6).toFixed(2) : "0.00");
 
           setText('req-rr-display', reqRR);
-          setText('toss-display', `TARGET: ${target} (SLW NEED ${runsNeeded} RUNS IN ${ballsRemaining} BALLS)`);
+          setText('toss-display', isCompleted ? matchSummary.status_text.toUpperCase() : `TARGET: ${target} (${battingTeam} NEED ${runsNeeded} RUNS IN ${ballsRemaining} BALLS)`);
           setText('info-target-score', `${target} Runs (from 20 Ov)`);
-          setText('match-live-status', "Sri Lanka Women Chase");
+          setText('match-live-status', isCompleted ? matchSummary.status_text : `${battingTeam} Chase`);
         } else {
-          if (info.toss) setText('toss-display', info.toss);
+          setText('req-rr-display', "--");
+          const tText = matchSummary.toss || info.toss || "First Innings in Progress";
+          setText('toss-display', tText.toUpperCase());
+          setText('info-target-score', "First Innings");
+          setText('match-live-status', isCompleted ? (matchSummary.status_text || "Match Completed") : "1st Innings");
         }
 
-        if (info.series) setText('info-series', info.series);
-        if (info.venue) setText('info-venue', info.venue);
-        if (info.capacity) setText('info-capacity', info.capacity + " Spectators");
-        if (info.ends) setText('info-ends', info.ends);
-        if (info.umpires) setText('umpire-onfield', info.umpires);
-        if (info.third_umpire) setText('umpire-third', info.third_umpire);
-        if (info.referee) setText('umpire-referee', info.referee);
-
-        // 3. TOP CENTER PILL & LIVE BALL ACTION (DYNAMIC: BALL / OVER / 6 / 4 / WICKET)
+        // 3. Center Ball Pill & Live Delivery
         const latestDelivery = (comm && comm.length > 0) ? (comm.find(c => c.over) || comm[0]) : (live.latest_ball || {});
-        const ballText = live.latest_update || latestDelivery.text || "Play in progress";
+        const ballText = live.latest_update || latestDelivery.text || (isCompleted ? matchSummary.status_text : "Play in progress");
         const eventObj = detectDeliveryEvent(latestDelivery.badge, ballText);
 
-        // Sync center over badge with either latest ball over or current overs
         const ballOver = latestDelivery.over || live.latest_ball?.over || currentOversStr;
-        setText('live-over-badge', ballOver || "--");
+        setText('live-over-badge', isCompleted ? "FINAL" : (ballOver || "--"));
         setText('live-ball-text', ballText);
 
-        const centerPill = document.getElementById('center-ball-pill');
-        const centerPillTitle = document.getElementById('ball-event-title');
-        const centerPillSub = document.getElementById('ball-event-subtitle');
         const eventBadge = document.getElementById('live-event-badge');
-
-        // Center pitch card event badge
         if (eventBadge) {
           eventBadge.className = `ball-event-badge badge-${eventObj.type}`;
-          eventBadge.textContent = eventObj.label;
+          eventBadge.textContent = isCompleted ? "MATCH ENDED" : eventObj.label;
         }
 
         const isOverCompleted = (LiveEngine.maxTotalBalls > 0 && LiveEngine.maxTotalBalls % 6 === 0);
         const completedOverNum = Math.floor(LiveEngine.maxTotalBalls / 6);
 
-        if (isOverCompleted) {
-          // OVER COMPLETED: Display "OVER" in top box & trigger over card
+        if (isCompleted) {
+          if (centerPill) centerPill.className = "pill-over";
+          if (centerPillTitle) centerPillTitle.textContent = "MATCH ENDED";
+          if (centerPillSub) centerPillSub.textContent = matchSummary.equation || "FINAL RESULT";
+          dismissOverEndCard();
+        } else if (isOverCompleted) {
           if (centerPill) centerPill.className = "pill-over";
           if (centerPillTitle) centerPillTitle.textContent = "OVER";
           if (centerPillSub) centerPillSub.textContent = `END OF OVER ${completedOverNum}`;
           showRandomOverEndCard();
         } else {
-          // BALL IN PROGRESS: Display ball result (6, 4, WICKET, 1 RUN, BALL)
           if (centerPill) centerPill.className = `pill-${eventObj.type}`;
           if (centerPillTitle) centerPillTitle.textContent = eventObj.title;
           if (centerPillSub) centerPillSub.textContent = `OVER ${currentOversStr}`;
-
-          // Dismiss over break card whenever match is in active over
           dismissOverEndCard();
         }
 
-        // Dynamic Over Balls Tray (6 bubbles for current over)
+        // Over Balls Tray
         const currentOverIndex = isOverCompleted ? (completedOverNum - 1) : Math.floor(LiveEngine.maxTotalBalls / 6);
         renderOverBallsTray(comm, currentOverIndex);
 
-        // Trigger Fullscreen Cheer & Stadium Roar Sound on 4, 6 or genuine Wicket
+        // Fullscreen Cheer Celebration on 4, 6, Wickets
         const deliveryId = `${currentOversStr}_${eventObj.type}_${ballText.slice(0, 24)}`;
         if (deliveryId !== LiveEngine.lastCelebratedBallId) {
           LiveEngine.lastCelebratedBallId = deliveryId;
-          if (!LiveEngine.isInitialLoad && (eventObj.type === 'six' || eventObj.type === 'four' || eventObj.type === 'wicket')) {
-            const bName = isSriLankaBatting ? "Sri Lanka Batter" : "India Batter";
-            triggerFullscreenCheer(eventObj.type, bName, ballText);
+          if (!LiveEngine.isInitialLoad && !isCompleted && (eventObj.type === 'six' || eventObj.type === 'four' || eventObj.type === 'wicket')) {
+            triggerFullscreenCheer(eventObj.type, battingTeam, ballText);
           }
         }
 
-        // 4. BATSMEN: Strike Assignment from commentary
+        // 4. Batsmen: Active Strike Assignment
+        setText('bat1-role-title', "BATSMAN");
+        setText('bat2-role-title', "BATSMAN");
+        setText('bowler-role-title', "BOWLER");
+        setText('bowler-spell-tag', "ACTIVE SPELL");
+
         const allBatters = inn.batting || [];
         let activeBatters = filterAliveBatters(allBatters);
         if (activeBatters.length < 2) {
@@ -2266,7 +2922,7 @@
         if (activeBatters.length > 0) {
           const b1 = activeBatters[0];
           const b1NameLower = (b1.name || "").toLowerCase();
-          setText('bat1-name', b1.name ? b1.name.toUpperCase() : "BATSMAN 1");
+          setText('bat1-name', b1.name ? b1.name.toUpperCase() : "BATTER 1");
           setText('bat1-runs', b1.runs || "0");
           setText('bat1-balls', `(${b1.balls || "0"})`);
           setText('bat1-fours', b1.fours || "0");
@@ -2289,7 +2945,7 @@
         if (activeBatters.length > 1) {
           const b2 = activeBatters[1];
           const b2NameLower = (b2.name || "").toLowerCase();
-          setText('bat2-name', b2.name ? b2.name.toUpperCase() : "BATSMAN 2");
+          setText('bat2-name', b2.name ? b2.name.toUpperCase() : "BATTER 2");
           setText('bat2-runs', b2.runs || "0");
           setText('bat2-balls', `(${b2.balls || "0"})`);
           setText('bat2-fours', b2.fours || "0");
@@ -2317,7 +2973,7 @@
           }
         }
 
-        // 5. BOWLER
+        // 5. Active Bowler
         const bowlers = inn.bowling || [];
         if (bowlers.length > 0) {
           let activeBowler = null;
@@ -2352,15 +3008,31 @@
           }
         }
 
-        // 6. RUNNING COMMENTARY TICKER (Smooth 140s marquee)
+        // 6. Running Commentary Ticker (Chronological Deliveries + Relaxed Speed)
         if (comm && comm.length > 0) {
-          const tickerString = comm
-            .filter(c => c.text)
-            .map(c => `● [OVER ${c.over || 'LIVE'}]: ${c.text}`)
-            .join('    ──────────    ');
-          
-          setText('ticker-text-1', tickerString);
-          setText('ticker-text-2', tickerString);
+          // Filter deliveries with overs and sort chronologically (0.1, 0.2, 0.3 ...)
+          const deliveryBalls = comm
+            .filter(c => c.over && /^\d+\.?\d*$/.test(c.over))
+            .sort((a, b) => parseFloat(a.over) - parseFloat(b.over));
+
+          const generalNotes = comm.filter(c => !c.over || !/^\d+\.?\d*$/.test(c.over));
+
+          let tickerItems = [];
+          if (deliveryBalls.length > 0) {
+            // Display deliveries in proper chronological sequence
+            const ballTexts = deliveryBalls.slice(-20).map(c => `● [OVER ${c.over}]: ${c.text}`);
+            tickerItems = tickerItems.concat(ballTexts);
+          }
+          if (generalNotes.length > 0) {
+            const noteTexts = generalNotes.slice(0, 5).map(c => `● [UPDATE]: ${c.text}`);
+            tickerItems = tickerItems.concat(noteTexts);
+          }
+
+          if (tickerItems.length > 0) {
+            const fullTickerString = tickerItems.join('    ──────────    ');
+            setText('ticker-text-1', fullTickerString);
+            setText('ticker-text-2', fullTickerString);
+          }
         }
       } catch (err) {
         console.error('Error during renderAllData:', err);
@@ -2459,13 +3131,13 @@
     }
     animateAmbientCanvas();
 
-    // Render immediately if cached
+    // Initial render from local cache if present
     if (matchData) {
       processIncomingCricketData(matchData);
       renderAllData();
     }
 
-    // Call live fetch immediately (0ms) on load
+    // Call live fetch immediately (0ms) on page load
     fetchLiveCricketData();
   </script>
 </body>
