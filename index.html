@@ -276,13 +276,18 @@
       align-items: center;
       gap: 14px;
       background: rgba(36, 0, 61, 0.9);
-      padding: 6px 22px;
+      padding: 6px 20px;
       border-radius: 50px;
       border: 2px solid var(--pink-neon);
       box-shadow: 0 0 20px rgba(255, 0, 127, 0.4);
+      min-width: 320px;
     }
 
-    .flag-circle {
+    .team-badge-box-right {
+      justify-content: flex-end;
+    }
+
+    .flag-container {
       width: 62px;
       height: 62px;
       border-radius: 50%;
@@ -291,107 +296,32 @@
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      box-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+      box-shadow: 0 0 16px rgba(255, 255, 255, 0.75);
       position: relative;
       flex-shrink: 0;
+      background: linear-gradient(135deg, #1f0133, #4a0368);
     }
 
-    /* National Flag Emblems */
-    .flag-india {
-      background: linear-gradient(180deg, #FF9933 33.33%, #FFFFFF 33.33%, #FFFFFF 66.66%, #138808 66.66%);
-    }
-    .flag-india::after {
-      content: '☸';
-      position: absolute;
-      color: #000080;
-      font-size: 20px;
-      line-height: 1;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-    }
-
-    .flag-srilanka {
-      background: #8D153A;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .flag-srilanka::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      width: 25%;
+    .flag-img {
+      width: 100%;
       height: 100%;
-      background: linear-gradient(90deg, #00534E 50%, #EB7400 50%);
-      border-right: 2px solid #FFBE29;
-    }
-    .flag-srilanka::after {
-      content: '🦁';
-      font-size: 22px;
-      margin-left: 25%;
-      filter: drop-shadow(0 0 2px #FFBE29);
+      object-fit: cover;
+      display: block;
     }
 
-    .flag-japan {
-      background: #ffffff;
-      position: relative;
-    }
-    .flag-japan::after {
-      content: '';
-      position: absolute;
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: #bc002d;
-      box-shadow: 0 0 10px rgba(188, 0, 45, 0.6);
-    }
-
-    .flag-england {
-      background: #ffffff;
-      position: relative;
-    }
-    .flag-england::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 42%; width: 16%; height: 100%;
-      background: #ce1124;
-    }
-    .flag-england::after {
-      content: '';
-      position: absolute;
-      top: 42%; left: 0; width: 100%; height: 16%;
-      background: #ce1124;
-    }
-
-    .flag-australia {
-      background: #00008b;
-      position: relative;
-      display: flex;
+    .flag-fallback {
+      display: none;
+      width: 100%;
+      height: 100%;
       align-items: center;
       justify-content: center;
-      font-size: 22px;
-    }
-    .flag-australia::after { content: '⭐'; font-size: 22px; }
-
-    .flag-pakistan {
-      background: #01411c;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .flag-pakistan::after { content: '🌙'; font-size: 20px; }
-
-    .flag-generic {
-      background: linear-gradient(135deg, #3a0078, #6900b8);
       font-family: var(--font-teko);
       font-size: 26px;
       font-weight: 700;
+      letter-spacing: 1px;
       color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-shadow: 0 0 8px rgba(255,255,255,0.8);
+      background: linear-gradient(135deg, #2b0246, #6b058a);
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
     }
 
     .team-meta {
@@ -399,18 +329,70 @@
       flex-direction: column;
     }
 
+    .team-title-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
     .team-title {
       font-family: var(--font-chakra);
       font-weight: 700;
-      font-size: 21px;
+      font-size: 20px;
       letter-spacing: 1.5px;
       color: var(--yellow-gold);
       text-transform: uppercase;
       text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
-      max-width: 250px;
+      max-width: 220px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+
+    .team-status-badge {
+      font-family: var(--font-teko);
+      font-size: 15px;
+      line-height: 1;
+      letter-spacing: 1px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .badge-batting {
+      background: linear-gradient(90deg, #ff007f, #b30059);
+      color: #fff;
+      box-shadow: 0 0 10px rgba(255, 0, 127, 0.6);
+      animation: pulseGlow 1.5s infinite alternate;
+    }
+
+    .badge-bowling {
+      background: rgba(0, 242, 254, 0.15);
+      color: var(--cyan-neon);
+      border: 1px solid var(--cyan-neon);
+      box-shadow: 0 0 8px rgba(0, 242, 254, 0.3);
+    }
+
+    .badge-chasing {
+      background: linear-gradient(90deg, #ffe600, #ff8c00);
+      color: #000;
+      font-weight: 800;
+      box-shadow: 0 0 10px rgba(255, 230, 0, 0.6);
+      animation: pulseGlow 1.5s infinite alternate;
+    }
+
+    .badge-completed {
+      background: rgba(255, 255, 255, 0.15);
+      color: #cbd5e1;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+
+    .badge-waiting {
+      background: rgba(148, 163, 184, 0.15);
+      color: #94a3b8;
+      border: 1px dashed rgba(148, 163, 184, 0.4);
     }
 
     .team-score-overs {
@@ -421,7 +403,7 @@
 
     .main-score {
       font-family: var(--font-teko);
-      font-size: 68px;
+      font-size: 64px;
       font-weight: 700;
       line-height: 1;
       color: #ffffff;
@@ -431,7 +413,7 @@
 
     .main-overs {
       font-family: var(--font-teko);
-      font-size: 44px;
+      font-size: 40px;
       font-weight: 600;
       color: var(--yellow-gold);
       text-shadow: 0 0 10px rgba(255, 230, 0, 0.7);
@@ -523,27 +505,7 @@
       transition: all 0.25s ease;
     }
 
-    .bowling-team-box {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      background: rgba(36, 0, 61, 0.9);
-      padding: 8px 24px;
-      border-radius: 50px;
-      border: 2px solid var(--pink-neon);
-      box-shadow: 0 0 20px rgba(255, 0, 127, 0.4);
-    }
 
-    .bowling-label {
-      font-family: var(--font-chakra);
-      font-size: 26px;
-      font-weight: 700;
-      font-style: italic;
-      color: #ffffff;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      text-shadow: 0 0 12px var(--pink-neon);
-    }
 
     /* =========================================================
        ROW 2: SUB-BAR (RR, P'Ship, Target/Toss, SL Time)
@@ -1526,13 +1488,19 @@
       </div>
     </div>
 
-    <!-- ROW 1: TOP MAIN BROADCAST HEADER (DYNAMIC SWAP) -->
+    <!-- ROW 1: TOP MAIN BROADCAST HEADER (DYNAMIC DUAL-TEAM SCOREBOARD) -->
     <header id="top-bar">
-      <!-- Left: Batting Team & Score -->
-      <div class="team-badge-box">
-        <div class="flag-circle flag-srilanka" id="team1-flag"></div>
+      <!-- Left: Team 1 (Scores, Overs, Badge, Flag) -->
+      <div class="team-badge-box team-badge-box-left" id="team1-box">
+        <div class="flag-container" id="team1-flag">
+          <img class="flag-img" id="team1-flag-img" src="" alt="Team 1 Flag" onerror="handleFlagError(this, 'team1-flag')">
+          <div class="flag-fallback" id="team1-flag-fallback">T1</div>
+        </div>
         <div class="team-meta">
-          <div class="team-title" id="team1-title">SRI LANKA W</div>
+          <div class="team-title-row">
+            <span class="team-title" id="team1-title">TEAM 1</span>
+            <span class="team-status-badge badge-waiting" id="team1-status-badge">YET TO BAT</span>
+          </div>
           <div class="team-score-overs">
             <div class="main-score" id="team1-score">--</div>
             <div class="main-overs" id="team1-overs">0.0 Ov</div>
@@ -1540,25 +1508,34 @@
         </div>
       </div>
 
-      <!-- Center: Current Ball Event Pill (DYNAMIC BALL / OVER / 6 / 4 / WICKET / COUNTDOWN) -->
+      <!-- Center: Current Ball Event Pill (DYNAMIC BALL / OVER / 6 / 4 / WICKET / RESULT / COUNTDOWN) -->
       <div id="center-ball-pill" class="pill-ball">
-        <div class="beat-bars" style="position: absolute; left: 10px; top: 12px;">
+        <div class="beat-bars" style="position: absolute; left: 12px; top: 12px;">
           <div class="bar"></div><div class="bar"></div><div class="bar"></div>
         </div>
         <div id="ball-event-title">BALL</div>
         <div id="ball-event-subtitle">LIVE CRICKET BROADCAST</div>
-        <div class="beat-bars" style="position: absolute; right: 10px; top: 12px;">
+        <div class="beat-bars" style="position: absolute; right: 12px; top: 12px;">
           <div class="bar"></div><div class="bar"></div><div class="bar"></div>
         </div>
       </div>
 
-      <!-- Right: Bowling Team -->
-      <div class="bowling-team-box">
+      <!-- Right: Team 2 (Scores, Overs, Badge, Flag) -->
+      <div class="team-badge-box team-badge-box-right" id="team2-box">
         <div class="team-meta" style="text-align: right;">
-          <div class="team-title" id="team2-title">INDIA WOMEN</div>
-          <div class="bowling-label" id="team2-status-label">BOWLING</div>
+          <div class="team-title-row" style="justify-content: flex-end;">
+            <span class="team-status-badge badge-waiting" id="team2-status-badge">YET TO BAT</span>
+            <span class="team-title" id="team2-title">TEAM 2</span>
+          </div>
+          <div class="team-score-overs" style="justify-content: flex-end;">
+            <div class="main-overs" id="team2-overs">0.0 Ov</div>
+            <div class="main-score" id="team2-score">--</div>
+          </div>
         </div>
-        <div class="flag-circle flag-india" id="team2-flag"></div>
+        <div class="flag-container" id="team2-flag">
+          <img class="flag-img" id="team2-flag-img" src="" alt="Team 2 Flag" onerror="handleFlagError(this, 'team2-flag')">
+          <div class="flag-fallback" id="team2-flag-fallback">T2</div>
+        </div>
       </div>
     </header>
 
@@ -1648,13 +1625,19 @@
 
           <div class="cd-versus-box">
             <div class="cd-team cd-team-left">
-              <div class="cd-team-name" id="cd-name-team1">JAPAN WOMEN</div>
-              <div class="flag-circle flag-japan" id="cd-flag-team1"></div>
+              <div class="cd-team-name" id="cd-name-team1">TEAM 1</div>
+              <div class="flag-container" id="cd-flag-team1">
+                <img class="flag-img" id="cd-flag-team1-img" src="" alt="Team 1 Flag" onerror="handleFlagError(this, 'cd-flag-team1')">
+                <div class="flag-fallback" id="cd-flag-team1-fallback">T1</div>
+              </div>
             </div>
             <div class="cd-vs-badge">VS</div>
             <div class="cd-team cd-team-right">
-              <div class="flag-circle flag-india" id="cd-flag-team2"></div>
-              <div class="cd-team-name" id="cd-name-team2">INDIA WOMEN</div>
+              <div class="flag-container" id="cd-flag-team2">
+                <img class="flag-img" id="cd-flag-team2-img" src="" alt="Team 2 Flag" onerror="handleFlagError(this, 'cd-flag-team2')">
+                <div class="flag-fallback" id="cd-flag-team2-fallback">T2</div>
+              </div>
+              <div class="cd-team-name" id="cd-name-team2">TEAM 2</div>
             </div>
           </div>
 
@@ -2055,6 +2038,7 @@
       maxWkts: 0,
       lastCelebratedBallId: "",
       isInitialLoad: true,
+      hasRenderedOnce: false,
       lastTossAnnounced: ""
     };
 
@@ -2157,31 +2141,41 @@
     }
 
     /**
-     * DYNAMIC NATIONAL FLAG / EMBLEM HELPER
+     * UNIVERSAL TEAM FLAG / EMBLEM HELPER (FLAGCDN + FRANCHISE + DYNAMIC INITIALS)
      */
-    function applyTeamFlag(el, teamName) {
-      if (!el) return;
-      const t = (teamName || "").toLowerCase();
-      el.className = "flag-circle";
-      el.innerHTML = "";
+    function getTeamInitials(name) {
+      if (!name) return 'CRK';
+      const cleaned = name.replace(/\s*(women|men|u19)\b/gi, '').trim();
+      const parts = cleaned.split(/\s+/).filter(Boolean);
+      if (parts.length === 1) return parts[0].slice(0, 3).toUpperCase();
+      if (parts.length === 2) return (parts[0][0] + parts[1][0]).toUpperCase();
+      return parts.map(p => p[0]).join('').slice(0, 4).toUpperCase();
+    }
 
-      if (t.includes('sri lanka') || t.includes('slw') || t.includes('sl')) {
-        el.classList.add('flag-srilanka');
-      } else if (t.includes('india') || t.includes('indw') || t.includes('ind')) {
-        el.classList.add('flag-india');
-      } else if (t.includes('japan') || t.includes('jpnw') || t.includes('jpn')) {
-        el.classList.add('flag-japan');
-      } else if (t.includes('england') || t.includes('eng')) {
-        el.classList.add('flag-england');
-      } else if (t.includes('australia') || t.includes('aus')) {
-        el.classList.add('flag-australia');
-      } else if (t.includes('pakistan') || t.includes('pak')) {
-        el.classList.add('flag-pakistan');
+    function applyTeamFlag(containerId, teamName, flagUrl) {
+      const container = (typeof containerId === 'string') ? document.getElementById(containerId) : containerId;
+      if (!container) return;
+      const id = container.id || containerId;
+      const imgEl = document.getElementById(`${id}-img`);
+      const fallbackEl = document.getElementById(`${id}-fallback`);
+      const initials = getTeamInitials(teamName);
+
+      if (fallbackEl) fallbackEl.textContent = initials;
+
+      if (flagUrl && imgEl) {
+        imgEl.src = flagUrl;
+        imgEl.style.display = 'block';
+        if (fallbackEl) fallbackEl.style.display = 'none';
       } else {
-        el.classList.add('flag-generic');
-        const initials = (teamName || "TM").split(' ').map(w => w[0]).join('').slice(0, 3).toUpperCase();
-        el.textContent = initials;
+        if (imgEl) imgEl.style.display = 'none';
+        if (fallbackEl) fallbackEl.style.display = 'flex';
       }
+    }
+
+    function handleFlagError(imgEl, key) {
+      if (imgEl) imgEl.style.display = 'none';
+      const fallback = document.getElementById(`${key}-fallback`);
+      if (fallback) fallback.style.display = 'flex';
     }
 
     /**
@@ -2718,10 +2712,11 @@
           if (liveCard) liveCard.style.display = 'none';
 
           // Team confrontation on countdown stage
+          // Team confrontation on countdown stage
           setText('cd-name-team1', team1Name.toUpperCase());
           setText('cd-name-team2', team2Name.toUpperCase());
-          applyTeamFlag(document.getElementById('cd-flag-team1'), team1Name);
-          applyTeamFlag(document.getElementById('cd-flag-team2'), team2Name);
+          applyTeamFlag('cd-flag-team1', team1Name, matchSummary.team1?.flag_url);
+          applyTeamFlag('cd-flag-team2', team2Name, matchSummary.team2?.flag_url);
 
           setText('cd-venue-disp', info.venue || "International Stadium");
           setText('info-badge-type', "PREVIEW");
@@ -2744,11 +2739,22 @@
           setText('team1-title', team1Name.toUpperCase());
           setText('team1-score', "YET TO BAT");
           setText('team1-overs', "0.0 Ov");
-          applyTeamFlag(document.getElementById('team1-flag'), team1Name);
+          applyTeamFlag('team1-flag', team1Name, matchSummary.team1?.flag_url);
+          const t1BadgePre = document.getElementById('team1-status-badge');
+          if (t1BadgePre) {
+            t1BadgePre.className = 'team-status-badge badge-waiting';
+            t1BadgePre.textContent = matchSummary.team1?.badge || "YET TO BAT";
+          }
 
           setText('team2-title', team2Name.toUpperCase());
-          setText('team2-status-label', "YET TO BOWL");
-          applyTeamFlag(document.getElementById('team2-flag'), team2Name);
+          setText('team2-score', "YET TO BAT");
+          setText('team2-overs', "0.0 Ov");
+          applyTeamFlag('team2-flag', team2Name, matchSummary.team2?.flag_url);
+          const t2BadgePre = document.getElementById('team2-status-badge');
+          if (t2BadgePre) {
+            t2BadgePre.className = 'team-status-badge badge-waiting';
+            t2BadgePre.textContent = matchSummary.team2?.badge || "YET TO BAT";
+          }
 
           // Center Pill
           if (centerPill) centerPill.className = "pill-upcoming";
@@ -2807,25 +2813,95 @@
         }
 
         const isSecondInnings = allInnings.length >= 2;
-        const battingTeam = (inn.team_name || (isSecondInnings ? team2Name : team1Name)).toUpperCase();
-        const bowlingTeam = (battingTeam === team1Name.toUpperCase() ? team2Name : team1Name).toUpperCase();
+        const isTest = matchSummary.is_test || matchState.match_format === "TEST";
+        const isOdi = matchState.match_format === "ODI";
+        const maxOvers = matchSummary.max_overs || (isTest ? null : (isOdi ? 50 : 20));
+        const maxBalls = matchSummary.format_info?.max_balls || matchSummary.max_balls || (isTest ? null : (isOdi ? 300 : 120));
 
-        // 1. Team & Main Score (Synchronized Monotonic Progress)
+        const t1 = matchSummary.team1 || {};
+        const t2 = matchSummary.team2 || {};
+
+        // Active batting and bowling teams
+        const activeBattingTeamName = matchSummary.current_batting_team || inn.team_name || (isSecondInnings ? team2Name : team1Name);
+        const activeBowlingTeamName = matchSummary.current_bowling_team || (activeBattingTeamName.toLowerCase().includes(team1Name.toLowerCase()) ? team2Name : team1Name);
+
+        // Synchronized Monotonic Over & Score for active batting team
         const currentOversStr = ballsToOversString(LiveEngine.maxTotalBalls);
         const currentScoreStr = (LiveEngine.maxRuns > 0 || LiveEngine.maxWkts > 0)
           ? `${LiveEngine.maxRuns}-${LiveEngine.maxWkts}`
           : (inn.score || "0-0");
 
-        setText('team1-title', battingTeam);
-        setText('team1-score', currentScoreStr);
-        setText('team1-overs', `${currentOversStr} Ov`);
-        applyTeamFlag(document.getElementById('team1-flag'), battingTeam);
+        // 1. Team 1 (Left Box)
+        setText('team1-title', (t1.name || team1Name).toUpperCase());
+        const t1BadgeEl = document.getElementById('team1-status-badge');
+        applyTeamFlag('team1-flag', t1.name || team1Name, t1.flag_url);
 
-        setText('team2-title', bowlingTeam);
-        setText('team2-status-label', isCompleted ? "RESULT" : "BOWLING");
-        applyTeamFlag(document.getElementById('team2-flag'), bowlingTeam);
+        if (isCompleted) {
+          setText('team1-score', t1.score || "0-0");
+          setText('team1-overs', t1.overs || "0.0 Ov");
+          if (t1BadgeEl) {
+            t1BadgeEl.className = 'team-status-badge badge-completed';
+            t1BadgeEl.textContent = t1.badge || "1ST INN";
+          }
+        } else if (t1.is_batting) {
+          setText('team1-score', currentScoreStr);
+          setText('team1-overs', `${currentOversStr} Ov`);
+          if (t1BadgeEl) {
+            t1BadgeEl.className = 'team-status-badge badge-batting';
+            t1BadgeEl.textContent = "★ BATTING";
+          }
+        } else if (t1.is_bowling) {
+          setText('team1-score', t1.score || "0-0");
+          setText('team1-overs', t1.overs || "0.0 Ov");
+          if (t1BadgeEl) {
+            t1BadgeEl.className = 'team-status-badge badge-bowling';
+            t1BadgeEl.textContent = "BOWLING";
+          }
+        } else {
+          setText('team1-score', t1.score || "0-0");
+          setText('team1-overs', t1.overs || "0.0 Ov");
+          if (t1BadgeEl) {
+            t1BadgeEl.className = 'team-status-badge badge-waiting';
+            t1BadgeEl.textContent = t1.badge || "YET TO BAT";
+          }
+        }
 
-        // 2. CRR, Target & Sub-bar Equation
+        // 2. Team 2 (Right Box)
+        setText('team2-title', (t2.name || team2Name).toUpperCase());
+        const t2BadgeEl = document.getElementById('team2-status-badge');
+        applyTeamFlag('team2-flag', t2.name || team2Name, t2.flag_url);
+
+        if (isCompleted) {
+          setText('team2-score', t2.score || "0-0");
+          setText('team2-overs', t2.overs || "0.0 Ov");
+          if (t2BadgeEl) {
+            t2BadgeEl.className = 'team-status-badge badge-completed';
+            t2BadgeEl.textContent = t2.badge || "2ND INN";
+          }
+        } else if (t2.is_batting) {
+          setText('team2-score', currentScoreStr);
+          setText('team2-overs', `${currentOversStr} Ov`);
+          if (t2BadgeEl) {
+            t2BadgeEl.className = (isSecondInnings && !isTest) ? 'team-status-badge badge-chasing' : 'team-status-badge badge-batting';
+            t2BadgeEl.textContent = (isSecondInnings && !isTest) ? "★ CHASING" : "★ BATTING";
+          }
+        } else if (t2.is_bowling) {
+          setText('team2-score', t2.score || "Yet to bat");
+          setText('team2-overs', t2.overs || "0.0 Ov");
+          if (t2BadgeEl) {
+            t2BadgeEl.className = 'team-status-badge badge-bowling';
+            t2BadgeEl.textContent = "BOWLING";
+          }
+        } else {
+          setText('team2-score', t2.score || "Yet to bat");
+          setText('team2-overs', t2.overs || "0.0 Ov");
+          if (t2BadgeEl) {
+            t2BadgeEl.className = 'team-status-badge badge-waiting';
+            t2BadgeEl.textContent = t2.badge || "YET TO BAT";
+          }
+        }
+
+        // 3. CRR, Target & Sub-bar Equation
         if (inn.total) {
           const crrMatch = inn.total.match(/RR:\s*([\d\.]+)/i);
           if (crrMatch) setText('crr-display', crrMatch[1]);
@@ -2833,31 +2909,36 @@
           setText('crr-display', matchSummary.curr_run_rate);
         }
 
-        if (isSecondInnings) {
-          const target = matchSummary.target || (parseInt(inn1.score) ? parseInt(inn1.score) + 1 : 184);
+        if (isTest) {
+          setText('req-rr-display', matchSummary.req_run_rate || "--");
+          setText('toss-display', isCompleted ? matchSummary.status_text.toUpperCase() : (matchSummary.equation || info.toss || "TEST MATCH IN PROGRESS").toUpperCase());
+          setText('info-target-score', matchSummary.equation || "Test Match");
+          setText('match-live-status', isCompleted ? matchSummary.status_text : (matchSummary.status_text || "Day in Progress"));
+        } else if (isSecondInnings) {
+          const target = matchSummary.target || (parseInt(inn1.score) ? parseInt(inn1.score) + 1 : null);
           const curRuns = LiveEngine.maxRuns || parseInt(inn.score) || 0;
           const runsNeeded = matchSummary.runs_needed !== null && matchSummary.runs_needed !== undefined 
             ? matchSummary.runs_needed 
-            : Math.max(0, target - curRuns);
+            : (target ? Math.max(0, target - curRuns) : 0);
           const ballsRemaining = matchSummary.balls_remaining !== null && matchSummary.balls_remaining !== undefined
             ? matchSummary.balls_remaining
-            : Math.max(0, 120 - LiveEngine.maxTotalBalls);
+            : (maxBalls ? Math.max(0, maxBalls - LiveEngine.maxTotalBalls) : 0);
 
           const reqRR = matchSummary.req_run_rate || (ballsRemaining > 0 ? ((runsNeeded / ballsRemaining) * 6).toFixed(2) : "0.00");
 
           setText('req-rr-display', reqRR);
-          setText('toss-display', isCompleted ? matchSummary.status_text.toUpperCase() : `TARGET: ${target} (${battingTeam} NEED ${runsNeeded} RUNS IN ${ballsRemaining} BALLS)`);
-          setText('info-target-score', `${target} Runs (from 20 Ov)`);
-          setText('match-live-status', isCompleted ? matchSummary.status_text : `${battingTeam} Chase`);
+          setText('toss-display', isCompleted ? matchSummary.status_text.toUpperCase() : `TARGET: ${target} (${activeBattingTeamName} NEED ${runsNeeded} RUNS IN ${ballsRemaining} BALLS)`);
+          setText('info-target-score', target ? `${target} Runs ${maxOvers ? `(from ${maxOvers} Ov)` : ""}` : "Target Pending");
+          setText('match-live-status', isCompleted ? matchSummary.status_text : `${activeBattingTeamName} Chase`);
         } else {
           setText('req-rr-display', "--");
           const tText = matchSummary.toss || info.toss || "First Innings in Progress";
           setText('toss-display', tText.toUpperCase());
-          setText('info-target-score', "First Innings");
+          setText('info-target-score', maxOvers ? `First Innings (${maxOvers} Ov)` : "First Innings");
           setText('match-live-status', isCompleted ? (matchSummary.status_text || "Match Completed") : "1st Innings");
         }
 
-        // 3. Center Ball Pill & Live Delivery
+        // 4. Center Ball Pill & Live Delivery
         const latestDelivery = (comm && comm.length > 0) ? (comm.find(c => c.over) || comm[0]) : (live.latest_ball || {});
         const ballText = live.latest_update || latestDelivery.text || (isCompleted ? matchSummary.status_text : "Play in progress");
         const eventObj = detectDeliveryEvent(latestDelivery.badge, ballText);
@@ -2878,7 +2959,7 @@
         if (isCompleted) {
           if (centerPill) centerPill.className = "pill-over";
           if (centerPillTitle) centerPillTitle.textContent = "MATCH ENDED";
-          if (centerPillSub) centerPillSub.textContent = matchSummary.equation || "FINAL RESULT";
+          if (centerPillSub) centerPillSub.textContent = matchSummary.equation || matchState.result || "FINAL RESULT";
           dismissOverEndCard();
         } else if (isOverCompleted) {
           if (centerPill) centerPill.className = "pill-over";
@@ -2896,12 +2977,16 @@
         const currentOverIndex = isOverCompleted ? (completedOverNum - 1) : Math.floor(LiveEngine.maxTotalBalls / 6);
         renderOverBallsTray(comm, currentOverIndex);
 
-        // Fullscreen Cheer Celebration on 4, 6, Wickets
+        // Fullscreen Cheer Celebration on 4, 6, Wickets (STRICT LOAD & COMPLETED SUPPRESSION)
         const deliveryId = `${currentOversStr}_${eventObj.type}_${ballText.slice(0, 24)}`;
-        if (deliveryId !== LiveEngine.lastCelebratedBallId) {
+        if (!LiveEngine.hasRenderedOnce) {
           LiveEngine.lastCelebratedBallId = deliveryId;
-          if (!LiveEngine.isInitialLoad && !isCompleted && (eventObj.type === 'six' || eventObj.type === 'four' || eventObj.type === 'wicket')) {
-            triggerFullscreenCheer(eventObj.type, battingTeam, ballText);
+          LiveEngine.hasRenderedOnce = true;
+          // Suppress cheer on initial session render!
+        } else if (deliveryId !== LiveEngine.lastCelebratedBallId) {
+          LiveEngine.lastCelebratedBallId = deliveryId;
+          if (!LiveEngine.isInitialLoad && !isCompleted && !isUpcoming && (eventObj.type === 'six' || eventObj.type === 'four' || eventObj.type === 'wicket')) {
+            triggerFullscreenCheer(eventObj.type, activeBattingTeamName, ballText);
           }
         }
 
@@ -3019,8 +3104,11 @@
 
           let tickerItems = [];
           if (deliveryBalls.length > 0) {
-            // Display deliveries in proper chronological sequence
-            const ballTexts = deliveryBalls.slice(-20).map(c => `● [OVER ${c.over}]: ${c.text}`);
+            // Display deliveries in proper chronological sequence without repeating over number
+            const ballTexts = deliveryBalls.slice(-20).map(c => {
+              const clean = (c.text || "").replace(new RegExp(`^${c.over}\\s*`, 'i'), '').trim();
+              return `● [OVER ${c.over}]: ${clean}`;
+            });
             tickerItems = tickerItems.concat(ballTexts);
           }
           if (generalNotes.length > 0) {
