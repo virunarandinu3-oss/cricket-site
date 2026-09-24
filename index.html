@@ -2663,6 +2663,7 @@
       const live = freshData.live || {};
       const comm = freshData.full_commentary || [];
 
+      // Check all available places for maximum balls/overs
       const scBalls = oversStringToBalls(inn.overs);
       const liveBalls = oversStringToBalls(live.latest_ball?.over);
       const commBalls = oversStringToBalls(comm.find(c => c.over)?.over);
@@ -2675,6 +2676,24 @@
         if (m) {
           incRuns = parseInt(m[1], 10) || 0;
           incWkts = m[2] ? (parseInt(m[2], 10) || 0) : 0;
+        }
+      }
+
+      // Check commentary for newer runs if scorecard is lagging behind
+      if (comm && comm.length > 0) {
+        for (let i = 0; i < Math.min(comm.length, 5); i++) {
+          const t = comm[i]?.text || "";
+          const sm = t.match(/(\b\d{1,3}-\d{1,2}\b)/);
+          if (sm) {
+            const parts = sm[1].split('-');
+            const r = parseInt(parts[0], 10) || 0;
+            const w = parseInt(parts[1], 10) || 0;
+            if (r >= incRuns) {
+              incRuns = r;
+              incWkts = w;
+              break;
+            }
+          }
         }
       }
 
